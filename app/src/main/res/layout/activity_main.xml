@@ -144,6 +144,47 @@
                 android:text="Confirm"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/registerPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                />
+            <EditText
+                android:id="@+id/registerPass1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:text=""/>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"/>
+            <EditText
+                android:id="@+id/registerPass2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:text=""/>
+
+            <Button
+                android:id="@+id/registerPassButton"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 
@@ -177,8 +218,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:ems="10"
-            android:text="c0aba0c3f3fdc55050e59b7eb596605d000d41e0625328b7e87c65336b000a15"/>
+            android:ems="10" />
 
         <Button
             android:id="@+id/loginButton"

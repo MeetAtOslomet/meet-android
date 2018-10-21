@@ -1,11 +1,13 @@
 package no.oslomet.meet;
 
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,6 +24,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import no.oslomet.meet.Handler.JsonHandler;
@@ -112,6 +118,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void ValidateAuthentication()
     {
+        if (Looper.myLooper() == Looper.getMainLooper())
+        {
+            Log.e("Mistake where made", "You where just about to run network code on main thread! This is not allowed by the Android OS!");
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    ValidateAuthentication();
+                }
+            });
+        }
+
         Api api = new Api();
         String AuthKey = new SettingsHandler().getStringSetting(MainActivity.this, R.string.preference_AuthKey);
         runOnUiThread(new Runnable() {
@@ -159,17 +176,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    private String username = null;
     private void showUserInput()
     {
-        String username = new SettingsHandler().getStringSetting(MainActivity.this, R.string.preference_username);
+        username = new SettingsHandler().getStringSetting(MainActivity.this, R.string.preference_username);
         Boolean awaitingValidation = new SettingsHandler().getBooleanSetting(MainActivity.this, R.string.preference_validate, false);
-
+        Boolean awaitingPassword = new SettingsHandler().getBooleanSetting(MainActivity.this, R.string.preference_setPassword, false);
         if (username != null && username != "" && awaitingValidation == true )
         {
             //Show authentication code
             HandleActivation();
 
+        }
+        else if (username != null && username != "" && awaitingPassword == true)
+        {
+            HandlePasswordSetting();
         }
         else
         {
@@ -358,52 +379,183 @@ public class MainActivity extends AppCompatActivity {
                                 ((EditText)findViewById(R.id.code2)).getText().toString() +
                                 ((EditText)findViewById(R.id.code3)).getText().toString() +
                                 ((EditText)findViewById(R.id.code4)).getText().toString();
+                final int activationCode = Integer.valueOf(code);
+
+                Toast.makeText(MainActivity.this, String.valueOf(activationCode), Toast.LENGTH_LONG).show();
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Api api = new Api();
+                        ArrayList<PostParam> params = new ArrayList<>();
+                        params.add(new PostParam("request", "activate_user"));
+
+                        JSONObject root = new JSONObject();
+                        try {
+                            root.put("username", username);
+                            root.put("activationKey", activationCode);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String json = root.toString();
+                        params.add(new PostParam("data", json));
+
+                        String jString = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
+                        AuthStatus as = new JsonHandler().getHasAuth(jString);
+                        if (as != null && as.authenticationExit == 0)
+                        {
+                            SettingsHandler sh = new SettingsHandler();
+                            sh.setBooleanSetting(MainActivity.this, R.string.preference_validate, false);
+                            sh.setBooleanSetting(MainActivity.this, R.string.preference_setPassword, true);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    findViewById(R.id.registerUserCode).setVisibility(View.GONE);
+                                    HandlePasswordSetting();
+                                }
+                            });
+                        }
+                    }
+                });
 
 
-
-
-                Toast.makeText(MainActivity.this, code, Toast.LENGTH_LONG).show();
             }
         });
 
         //UserCodeConfirm
     }
 
-    private void Login()
+    private void HandlePasswordSetting()
     {
-        String username = ((EditText)findViewById(R.id.loginUser)).getText().toString();
-        String password = ((EditText)findViewById(R.id.loginPass)).getText().toString();
+        findViewById(R.id.registerUserLayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.registerPassword).setVisibility(View.VISIBLE);
 
-        JSONObject root = new JSONObject();
-        try {
-            root.put("username", username);
-            root.put("password", password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        final EditText et1 = (EditText)findViewById(R.id.registerPass1);
+        final EditText et2 = (EditText)findViewById(R.id.registerPass2);
 
-        String json = root.toString();
-        final ArrayList<PostParam> params = new ArrayList<>();
-        params.add(new PostParam("request","login_user"));
-        params.add(new PostParam("data", json));
-
-        AsyncTask.execute(new Runnable() {
+        findViewById(R.id.registerPassButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                Api api = new Api();
-                String result = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
-                AuthStatus as = new JsonHandler().getHasAuth(result);
-                if (as != null && as.authenticationExit == 0 && as.authenticationToken.length() > 0)
+            public void onClick(View v) {
+                String password1 = et1.getText().toString();
+                String password2 = et2.getText().toString();
+
+                if (password1.equals(password2))
                 {
-                    new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_AuthKey, as.authenticationToken);
-                    Log.e("AuthKey", as.authenticationToken);
-                    ValidateAuthentication();
+
+                    try {
+
+
+                        JSONObject root = new JSONObject();
+                        root.put("username", username);
+                        root.put("password", getSHA256(password1));
+
+                        String json = root.toString();
+                        final ArrayList<PostParam> params = new ArrayList<>();
+                        params.add(new PostParam("request","initPass_user"));
+                        params.add(new PostParam("data", json));
+
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                Api api = new Api();
+                                String result = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
+                                final AuthStatus as = new JsonHandler().getHasAuth(result);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (as != null && as.authenticationExit == 0)
+                                        {
+                                            new SettingsHandler().setBooleanSetting(MainActivity.this, R.string.preference_setPassword, false);
+                                            findViewById(R.id.registerUserLayout).setVisibility(View.GONE);
+                                            findViewById(R.id.registerPassword).setVisibility(View.GONE);
+                                            AsyncTask.execute(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ValidateAuthentication();
+                                                }
+                                            });
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(MainActivity.this, as.message, Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, "Passwords did not match", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
 
+
+    private void Login()
+    {
+        String username = ((EditText)findViewById(R.id.loginUser)).getText().toString();
+        String password = null;
+        try {
+            password = getSHA256(((EditText)findViewById(R.id.loginPass)).getText().toString());
+            JSONObject root = new JSONObject();
+            try {
+                root.put("username", username);
+                root.put("password", password);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String json = root.toString();
+            final ArrayList<PostParam> params = new ArrayList<>();
+            params.add(new PostParam("request","login_user"));
+            params.add(new PostParam("data", json));
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    Api api = new Api();
+                    String result = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
+                    AuthStatus as = new JsonHandler().getHasAuth(result);
+                    if (as != null && as.authenticationExit == 0 && as.authenticationToken.length() > 0)
+                    {
+                        new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_AuthKey, as.authenticationToken);
+                        Log.e("AuthKey", as.authenticationToken);
+                        ValidateAuthentication();
+                    }
+                }
+            });
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
+
+    private String getSHA256(String text) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(text.getBytes());
+        byte[] passHash = md.digest();
+
+        String hex = String.format("%064x", new BigInteger(1, passHash));
+        System.out.println(hex);
+        Log.e("SHA256-Hex", hex);
+        return hex;
+    }
 
 
     public class SplashAnimationListener implements Animation.AnimationListener {

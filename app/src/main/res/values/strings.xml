@@ -7,5 +7,6 @@
     <string name="preference_AuthKey"></string>
     <string name="preference_username"></string>
     <string name="preference_validate">false</string>
+    <string name="preference_setPassword">false</string>
 
 </resources>
