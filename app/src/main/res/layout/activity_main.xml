@@ -78,12 +78,22 @@
             <EditText
                 android:id="@+id/registerUsernameInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text|textEmailAddress"/>
             <Button
                 android:id="@+id/registerUsernameButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Register"/>
+
+            <Button
+                android:layout_marginTop="10dp"
+                android:id="@+id/registerGoBackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="Go back" />
+
 
         </LinearLayout>
 
@@ -206,7 +216,8 @@
         <EditText
             android:id="@+id/loginUser"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text|textEmailAddress"/>
 
         <TextView
             android:layout_marginTop="20dp"
@@ -227,6 +238,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"/>
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/loginGoBackButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Go back" />
 
     </LinearLayout>
 

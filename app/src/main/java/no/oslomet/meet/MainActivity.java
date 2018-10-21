@@ -1,5 +1,6 @@
 package no.oslomet.meet;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -95,23 +96,6 @@ public class MainActivity extends AppCompatActivity {
                         tv.append(response);
                     }
                 });
-
-
-
-                /*ArrayList<PostParam> pptest = new ArrayList<>();
-                pptest.add(new PostParam("request", "register_user"));
-                pptest.add(new PostParam("data", Strings.testPost));
-
-
-                String data = api.POST_DATA(pptest);
-                final String resp = api.POST(Strings.ApiUrl(), data);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView tv = MainActivity.this.findViewById(R.id.HeartBeat);
-                        tv.append(resp);
-                    }
-                });*/
             }
         });
     }
@@ -139,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         });
         if (AuthKey == null || AuthKey.length() == 0)
         {
-            //Present login or register
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -195,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             findViewById(R.id.selectLayout).setVisibility(View.VISIBLE);
+
+
             findViewById(R.id.PromptloginButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -206,66 +191,92 @@ public class MainActivity extends AppCompatActivity {
                             Login();
                         }
                     });
+                    findViewById(R.id.loginGoBackButton).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            findViewById(R.id.selectLayout).setVisibility(View.VISIBLE);
+                            findViewById(R.id.loginLayout).setVisibility(View.GONE);
+                        }
+                    });
                 }
             });
 
             findViewById(R.id.PromptregisterButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    findViewById(R.id.selectLayout).setVisibility(View.GONE);
                     findViewById(R.id.registerUserLayout).setVisibility(View.VISIBLE);
                     findViewById(R.id.registerUsernameLayout).setVisibility(View.VISIBLE);
                     findViewById(R.id.registerUsernameButton).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v)
                         {
-                            final String username = ((EditText)findViewById(R.id.registerUsernameInput)).getText().toString();
-                            if (username.contains("@"))
-                            {
-                                AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
-                                adb.setTitle("Illegal character!");
-                                adb.setMessage("Only insert your username (student number or employee number). Example sXXXXX or olanordmann");
-                                adb.show();
-                            }
-                            else
-                            {
-                                final JSONObject root = new JSONObject();
-                                try {
-                                    root.put("username", username);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                AsyncTask.execute(new Runnable() {
-                                    @Override
-                                    public void run()
-                                    {
-                                        String json = root.toString();
-                                        ArrayList<PostParam> params = new ArrayList<>();
-                                        params.add(new PostParam("request", "register_user"));
-                                        params.add(new PostParam("data", json));
-
-                                        Api api = new Api();
-                                        String reuslt = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
-                                        Registration registration = new JsonHandler().getRegistration(reuslt);
-                                        if (registration != null && registration.registrationExit == 0)
-                                        {
-                                            //Store username
-                                            new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_username, username);
-                                            new SettingsHandler().setBooleanSetting(MainActivity.this, R.string.preference_validate, true);
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    findViewById(R.id.registerUsernameLayout).setVisibility(View.GONE);
-                                                    HandleActivation();
-                                                }
-                                            });
-                                        }
-                                    }
-                                });
-                            }
-
+                            RegisterUsername();
                         }
                     });
+                    findViewById(R.id.registerGoBackButton).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            findViewById(R.id.selectLayout).setVisibility(View.VISIBLE);
+                            findViewById(R.id.registerUserLayout).setVisibility(View.GONE);
+                            findViewById(R.id.registerUsernameLayout).setVisibility(View.GONE);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void RegisterUsername()
+    {
+        final String username = ((EditText)findViewById(R.id.registerUsernameInput)).getText().toString().trim();
+        if (username.contains("@"))
+        {
+            AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+            adb.setTitle("Illegal character!");
+            adb.setMessage("Only insert your username (student number or employee number). Example sXXXXX or olanordmann");
+            adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            adb.show();
+        }
+        else
+        {
+            final JSONObject root = new JSONObject();
+            try {
+                root.put("username", username);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run()
+                {
+                    String json = root.toString();
+                    ArrayList<PostParam> params = new ArrayList<>();
+                    params.add(new PostParam("request", "register_user"));
+                    params.add(new PostParam("data", json));
+
+                    Api api = new Api();
+                    String reuslt = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
+                    Registration registration = new JsonHandler().getRegistration(reuslt);
+                    if (registration != null && registration.registrationExit == 0)
+                    {
+                        //Store username
+                        new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_username, username);
+                        new SettingsHandler().setBooleanSetting(MainActivity.this, R.string.preference_validate, true);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                findViewById(R.id.registerUsernameLayout).setVisibility(View.GONE);
+                                HandleActivation();
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -336,52 +347,23 @@ public class MainActivity extends AppCompatActivity {
 
         code4.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL)
-                {
-                    EditText et = ((EditText)v);
-                    if (et.getText().length() == 0) { code3.requestFocus(); }
-                }
-                return false;
-            }
+            public boolean onKey(View v, int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_DEL) { EditText et = ((EditText)v); if (et.getText().length() == 0) { code3.requestFocus(); } }return false; }
         });
-
         code3.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL)
-                {
-                    EditText et = ((EditText)v);
-                    if (et.getText().length() == 0) { code2.requestFocus(); }
-                }
-                return false;
-            }
+            public boolean onKey(View v, int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_DEL) { EditText et = ((EditText)v); if (et.getText().length() == 0) { code2.requestFocus(); } }return false; }
         });
-
         code2.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL)
-                {
-                    EditText et = ((EditText)v);
-                    if (et.getText().length() == 0) { code1.requestFocus(); }
-                }
-                return false;
-            }
-        });
+            public boolean onKey(View v, int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_DEL) { EditText et = ((EditText)v); if (et.getText().length() == 0) { code1.requestFocus(); } }return false; }});
 
 
         findViewById(R.id.UserCodeConfirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code =
-                        ((EditText)findViewById(R.id.code1)).getText().toString() +
-                                ((EditText)findViewById(R.id.code2)).getText().toString() +
-                                ((EditText)findViewById(R.id.code3)).getText().toString() +
-                                ((EditText)findViewById(R.id.code4)).getText().toString();
+                String code = code1.getText().toString() + code2.getText().toString() + code3.getText().toString() + code4.getText().toString()  ;
                 final int activationCode = Integer.valueOf(code);
 
-                Toast.makeText(MainActivity.this, String.valueOf(activationCode), Toast.LENGTH_LONG).show();
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
