@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Meet</string>
+    <string name="app_name">Meet @ OsloMet</string>
+
+
+
+    <!-- Preference strings are to be left empty in this file -->
+    <string name="preference_AuthKey"></string>
+    <string name="preference_username"></string>
+    <string name="preference_validate">false</string>
+
 </resources>
