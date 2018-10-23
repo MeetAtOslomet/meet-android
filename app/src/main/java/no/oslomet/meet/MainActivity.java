@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import net.hockeyapp.android.CrashManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             no.oslomet.meet.core.Certificate cert = new no.oslomet.meet.core.Certificate();
             cert.InitializeCetificate(this);
         }
+        CrashManager.register(this);
     }
 
     //https://developer.android.com/training/articles/security-ssl#java
@@ -160,6 +164,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String username = null;
+    public void updateUsername(String username)
+    {
+        this.username = username;
+    }
+
     private void showUserInput()
     {
         username = new SettingsHandler().getStringSetting(MainActivity.this, R.string.preference_username);
@@ -268,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
                     {
                         //Store username
                         new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_username, username);
+                        updateUsername(username);
                         new SettingsHandler().setBooleanSetting(MainActivity.this, R.string.preference_validate, true);
                         runOnUiThread(new Runnable() {
                             @Override
@@ -358,7 +368,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_DEL) { EditText et = ((EditText)v); if (et.getText().length() == 0) { code1.requestFocus(); } }return false; }});
 
 
-        findViewById(R.id.UserCodeConfirm).setOnClickListener(new View.OnClickListener() {
+        Button confirmCode = (Button)findViewById(R.id.UserCodeConfirm);
+        confirmCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String code = code1.getText().toString() + code2.getText().toString() + code3.getText().toString() + code4.getText().toString()  ;
@@ -375,8 +386,14 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             root.put("username", username);
                             root.put("activationKey", activationCode);
-                        } catch (JSONException e) {
+                        } catch (final JSONException e) {
                             e.printStackTrace();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                         String json = root.toString();
                         params.add(new PostParam("data", json));
@@ -404,7 +421,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //UserCodeConfirm
     }
 
     private void HandlePasswordSetting()
