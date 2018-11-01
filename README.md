@@ -3,6 +3,35 @@
 A project for improving OsloMet students language skills
 
 
+### Required stuff to do api calls
+```java
+
+/// To run the api calls the requests needs to be run on a different thread
+/// calls thats performed on the main thread will cause the app to get killed
+/// An example to run the api code use AsyncTask
+AsyncTask.execute(new Runnable()
+{
+  @Override
+  public void run()
+  {
+    /// place your code here ..
+  }
+});
+
+/// To access the main thread again (to perform changes or access views)
+runOnUiThread(new Runnable()
+{
+  @Override
+  public void run()
+  {
+    /// place your code here..
+  }
+});
+
+
+```
+
+
 ### GET request with API
 ```java
 
