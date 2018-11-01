@@ -2,11 +2,11 @@
     <string name="app_name">Meet @ OsloMet</string>
 
 
-
     <!-- Preference strings are to be left empty in this file -->
     <string name="preference_AuthKey"></string>
     <string name="preference_username"></string>
     <string name="preference_validate">false</string>
     <string name="preference_setPassword">false</string>
+    <string name="title_activity_match">ActivityMatch</string>
 
 </resources>

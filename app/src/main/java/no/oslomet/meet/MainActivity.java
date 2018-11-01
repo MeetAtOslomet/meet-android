@@ -1,6 +1,7 @@
 package no.oslomet.meet;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -156,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
                         adb.setTitle("Success");
                         adb.setMessage("You where successfully authenticated!");
                         adb.show();
+
+                        startActivity(new Intent(MainActivity.this, ActivityMatch.class));
                         //Authorize connection
                     }
                 }
