@@ -37,7 +37,51 @@ params.add(pp1);
 String sParams = api.POST_DATA(params);
 
 /// Sending POST request and getting data
-/// URL to the api can be obtained by writing: Strings.ApiUrl(); // To lessen workload.
+/// URL to the api can be obtained by writing: Strings.ApiUrl(); // To reduce workload.
+String response = api.POST("https://meet.vlab.cs.hioa.no/api.php", sParams);
+
+/// Then handling the response according to the API.
+
+
+```
+
+### POST request with API (JSON how to)
+```java
+
+/// Creating the API object containing API methods
+Api api = new Api();
+
+/// Creating the JSON object with values
+JSONObject root = new JSONObject();
+try
+{
+  root.put("username", "<username string here>");
+  root.put("password", "<hashed password here>"); /// Password passed should and will always be hashed
+}
+catch (JSONException e)
+{
+  e.printStackTrace();
+}
+
+/// Getting JSON as string
+String jString = root.toString();
+
+/// Creating the ArrayList that will contain all of our POST Paramters to the API
+ArrayList<PostParam> params = new ArrayList<>();
+
+/// Example of how paramters are constructed
+PostParam pp = new PostParam("request", "login_user");
+PostParam pp1 = new PostParam("data", jString);
+
+/// Adding the paramters to the ArrayList
+params.add(pp);
+params.add(pp1);
+
+/// Getting the paramets as a string by passing the ArrayList params
+String sParams = api.POST_DATA(params);
+
+/// Sending POST request and getting data
+/// URL to the api can be obtained by writing: Strings.ApiUrl(); // To reduce workload.
 String response = api.POST("https://meet.vlab.cs.hioa.no/api.php", sParams);
 
 /// Then handling the response according to the API.
