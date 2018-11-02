@@ -7,6 +7,7 @@
     <string name="preference_username"></string>
     <string name="preference_validate">false</string>
     <string name="preference_setPassword">false</string>
+    <string name="title_activity_match">ActivityMatch</string>
 
 
     <string name="gender0">Male</string>

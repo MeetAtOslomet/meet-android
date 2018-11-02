@@ -24,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ActivityMatch"
+            android:label="@string/title_activity_match"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity android:name=".ActivityMyProfile" android:theme="@style/AppTheme.NoBar"></activity>
     </application>
 

@@ -160,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
                         adb.setTitle("Success");
                         adb.setMessage("You where successfully authenticated!");
                         adb.show();
+
+                        startActivity(new Intent(MainActivity.this, ActivityMatch.class));
                         //Authorize connection
                         AsyncTask.execute(new Runnable() {
                             @Override
