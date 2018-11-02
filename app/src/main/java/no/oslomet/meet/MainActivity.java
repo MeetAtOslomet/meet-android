@@ -1,6 +1,7 @@
 package no.oslomet.meet;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 
 import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.SettingsHandler;
+import no.oslomet.meet.classes.ApiDataResponse;
 import no.oslomet.meet.classes.AuthStatus;
 import no.oslomet.meet.classes.Heartbeat;
 import no.oslomet.meet.classes.PostParam;
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     ValidateAuthentication();
+                    return;
                 }
             });
         }
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             //Continue
+            username = new SettingsHandler().getStringSetting(MainActivity.this, R.string.preference_username);
             ArrayList<PostParam> reqs = new ArrayList<>();
             reqs.add(new PostParam("request", "auth_check"));
             reqs.add(new PostParam("authenticationToken", AuthKey));
@@ -157,11 +161,40 @@ public class MainActivity extends AppCompatActivity {
                         adb.setMessage("You where successfully authenticated!");
                         adb.show();
                         //Authorize connection
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                checkIfUserExists();
+                            }
+                        });
+
                     }
                 }
             });
         }
     }
+
+    private void checkIfUserExists()
+    {
+        Api api = new Api();
+        String resp = api.GET(Strings.ProfileExists(username));
+        ApiDataResponse adr = new JsonHandler().getData(resp);
+        if (adr != null && adr.dataExit == 0)
+        {
+            //Navigate to matching activity
+            startActivity(new Intent(MainActivity.this, ActivityMyProfile.class));
+        }
+        else if (adr != null && adr.dataExit == 1)
+        {
+            startActivity(new Intent(MainActivity.this, ActivityMyProfile.class));
+        }
+
+    }
+
+
+
+
+
 
     private String username = null;
     public void updateUsername(String username)

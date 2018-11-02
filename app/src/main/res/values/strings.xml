@@ -2,11 +2,39 @@
     <string name="app_name">Meet @ OsloMet</string>
 
 
-
     <!-- Preference strings are to be left empty in this file -->
     <string name="preference_AuthKey"></string>
     <string name="preference_username"></string>
     <string name="preference_validate">false</string>
     <string name="preference_setPassword">false</string>
 
+
+    <string name="gender0">Male</string>
+    <string name="gender1">Female</string>
+    <string name="gender2">Other</string>
+    <string name="genderSelect">Please select your gender</string>
+
+    <!-- Array strings -->
+    <string-array name="genders">
+        <item>@string/genderSelect</item>
+        <item>@string/gender0</item>
+        <item>@string/gender1</item>
+        <item>@string/gender2</item>
+    </string-array>
+
+    <string name="position0">Bachelor student</string>
+    <string name="position1">Master/PhD student</string>
+    <string name="position2">Academic staff</string>
+    <string name="position3">Administrative staff</string>
+    <string name="position4">Other</string>
+
+    <string-array name="positions">
+        <item>@string/position0</item>
+        <item>@string/position1</item>
+        <item>@string/position2</item>
+        <item>@string/position3</item>
+        <item>@string/position4</item>
+    </string-array>
+    
+    
 </resources>
