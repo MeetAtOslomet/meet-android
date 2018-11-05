@@ -42,7 +42,7 @@ public class ActivityMyProfile extends AppCompatActivity {
         setContentView(R.layout.activity_my_profile);
         calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.set(1990, calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        dialog = new DatePickerDialog(ActivityMyProfile.this, setDate, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        dialog = setDate();
 
     }
 
@@ -57,6 +57,13 @@ public class ActivityMyProfile extends AppCompatActivity {
 
     Calendar calendar;
     DatePickerDialog dialog;
+
+    public DatePickerDialog setDate()
+    {
+        return new DatePickerDialog(ActivityMyProfile.this, setDate, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+
     private void setListeners()
     {
 
@@ -88,10 +95,12 @@ public class ActivityMyProfile extends AppCompatActivity {
         }
     };
 
+    Spinner genderSpinner;
+    Spinner positionSpinner;
     private void setSpinners()
     {
         String[] genderArray = getResources().getStringArray(R.array.genders);
-        Spinner genderSpinner = (Spinner)findViewById(R.id.spinnerGender);
+        genderSpinner = (Spinner)findViewById(R.id.spinnerGender);
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -101,7 +110,7 @@ public class ActivityMyProfile extends AppCompatActivity {
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                user.gender = position;
+                user.setGender(position);
             }
 
             @Override
@@ -112,18 +121,18 @@ public class ActivityMyProfile extends AppCompatActivity {
 
 
         String[] positionArray = getResources().getStringArray(R.array.positions);
-        Spinner spinnerPosition = (Spinner)findViewById(R.id.spinnerPosition);
+        positionSpinner = (Spinner)findViewById(R.id.spinnerPosition);
         ArrayAdapter<String> positionAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
                 positionArray
         );
-        spinnerPosition.setAdapter(positionAdapter);
-        spinnerPosition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        positionSpinner.setAdapter(positionAdapter);
+        positionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                user.type = position;
+                user.setType(position);
             }
 
             @Override
@@ -187,12 +196,12 @@ public class ActivityMyProfile extends AppCompatActivity {
                             "&data="+data;
 
                     String resp = api.GET(getUser);
-                    user = new JsonHandler().getUser(resp);
+                    final User user = new JsonHandler().getUser(resp);
                     System.out.print(user);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            setUserFields();
+                            setUserFields(user);
                         }
                     });
                 }
@@ -200,25 +209,35 @@ public class ActivityMyProfile extends AppCompatActivity {
         });
     }
 
-    public void setUserFields()
+    public void setUserFields(User user)
     {
         if (user == null)
         {
             return;
         }
 
-        ((EditText)findViewById(R.id.inputFirstName)).setText(user.firstName);
-        ((EditText)findViewById(R.id.inputLastName)).setText(user.lastName);
-        Date date = new Date(user.age);
+        ((EditText)findViewById(R.id.inputFirstName)).setText(user.getFirstName());
+        ((EditText)findViewById(R.id.inputLastName)).setText(user.getLastName());
+        Date date = new Date(user.getAge());
         calendar.setTime(date);
-        ((EditText)findViewById(R.id.dateEdit)).setText(calendar.get(Calendar.DAY_OF_MONTH) + "-" +calendar.get(Calendar.MONTH) + "-" +calendar.get(Calendar.YEAR));
-        if (user.gender > 0)
+        dialog = setDate();
+        ((EditText)findViewById(R.id.dateEdit)).setText(calendar.get(Calendar.DAY_OF_MONTH) + "-" +(calendar.get(Calendar.MONTH)+1) + "-" +calendar.get(Calendar.YEAR));
+        if (user.getGender() > 0)
         {
-            ((Spinner)findViewById(R.id.spinnerGender)).setSelection(user.gender);
+            Log.e("VALUES SET", "Gender provieded: " + user.getGender());
+            if (genderSpinner != null) {
+                genderSpinner.setSelection(user.getGender());
+            }
+            //((Spinner)findViewById(R.id.spinnerGender)).setSelection(user.gender);
         }
-        if (user.type > -1)
+        if (user.getType() > -1)
         {
-            ((Spinner)findViewById(R.id.spinnerPosition)).setSelection(user.type);
+            Log.e("VALUES SET", "Type provieded: " + user.getType());
+            if (positionSpinner != null)
+            {
+                positionSpinner.setSelection(user.getType());
+            }
+            //((Spinner)findViewById(R.id.spinnerPosition)).setSelection(user.type);
         }
 
     }

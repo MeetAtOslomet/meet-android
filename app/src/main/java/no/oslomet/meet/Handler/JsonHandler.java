@@ -1,5 +1,7 @@
 package no.oslomet.meet.Handler;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -147,14 +149,19 @@ public class JsonHandler
         User user = null;
         try {
             JSONObject root = new JSONObject(jString);
+            int type = (root.has("type")) ? root.getInt("type") : -1;
+            int gender = (root.has("gender")) ? root.getInt("gender") : -1;
+            Log.e("VALUES JSON", "Type provided: " + type);
+            Log.e("VALUES JSON", "Gender provieded: " + gender);
+
             user = new User(
                     (root.has("id_user")) ? (root.isNull("id_user") ? -1 : root.getInt("id_user")) : -1,
                     (root.has("username")) ? root.getString("username") : "",
                     (root.has("first_name")) ? root.getString("first_name") : "",
                     (root.has("last_name")) ? root.getString("last_name") : "",
                     (root.has("age")) ? (root.isNull("age") ? -1 : root.getLong("age")) : -1,
-                    (root.has("type")) ? root.getInt("type") : -1,
-                    (root.has("gender")) ? root.getInt("gender") : -1,
+                    type,
+                    gender,
                     (root.has("id_campus")) ? root.getInt("id_campus") : -1,
                     (root.has("biography")) ? root.getString("biography") : ""
             );
