@@ -19,11 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="35" />
-                            <entry key="outputName" value="ic_logo_of_oslo_metropolitan_university" />
-                            <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Brage\OneDrive\Skrivebord\Logo_of_Oslo_Metropolitan_University.svg" />
-                            <entry key="width" value="60" />
+                            <entry key="outputName" value="ic_match_cards" />
+                            <entry key="sourceFile" value="C:\Users\Brage\Desktop\Match_Cards.svg" />
                           </map>
                         </option>
                       </PersistentState>
