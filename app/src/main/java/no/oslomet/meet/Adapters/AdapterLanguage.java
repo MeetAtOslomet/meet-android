@@ -23,6 +23,31 @@ public class AdapterLanguage extends BaseAdapter
         this.items = items;
     }
 
+    public void add(Languages languages)
+    {
+        items.add(languages);
+        notifyDataSetChanged();
+    }
+    public void remove(int id)
+    {
+        items.remove(id);
+        notifyDataSetChanged();
+    }
+
+    public void addIfNotPresent(Languages languages)
+    {
+        boolean isPresent = false;
+        for (Languages lang : items)
+        {
+            if (lang.name.equals(languages.name))
+                isPresent = true;
+        }
+        if (!isPresent)
+        {
+            add(languages);
+        }
+    }
+
 
     @Override
     public int getCount() {

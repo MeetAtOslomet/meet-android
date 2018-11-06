@@ -1,6 +1,8 @@
 package no.oslomet.meet;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -66,9 +69,6 @@ public class ActivityMyProfile extends AppCompatActivity {
 
     private void setListeners()
     {
-
-
-
         ((EditText)findViewById(R.id.dateEdit)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -83,6 +83,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                     dialog.show();
             }
         });
+
     }
 
     public DatePickerDialog.OnDateSetListener setDate = new DatePickerDialog.OnDateSetListener() {
@@ -143,8 +144,13 @@ public class ActivityMyProfile extends AppCompatActivity {
 
 
     }
+    AdapterLanguage adapterLanguage;
     public void getAllLanguages()
     {
+        adapterLanguage = new AdapterLanguage(this, new ArrayList<Languages>());
+        ((ListView)findViewById(R.id.listView_LangImprove)).setAdapter(adapterLanguage);
+
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -155,9 +161,17 @@ public class ActivityMyProfile extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            AdapterLanguage adapterLanguage = new AdapterLanguage(ActivityMyProfile.this, lang);
-                            ((ListView)findViewById(R.id.listView_LangImprove)).setAdapter(adapterLanguage);
-                            ListViewExpander.setListViewHeightBasedOnChildren((ListView) findViewById(R.id.listView_LangImprove));
+                            setLanguageSelect(lang);
+                            findViewById(R.id.addLanguageToLearn).setEnabled(true);
+                        }
+                    });
+                }
+                else
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            findViewById(R.id.addLanguageToLearn).setEnabled(false);
                         }
                     });
                 }
@@ -167,6 +181,47 @@ public class ActivityMyProfile extends AppCompatActivity {
 
         //AdapterLanguage adapterLanguage = new AdapterLanguage(this)
     }
+
+    public ArrayList<Languages> availableLanguages;
+    private ListView langToImprove;
+
+    private void setLanguageSelect(ArrayList<Languages> langs)
+    {
+        langToImprove = findViewById(R.id.listView_LangImprove);
+        availableLanguages = langs;
+        final AlertDialog.Builder languageSelect = new AlertDialog.Builder(ActivityMyProfile.this);
+        final ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(ActivityMyProfile.this, android.R.layout.select_dialog_singlechoice);
+        for (Languages lang : langs)
+        {
+            languageAdapter.add(lang.name);
+        }
+        languageSelect.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        languageSelect.setAdapter(languageAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.e("Selected", languageAdapter.getItem(i));
+                if (availableLanguages != null)
+                {
+                    adapterLanguage.addIfNotPresent(availableLanguages.get(i));
+                    ListViewExpander.setListViewHeightBasedOnChildren(langToImprove);
+                }
+            }
+        });
+
+        ((ImageButton)findViewById(R.id.addLanguageToLearn)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                languageSelect.show();
+            }
+        });
+    }
+
+
 
     public void getUser()
     {
@@ -191,6 +246,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                     String getUser = Strings.ApiUrl() + "?request=get_me" +
                             "&authenticationToken=" + new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)+
                             "&data="+data;

@@ -160,8 +160,6 @@ public class MainActivity extends AppCompatActivity {
                         adb.setTitle("Success");
                         adb.setMessage("You where successfully authenticated!");
                         adb.show();
-
-                        startActivity(new Intent(MainActivity.this, ActivityMatch.class));
                         //Authorize connection
                         AsyncTask.execute(new Runnable() {
                             @Override
@@ -185,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         {
             //Navigate to matching activity
             startActivity(new Intent(MainActivity.this, ActivityMatch.class));
+            //startActivity(new Intent(MainActivity.this, ActivityMatch.class));
         }
         else if (adr != null && adr.dataExit == 1)
         {
@@ -538,7 +537,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void Login()
     {
-        String username = ((EditText)findViewById(R.id.loginUser)).getText().toString();
+        final String username = ((EditText)findViewById(R.id.loginUser)).getText().toString();
         String password = null;
         try {
             password = getSHA256(((EditText)findViewById(R.id.loginPass)).getText().toString());
@@ -563,6 +562,7 @@ public class MainActivity extends AppCompatActivity {
                     AuthStatus as = new JsonHandler().getHasAuth(result);
                     if (as != null && as.authenticationExit == 0 && as.authenticationToken.length() > 0)
                     {
+                        new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_username, username);
                         new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_AuthKey, as.authenticationToken);
                         Log.e("AuthKey", as.authenticationToken);
                         ValidateAuthentication();
