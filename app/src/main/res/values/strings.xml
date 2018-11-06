@@ -36,6 +36,7 @@
         <item>@string/position3</item>
         <item>@string/position4</item>
     </string-array>
-    
-    
+    <string name="title_activity_chat">ActivityChat</string>
+
+
 </resources>

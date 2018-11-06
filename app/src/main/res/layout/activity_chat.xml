@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityMatch"
+    tools:context=".ActivityChat"
     android:background="@color/colorPrimaryDark">
 
     <android.support.design.widget.AppBarLayout
@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_activity_match" />
+    <include layout="@layout/content_activity_chat" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -31,6 +31,7 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
@@ -38,7 +39,6 @@
         android:background="@color/colorButton"
         android:layout_alignParentBottom="true"
         app:itemTextColor="@color/colorIconButton"
-        app:itemIconTint="@color/colorAccent"
         app:menu="@menu/top_menu" />
 
 </android.support.design.widget.CoordinatorLayout>

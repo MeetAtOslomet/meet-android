@@ -10,40 +10,39 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.text.SpannableString;
 
-public class ActivityMatch extends AppCompatActivity {
+public class ActivityChat extends AppCompatActivity {
 
 
-    private MenuItem menuMatch;
-    private Drawable iconMatch;
+    private MenuItem menuChat;
+    private Drawable iconChat;
     private BottomNavigationItemView launchMyProfile;
-    private BottomNavigationItemView lauchChat;
+    private BottomNavigationItemView launchMatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_match);
+        setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         launchMyProfile = findViewById(R.id.navigation_profile);
         launchMyProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
-                startActivity(new Intent(ActivityMatch.this, ActivityMyProfile.class));
+                startActivity(new Intent(ActivityChat.this, ActivityMyProfile.class));
             }
         });
 
-        lauchChat = findViewById(R.id.navigation_chat);
-        lauchChat.setOnClickListener(new View.OnClickListener() {
+        launchMatch = findViewById(R.id.navigation_match);
+        launchMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ActivityMatch.this, ActivityChat.class));
+                startActivity(new Intent(ActivityChat.this, ActivityMatch.class));
             }
         });
 
@@ -68,17 +67,19 @@ public class ActivityMatch extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        menuMatch = menu.findItem(R.id.navigation_match);
-        iconMatch = ContextCompat.getDrawable(this, R.drawable.ic_match_cards_yellow);
-        iconMatch = DrawableCompat.wrap(iconMatch);
-        DrawableCompat.setTint(iconMatch, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
-        menuMatch.setIcon(iconMatch);
+        menuChat = menu.findItem(R.id.navigation_chat);
+        iconChat = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chat_yellow_24dp);
+        iconChat = DrawableCompat.wrap(iconChat);
+        DrawableCompat.setTint(iconChat, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        menuChat.setIcon(iconChat);
 
-        SpannableString spanString = new SpannableString(menuMatch.getTitle().toString());
+        SpannableString spanString = new SpannableString(menuChat.getTitle().toString());
         spanString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getApplicationContext(), R.color.colorSecondary)), 0, spanString.length(), 0);
-        menuMatch.setTitle(spanString);
+        menuChat.setTitle(spanString);
 
-
-    return true;
+        return true;
     }
+
+
+
 }

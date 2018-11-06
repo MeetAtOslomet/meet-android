@@ -3,11 +3,6 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
-        <entry key="imageWizard">
-          <value>
-            <PersistentState />
-          </value>
-        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -18,9 +13,9 @@
                       <PersistentState>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_match_cards" />
-                            <entry key="sourceFile" value="C:\Users\Brage\Desktop\Match_Cards.svg" />
+                            <entry key="color" value="d69b09" />
+                            <entry key="outputName" value="ic_test_yellow_24dp" />
+                            <entry key="sourceFile" value="C:\Users\eliot" />
                           </map>
                         </option>
                       </PersistentState>

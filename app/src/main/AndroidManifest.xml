@@ -27,9 +27,14 @@
         <activity
             android:name=".ActivityMatch"
             android:label="@string/title_activity_match"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ActivityMyProfile"
+            android:theme="@style/AppTheme.NoBar" />
+        <activity
+            android:name=".ActivityChat"
+            android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity android:name=".ActivityMyProfile" android:theme="@style/AppTheme.NoBar"></activity>
     </application>
 
 </manifest>

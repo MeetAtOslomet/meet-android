@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_serie"
-        android:icon="@drawable/ic_profile_black_24dp"
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_profile_yellow_24dp"
         android:title="Profile" />
 
     <item
         android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_chat_black_24dp"
+        android:icon="@drawable/ic_chat_yellow_24dp"
         android:title="Chat" />
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_match_black_24dp"
+        android:id="@+id/navigation_match"
+        android:icon="@drawable/ic_match_cards_yellow"
         android:title="Match" />
 
 
