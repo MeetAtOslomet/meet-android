@@ -100,28 +100,36 @@ public class JsonHandler
         try
         {
             JSONObject jo = new JSONObject(jString);
-            JSONArray ja = jo.getJSONArray("data");
-            for (int i = 0; i < ja.length(); i++)
+            if (jo.isNull("data"))
             {
-                JSONObject l = ja.getJSONObject(i);
-                if (l.has("id_user") && l.has("teachOrLearn"))
-                {
-                    languages.add(new Languages(
-                            (l.has("id_language")) ? l.getInt("id_language") : -1,
-                            (l.has("name")) ? l.getString("name") : "NAN",
-                            (l.has("id_user")) ? l.getInt("id_user") : -1,
-                            (l.has("teachOrLearn")) ? l.getInt("teachOrLearn") : -1
-                    ));
-                }
-                else
-                {
-                    languages.add(new Languages(
-                            (l.has("id_language")) ? l.getInt("id_language") : -1,
-                            (l.has("name")) ? l.getString("name") : "NAN"
-                    ));
 
+            }
+            else
+            {
+                JSONArray ja = jo.getJSONArray("data");
+                for (int i = 0; i < ja.length(); i++)
+                {
+                    JSONObject l = ja.getJSONObject(i);
+                    if (l.has("id_user") && l.has("teachOrLearn"))
+                    {
+                        languages.add(new Languages(
+                                (l.has("id_language")) ? l.getInt("id_language") : -1,
+                                (l.has("name")) ? l.getString("name") : "NAN",
+                                (l.has("id_user")) ? l.getInt("id_user") : -1,
+                                (l.has("teachOrLearn")) ? l.getInt("teachOrLearn") : -1
+                        ));
+                    }
+                    else
+                    {
+                        languages.add(new Languages(
+                                (l.has("id_language")) ? l.getInt("id_language") : -1,
+                                (l.has("name")) ? l.getString("name") : "NAN"
+                        ));
+
+                    }
                 }
             }
+
         }
         catch (JSONException e)
         {

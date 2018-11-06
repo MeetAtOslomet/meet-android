@@ -48,6 +48,11 @@ public class AdapterLanguage extends BaseAdapter
         }
     }
 
+    public void swapItems(ArrayList<Languages> swap)
+    {
+        items = swap;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getCount() {

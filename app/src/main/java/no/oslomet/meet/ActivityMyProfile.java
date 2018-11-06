@@ -33,6 +33,7 @@ import no.oslomet.meet.classes.Languages;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.User;
 import no.oslomet.meet.core.Api;
+import no.oslomet.meet.core.Helper;
 import no.oslomet.meet.core.Strings;
 
 public class ActivityMyProfile extends AppCompatActivity {
@@ -144,11 +145,18 @@ public class ActivityMyProfile extends AppCompatActivity {
 
 
     }
-    AdapterLanguage adapterLanguage;
+
+    private AdapterLanguage adapterLearnLanguage;
+    private AdapterLanguage adapterTeachLanguage;
+
+    private ArrayAdapter<String> availableTeachLanguages;
+    private ArrayAdapter<String> availableLearnLanguages;
     public void getAllLanguages()
     {
-        adapterLanguage = new AdapterLanguage(this, new ArrayList<Languages>());
-        ((ListView)findViewById(R.id.listView_LangImprove)).setAdapter(adapterLanguage);
+        adapterLearnLanguage = new AdapterLanguage(this, new ArrayList<Languages>());
+        ((ListView)findViewById(R.id.listView_LangImprove)).setAdapter(adapterLearnLanguage);
+        adapterTeachLanguage = new AdapterLanguage(this, new ArrayList<Languages>());
+        ((ListView)findViewById(R.id.listView_LangTeach)).setAdapter(adapterTeachLanguage);
 
 
         AsyncTask.execute(new Runnable() {
@@ -156,12 +164,45 @@ public class ActivityMyProfile extends AppCompatActivity {
             public void run() {
                 String response = new Api().GET(Strings.Languages());
                 final ArrayList<Languages> lang = new JsonHandler().getLanguages(response);
+
+                String getReq = Strings.ApiUrl() + "?request=get_id_user&username=" +
+                        new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username) +
+                        "&authenticationToken=" + new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey);
+                Api api = new Api();
+                String IDresponse = api.GET(getReq);
+                int id_user = new JsonHandler().getIdUser(IDresponse);
+                String req = Strings.ApiUrl() + "?request=get_user_language&id_user="+id_user;
+                String response2 = new Api().GET(req);
+                final ArrayList<Languages> userLangs = new JsonHandler().getLanguages(response2);
+
+                final Helper helper = new Helper();
+                ArrayList<Languages> availableForLearning = helper.extractAvailableForLearning(lang, userLangs);
+                ArrayList<Languages> availableForTeaching = helper.extractAvailableForTeaching(lang, userLangs);
+
+                availableTeachLanguages = new ArrayAdapter<>(ActivityMyProfile.this, android.R.layout.select_dialog_singlechoice);
+                availableLearnLanguages = new ArrayAdapter<>(ActivityMyProfile.this, android.R.layout.select_dialog_singlechoice);
+
+                for (Languages l : availableForLearning)
+                {
+                    availableLearnLanguages.add(l.name);
+                }
+                for (Languages l : availableForTeaching)
+                {
+                    availableTeachLanguages.add(l.name);
+                }
+
+
+
+
+
                 if (lang != null && lang.size() > 0)
                 {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             setLanguageSelect(lang);
+                            adapterLearnLanguage.swapItems(helper.getLearningLanguages(userLangs));
+                            adapterTeachLanguage.swapItems(helper.getTeachingLanguages(userLangs));
                             findViewById(R.id.addLanguageToLearn).setEnabled(true);
                         }
                     });
@@ -182,33 +223,42 @@ public class ActivityMyProfile extends AppCompatActivity {
         //AdapterLanguage adapterLanguage = new AdapterLanguage(this)
     }
 
-    public ArrayList<Languages> availableLanguages;
+    public ArrayList<Languages> languages;
     private ListView langToImprove;
+
 
     private void setLanguageSelect(ArrayList<Languages> langs)
     {
         langToImprove = findViewById(R.id.listView_LangImprove);
-        availableLanguages = langs;
-        final AlertDialog.Builder languageSelect = new AlertDialog.Builder(ActivityMyProfile.this);
-        final ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(ActivityMyProfile.this, android.R.layout.select_dialog_singlechoice);
-        for (Languages lang : langs)
-        {
-            languageAdapter.add(lang.name);
-        }
-        languageSelect.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        languages = langs;
+
+
+        final AlertDialog.Builder languageAvailableSelect = new AlertDialog.Builder(ActivityMyProfile.this);
+        final AlertDialog.Builder languageTeachingSelect = new AlertDialog.Builder(ActivityMyProfile.this);
+
+        languageAvailableSelect.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
-        languageSelect.setAdapter(languageAdapter, new DialogInterface.OnClickListener() {
+
+        languageAvailableSelect.setAdapter(availableLearnLanguages, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Log.e("Selected", languageAdapter.getItem(i));
-                if (availableLanguages != null)
+                Log.e("Selected", availableLearnLanguages.getItem(i));
+                if (availableLearnLanguages != null)
                 {
-                    adapterLanguage.addIfNotPresent(availableLanguages.get(i));
-                    ListViewExpander.setListViewHeightBasedOnChildren(langToImprove);
+                    final String langName = availableLearnLanguages.getItem(i);
+                    for (Languages l : languages)
+                    {
+                        if (l.name.equals(langName))
+                        {
+                            availableLearnLanguages.remove(availableLearnLanguages.getItem(i));
+                            adapterLearnLanguage.addIfNotPresent(l);
+                            ListViewExpander.setListViewHeightBasedOnChildren(langToImprove);
+                        }
+                    }
                 }
             }
         });
@@ -216,10 +266,18 @@ public class ActivityMyProfile extends AppCompatActivity {
         ((ImageButton)findViewById(R.id.addLanguageToLearn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                languageSelect.show();
+                if (adapterLearnLanguage.getCount() >= 7)
+                {
+                    //tell user that max is 7
+                }
+                else
+                {
+                    languageAvailableSelect.show();
+                }
             }
         });
     }
+
 
 
 

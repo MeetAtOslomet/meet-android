@@ -1,7 +1,11 @@
 package no.oslomet.meet;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.CrashManagerListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,9 +61,27 @@ public class MainActivity extends AppCompatActivity {
             no.oslomet.meet.core.Certificate cert = new no.oslomet.meet.core.Certificate();
             cert.InitializeCetificate(this);
         }
-        CrashManager.register(this);
+        CrashManager.register(this, getMetaString("net.hockeyapp.android.appIdentifier"), new CrashManagerListener() {
+            public boolean shouldAutoUploadCrashes() {
+                return true;
+            }
+        });
     }
 
+    public String getMetaString(String key)
+    {
+        try {
+            ApplicationInfo appinfo = this.getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
+            if (appinfo != null)
+            {
+                return appinfo.metaData.get(key).toString();
+            }
+            return null;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     //https://developer.android.com/training/articles/security-ssl#java
 
     ImageView mainLogo;
@@ -69,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
         mainLogo = findViewById(R.id.logo);
         spinner = findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
+
+
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run()
@@ -156,10 +182,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+                        /*AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                         adb.setTitle("Success");
                         adb.setMessage("You where successfully authenticated!");
-                        adb.show();
+                        adb.show();*/
+                        Toast.makeText(MainActivity.this, "Authenticated", Toast.LENGTH_SHORT).show();
                         //Authorize connection
                         AsyncTask.execute(new Runnable() {
                             @Override
