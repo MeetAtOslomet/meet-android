@@ -1,5 +1,14 @@
 package no.oslomet.meet.core;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.view.MenuItem;
+
 import java.util.ArrayList;
 
 import no.oslomet.meet.classes.Languages;
@@ -79,5 +88,17 @@ public class Helper
         return out;
     }
 
+
+    public static void forceTint(Context context, MenuItem menuItem, int ColorId)
+    {
+        Drawable image = menuItem.getIcon();
+        image = DrawableCompat.wrap(image);
+        DrawableCompat.setTint(image, ContextCompat.getColor(context.getApplicationContext(), ColorId));
+        menuItem.setIcon(image);
+
+        SpannableString sString = new SpannableString(menuItem.getTitle());
+        sString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context.getApplicationContext(), ColorId)), 0, sString.length(), 0);
+        menuItem.setTitle(sString);
+    }
 
 }

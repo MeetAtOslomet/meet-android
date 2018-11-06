@@ -1,11 +1,9 @@
 package no.oslomet.meet;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.icu.text.UnicodeSetSpanner;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -13,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -50,12 +46,12 @@ import no.oslomet.meet.classes.Registration;
 import no.oslomet.meet.core.Api;
 import no.oslomet.meet.core.Strings;
 
-public class MainActivity extends AppCompatActivity {
+public class ActivityLaunch extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_launch);
         if (no.oslomet.meet.core.Certificate.sslContext == null)
         {
             no.oslomet.meet.core.Certificate cert = new no.oslomet.meet.core.Certificate();
@@ -124,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                        TextView tv = MainActivity.this.findViewById(R.id.HeartBeat);
+                        TextView tv = ActivityLaunch.this.findViewById(R.id.HeartBeat);
                         tv.append(response);
                     }
                 });
@@ -147,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Api api = new Api();
-        String AuthKey = new SettingsHandler().getStringSetting(MainActivity.this, R.string.preference_AuthKey);
+        String AuthKey = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -166,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             //Continue
-            username = new SettingsHandler().getStringSetting(MainActivity.this, R.string.preference_username);
+            username = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username);
             ArrayList<PostParam> reqs = new ArrayList<>();
             reqs.add(new PostParam("request", "auth_check"));
             reqs.add(new PostParam("authenticationToken", AuthKey));
@@ -182,11 +178,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        /*AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+                        /*AlertDialog.Builder adb = new AlertDialog.Builder(ActivityLaunch.this);
                         adb.setTitle("Success");
                         adb.setMessage("You where successfully authenticated!");
                         adb.show();*/
-                        Toast.makeText(MainActivity.this, "Authenticated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityLaunch.this, "Authenticated", Toast.LENGTH_SHORT).show();
                         //Authorize connection
                         AsyncTask.execute(new Runnable() {
                             @Override
@@ -209,12 +205,12 @@ public class MainActivity extends AppCompatActivity {
         if (adr != null && adr.dataExit == 0)
         {
             //Navigate to matching activity
-            startActivity(new Intent(MainActivity.this, ActivityMatch.class));
-            //startActivity(new Intent(MainActivity.this, ActivityMatch.class));
+            startActivity(new Intent(ActivityLaunch.this, ActivityMain.class));
+            //startActivity(new Intent(ActivityLaunch.this, ActivityMatch.class));
         }
         else if (adr != null && adr.dataExit == 1)
         {
-            startActivity(new Intent(MainActivity.this, ActivityMatch.class));
+            startActivity(new Intent(ActivityLaunch.this, ActivityMain.class));
         }
 
     }
@@ -232,9 +228,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showUserInput()
     {
-        username = new SettingsHandler().getStringSetting(MainActivity.this, R.string.preference_username);
-        Boolean awaitingValidation = new SettingsHandler().getBooleanSetting(MainActivity.this, R.string.preference_validate, false);
-        Boolean awaitingPassword = new SettingsHandler().getBooleanSetting(MainActivity.this, R.string.preference_setPassword, false);
+        username = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username);
+        Boolean awaitingValidation = new SettingsHandler().getBooleanSetting(ActivityLaunch.this, R.string.preference_validate, false);
+        Boolean awaitingPassword = new SettingsHandler().getBooleanSetting(ActivityLaunch.this, R.string.preference_setPassword, false);
         if (username != null && username != "" && awaitingValidation == true )
         {
             //Show authentication code
@@ -302,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         final String username = ((EditText)findViewById(R.id.registerUsernameInput)).getText().toString().trim();
         if (username.contains("@"))
         {
-            AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+            AlertDialog.Builder adb = new AlertDialog.Builder(ActivityLaunch.this);
             adb.setTitle("Illegal character!");
             adb.setMessage("Only insert your username (student number or employee number). Example sXXXXX or olanordmann");
             adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
@@ -337,9 +333,9 @@ public class MainActivity extends AppCompatActivity {
                     if (registration != null && registration.registrationExit == 0)
                     {
                         //Store username
-                        new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_username, username);
+                        new SettingsHandler().setStringSetting(ActivityLaunch.this, R.string.preference_username, username);
                         updateUsername(username);
-                        new SettingsHandler().setBooleanSetting(MainActivity.this, R.string.preference_validate, true);
+                        new SettingsHandler().setBooleanSetting(ActivityLaunch.this, R.string.preference_validate, true);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -452,7 +448,7 @@ public class MainActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityLaunch.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -464,8 +460,8 @@ public class MainActivity extends AppCompatActivity {
                         if (as != null && as.authenticationExit == 0)
                         {
                             SettingsHandler sh = new SettingsHandler();
-                            sh.setBooleanSetting(MainActivity.this, R.string.preference_validate, false);
-                            sh.setBooleanSetting(MainActivity.this, R.string.preference_setPassword, true);
+                            sh.setBooleanSetting(ActivityLaunch.this, R.string.preference_validate, false);
+                            sh.setBooleanSetting(ActivityLaunch.this, R.string.preference_setPassword, true);
 
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -524,7 +520,7 @@ public class MainActivity extends AppCompatActivity {
                                     public void run() {
                                         if (as != null && as.authenticationExit == 0)
                                         {
-                                            new SettingsHandler().setBooleanSetting(MainActivity.this, R.string.preference_setPassword, false);
+                                            new SettingsHandler().setBooleanSetting(ActivityLaunch.this, R.string.preference_setPassword, false);
                                             findViewById(R.id.registerUserLayout).setVisibility(View.GONE);
                                             findViewById(R.id.registerPassword).setVisibility(View.GONE);
                                             AsyncTask.execute(new Runnable() {
@@ -536,7 +532,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                         else
                                         {
-                                            Toast.makeText(MainActivity.this, as.message, Toast.LENGTH_LONG).show();
+                                            Toast.makeText(ActivityLaunch.this, as.message, Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
@@ -554,7 +550,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "Passwords did not match", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityLaunch.this, "Passwords did not match", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -589,8 +585,8 @@ public class MainActivity extends AppCompatActivity {
                     AuthStatus as = new JsonHandler().getHasAuth(result);
                     if (as != null && as.authenticationExit == 0 && as.authenticationToken.length() > 0)
                     {
-                        new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_username, username);
-                        new SettingsHandler().setStringSetting(MainActivity.this, R.string.preference_AuthKey, as.authenticationToken);
+                        new SettingsHandler().setStringSetting(ActivityLaunch.this, R.string.preference_username, username);
+                        new SettingsHandler().setStringSetting(ActivityLaunch.this, R.string.preference_AuthKey, as.authenticationToken);
                         Log.e("AuthKey", as.authenticationToken);
                         ValidateAuthentication();
                     }

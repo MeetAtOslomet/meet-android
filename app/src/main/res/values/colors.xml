@@ -7,5 +7,6 @@
     <color name="colorIconButton">#fff</color>
     <color name="colorSecondary">#d69b09</color>
     <color name="colorTest">#f00</color>
+    <color name="colorLightGary">#ecebe7</color>
 
 </resources>

@@ -16,8 +16,8 @@
             android:value="${HOCKEYAPP_APP_ID}" />
 
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoBar">
+            android:name=".ActivityLaunch"
+            android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,15 +25,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityMatch"
-            android:label="@string/title_activity_match"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ActivityMyProfile"
-            android:theme="@style/AppTheme.NoBar" />
-        <activity
-            android:name=".ActivityChat"
-            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ActivityMain"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

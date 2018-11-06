@@ -7,15 +7,14 @@
         android:title="Profile" />
 
     <item
+        android:id="@+id/navigation_match"
+        android:icon="@drawable/ic_match_cards"
+        android:title="Match" />
+
+    <item
         android:id="@+id/navigation_chat"
         android:icon="@drawable/ic_chat_yellow_24dp"
         android:title="Chat" />
-
-    <item
-        android:id="@+id/navigation_match"
-        android:icon="@drawable/ic_match_cards_yellow"
-        android:title="Match" />
-
 
 
 </menu>
