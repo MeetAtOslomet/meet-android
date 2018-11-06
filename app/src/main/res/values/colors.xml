@@ -3,7 +3,9 @@
     <color name="colorAccent">#000</color>
     <color name="colorPrimaryDark">#FFC311</color>
     <color name="colorPrimary">#ffe200</color>
-    <color name="colorButton">#000</color>
+    <color name="colorButton">#FFC311</color>
     <color name="colorIconButton">#fff</color>
+    <color name="colorSecondary">#d69b09</color>
+    <color name="colorTest">#f00</color>
 
 </resources>

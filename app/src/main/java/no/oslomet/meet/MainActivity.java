@@ -209,12 +209,12 @@ public class MainActivity extends AppCompatActivity {
         if (adr != null && adr.dataExit == 0)
         {
             //Navigate to matching activity
-            startActivity(new Intent(MainActivity.this, ActivityMyProfile.class));
+            startActivity(new Intent(MainActivity.this, ActivityMatch.class));
             //startActivity(new Intent(MainActivity.this, ActivityMatch.class));
         }
         else if (adr != null && adr.dataExit == 1)
         {
-            startActivity(new Intent(MainActivity.this, ActivityMyProfile.class));
+            startActivity(new Intent(MainActivity.this, ActivityMatch.class));
         }
 
     }
