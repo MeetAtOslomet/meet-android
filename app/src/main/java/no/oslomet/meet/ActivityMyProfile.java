@@ -252,8 +252,8 @@ public class ActivityMyProfile extends AppCompatActivity
                 ArrayList<Languages> notSelectedForLearning = h.extractAvailableForLearning(available_Languages, userLanguages);
                 ArrayList<Languages> notSelectedForTeaching = h.extractAvailableForLearning(available_Languages, userLanguages);
 
-                learnDialougeItems = h._toArrayAdapter(ActivityMyProfile.this, notSelectedForLearning);
-                teachDialougeItems = h._toArrayAdapter(ActivityMyProfile.this, notSelectedForTeaching);
+                learnDialougeItems = h._toLanguageArrayAdapter(ActivityMyProfile.this, notSelectedForLearning);
+                teachDialougeItems = h._toLanguageArrayAdapter(ActivityMyProfile.this, notSelectedForTeaching);
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -296,13 +296,71 @@ public class ActivityMyProfile extends AppCompatActivity
     }
 
     ArrayList<Hobbies> available_Hobbies;
+    ArrayList<Hobbies> nonSelectedHobbies;
     private void Retrieve_Hobbies()
     {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 available_Hobbies = new JsonHandler().getHobbies(new Api().GET(Strings.Hobbies()));
+                nonSelectedHobbies = new Helper().extractAvailableHobbies(available_Hobbies, userHobbies);
+                arrayHobby = new Helper()._toHobbyArrayAdapter(ActivityMyProfile.this, nonSelectedHobbies);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        adapterHobby.swapItems(userHobbies);
+                        ((ListView)findViewById(R.id.listView_Hobbies)).setAdapter(adapterHobby);
+                        ListViewExpander.setListViewHeightBasedOnChildren(((ListView)findViewById(R.id.listView_Hobbies)));
+
+
+                        final AlertDialog.Builder adb = new AlertDialog.Builder(ActivityMyProfile.this);
+                        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        adb.setAdapter(arrayHobby, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                if (arrayHobby != null)
+                                {
+                                    String langName = arrayHobby.getItem(which);
+                                    for (Hobbies l : available_Hobbies)
+                                    {
+                                        if (l.getName().equals(langName))
+                                        {
+                                            arrayHobby.remove(arrayHobby.getItem(which));
+                                            adapterHobby.addIfNotPresent(l);
+                                            ListViewExpander.setListViewHeightBasedOnChildren( ((ListView)findViewById(R.id.listView_Hobbies)) );
+                                        }
+                                    }
+
+                                }
+                            }
+                        });
+                        findViewById(R.id.addHobbies).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                adb.show();
+                            }
+                        });
+                    }
+
+
+                });
+
             }
         });
+    }
+
+
+    private void upload()
+    {
+        
+
     }
 }

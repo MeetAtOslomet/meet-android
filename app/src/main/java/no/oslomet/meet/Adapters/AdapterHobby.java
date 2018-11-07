@@ -37,9 +37,9 @@ public class AdapterHobby extends BaseAdapter
     public void addIfNotPresent(Hobbies hobbies)
     {
         boolean isPresent = false;
-        for (Hobbies lang : items)
+        for (Hobbies hobby : items)
         {
-            if (hobbies.getName().equals(hobbies.getName()))
+            if (hobby.getName().equals(hobbies.getName()))
                 isPresent = true;
         }
         if (!isPresent)

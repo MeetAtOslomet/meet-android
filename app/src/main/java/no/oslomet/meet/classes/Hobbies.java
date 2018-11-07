@@ -4,20 +4,22 @@ public class Hobbies
 {
 
     private int id_user;
-    private int id_language;
+    private int id_hobby;
     private String name;
 
     public Hobbies(int id_user, int id_language, String name)
     {
         this.id_user = id_user;
-        this.id_language = id_language;
+        this.id_hobby = id_language;
         this.name = name;
     }
+
+    public Hobbies() {}
 
     public int getIdUser()
     {
         return id_user;
     }
-    public int getIdLanguage() { return id_language; }
+    public int getIdHobby() { return id_hobby; }
     public String getName() { return name; }
 }

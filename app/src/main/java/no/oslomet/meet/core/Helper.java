@@ -10,12 +10,35 @@ import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import no.oslomet.meet.classes.Hobbies;
 import no.oslomet.meet.classes.Languages;
 
 public class Helper
 {
+
+    public ArrayList<Hobbies> extractAvailableHobbies(ArrayList<Hobbies> listed, ArrayList<Hobbies> selected)
+    {
+        ArrayList<Hobbies> out = new ArrayList<>();
+
+        for (Hobbies h : listed)
+        {
+           boolean addHobbies = true;
+           for (Hobbies s : selected)
+           {
+               if (h.getIdHobby() == s.getIdHobby())
+               {
+                   addHobbies = false;
+                   break;
+               }
+           }
+            if (addHobbies)
+                out.add(h);
+        }
+        return out;
+    }
 
     public ArrayList<Languages> getTeachingLanguages(ArrayList<Languages> selected)
     {
@@ -89,12 +112,22 @@ public class Helper
         return out;
     }
 
-    public ArrayAdapter<String> _toArrayAdapter(Context context, ArrayList<Languages> listed)
+    public ArrayAdapter<String> _toLanguageArrayAdapter(Context context, ArrayList<Languages> listed)
     {
         ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.select_dialog_singlechoice);
         for(Languages l : listed)
         {
             adapter.add(l.name);
+        }
+        return adapter;
+    }
+
+    public ArrayAdapter<String> _toHobbyArrayAdapter(Context context, ArrayList<Hobbies> listed)
+    {
+        ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.select_dialog_singlechoice);
+        for (Hobbies h : listed)
+        {
+            adapter.add(h.getName());
         }
         return adapter;
     }
