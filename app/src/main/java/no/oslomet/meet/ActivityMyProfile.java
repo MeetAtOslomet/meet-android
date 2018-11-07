@@ -358,9 +358,32 @@ public class ActivityMyProfile extends AppCompatActivity
     }
 
 
+    private ArrayList<PostParam> getHobbies()
+    {
+        String hobbies = "";
+        for (Hobbies h : adapterHobby.getItems())
+        {
+            if (h == adapterHobby.getItem(adapterHobby.getCount()))
+                hobbies += h.getIdHobby();
+            else
+                hobbies += h.getIdHobby() + ",";
+        }
+
+        ArrayList<PostParam> pp = new ArrayList<>();
+        pp.add(new PostParam("id_user", String.valueOf(id_user)));
+        pp.add(new PostParam("id_hobbies", hobbies));
+        return pp;
+
+    }
+    /*private ArrayList<PostParam> getLanguages()
+    {
+
+    }*/
+
     private void upload()
     {
-        
+
+        String languages = "";
 
     }
 }

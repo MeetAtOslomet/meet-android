@@ -34,6 +34,10 @@ public class AdapterHobby extends BaseAdapter
         notifyDataSetChanged();
     }
 
+    public ArrayList<Hobbies> getItems() {
+        return items;
+    }
+
     public void addIfNotPresent(Hobbies hobbies)
     {
         boolean isPresent = false;
