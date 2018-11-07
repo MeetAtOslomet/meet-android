@@ -4,31 +4,29 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
+import no.oslomet.meet.Adapters.AdapterHobby;
 import no.oslomet.meet.Adapters.AdapterLanguage;
 import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.ListViewExpander;
 import no.oslomet.meet.Handler.SettingsHandler;
+import no.oslomet.meet.classes.Hobbies;
 import no.oslomet.meet.classes.Languages;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.User;
@@ -36,11 +34,16 @@ import no.oslomet.meet.core.Api;
 import no.oslomet.meet.core.Helper;
 import no.oslomet.meet.core.Strings;
 
-public class ActivityMyProfile extends AppCompatActivity {
+public class ActivityMyProfile extends AppCompatActivity
+{
+    private int id_user = -1;
+    public User user;
+    boolean isNewUser = false;
 
-    public User user = new User();
 
-    @Override
+    private Calendar calendar;
+    private DatePickerDialog dialog;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
@@ -48,36 +51,106 @@ public class ActivityMyProfile extends AppCompatActivity {
         calendar.set(1990, calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dialog = setDate();
 
+        isNewUser = true; //getIntent().getBooleanExtra("NewUser", false);
     }
+
+    private AdapterHobby adapterHobby = new AdapterHobby(this, new ArrayList<Hobbies>());
+    private ArrayAdapter<String> arrayHobby;
+
+    private AdapterLanguage toLearn = new AdapterLanguage(this, new ArrayList<Languages>());
+    private AdapterLanguage toTeach = new AdapterLanguage(this, new ArrayList<Languages>());
+    private ArrayAdapter<String> teachDialougeItems;
+    private ArrayAdapter<String> learnDialougeItems;
+
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        setListeners();
-        setSpinners();
-        getAllLanguages();
-        getUser();
+    protected void onStart() {
+        super.onStart();
+        initSpinner();
+
+        if (!isNewUser)
+        {
+            getIdUser();
+            RetrieveUserData();
+        }
+        else
+        {
+            user = new User();
+            Retrieve_Languages();
+            Retrieve_Hobbies();
+        }
+
+        initListeners();
     }
 
-    Calendar calendar;
-    DatePickerDialog dialog;
-
-    public DatePickerDialog setDate()
+    public void getIdUser()
     {
-        return new DatePickerDialog(ActivityMyProfile.this, setDate, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)  ));
+                id_user = new JsonHandler().getIdUser(response);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RetrieveUserData();
+                    }
+                });
+            }
+        });
     }
 
+    public DatePickerDialog setDate() { return new DatePickerDialog(ActivityMyProfile.this, setDate, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)); }
+    public DatePickerDialog.OnDateSetListener setDate = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            calendar.set(year, month, dayOfMonth);
+            String date = dayOfMonth + "-" + month + "-" + year;
+            ((EditText)findViewById(R.id.dateEdit)).setText(date);
+        }
+    };
 
-    private void setListeners()
+    private void initSpinner()
     {
-        ((EditText)findViewById(R.id.dateEdit)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        Spinner gender = ((Spinner)findViewById(R.id.spinnerGender));
+        gender.setAdapter(new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.genders)
+        ));
+        gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                user.setGender(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        Spinner position = ((Spinner)findViewById(R.id.spinnerPosition));
+        position.setAdapter(new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.positions)
+        ));
+        position.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                user.setType(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+    private void initListeners()
+    {
+        EditText dateEdit = (EditText)findViewById(R.id.dateEdit);
+        dateEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus && !dialog.isShowing())
                     dialog.show();
             }
         });
-        findViewById(R.id.dateEdit).setOnClickListener(new View.OnClickListener() {
+        dateEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!dialog.isShowing())
@@ -87,249 +160,72 @@ public class ActivityMyProfile extends AppCompatActivity {
 
     }
 
-    public DatePickerDialog.OnDateSetListener setDate = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            calendar.set(year, month, dayOfMonth);
-
-            String date = dayOfMonth + "-" + month + "-" + year;
-            ((EditText)findViewById(R.id.dateEdit)).setText(date);
-        }
-    };
-
-    Spinner genderSpinner;
-    Spinner positionSpinner;
-    private void setSpinners()
+    private AlertDialog.Builder getBaseDialog(final ArrayAdapter<String> adapter, final AdapterLanguage lang, final int ListViewId)
     {
-        String[] genderArray = getResources().getStringArray(R.array.genders);
-        genderSpinner = (Spinner)findViewById(R.id.spinnerGender);
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                genderArray
-        );
-        genderSpinner.setAdapter(genderAdapter);
-        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        AlertDialog.Builder adb = new AlertDialog.Builder(ActivityMyProfile.this);
+        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                user.setGender(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
-
-
-        String[] positionArray = getResources().getStringArray(R.array.positions);
-        positionSpinner = (Spinner)findViewById(R.id.spinnerPosition);
-        ArrayAdapter<String> positionAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                positionArray
-        );
-        positionSpinner.setAdapter(positionAdapter);
-        positionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        adb.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            public void onClick(DialogInterface dialog, int which)
             {
-                user.setType(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-    }
-
-    private AdapterLanguage adapterLearnLanguage;
-    private AdapterLanguage adapterTeachLanguage;
-
-    private ArrayAdapter<String> availableTeachLanguages;
-    private ArrayAdapter<String> availableLearnLanguages;
-    public void getAllLanguages()
-    {
-        adapterLearnLanguage = new AdapterLanguage(this, new ArrayList<Languages>());
-        ((ListView)findViewById(R.id.listView_LangImprove)).setAdapter(adapterLearnLanguage);
-        adapterTeachLanguage = new AdapterLanguage(this, new ArrayList<Languages>());
-        ((ListView)findViewById(R.id.listView_LangTeach)).setAdapter(adapterTeachLanguage);
-
-
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                String response = new Api().GET(Strings.Languages());
-                final ArrayList<Languages> lang = new JsonHandler().getLanguages(response);
-
-                String getReq = Strings.ApiUrl() + "?request=get_id_user&username=" +
-                        new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username) +
-                        "&authenticationToken=" + new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey);
-                Api api = new Api();
-                String IDresponse = api.GET(getReq);
-                int id_user = new JsonHandler().getIdUser(IDresponse);
-                String req = Strings.ApiUrl() + "?request=get_user_language&id_user="+id_user;
-                String response2 = new Api().GET(req);
-                final ArrayList<Languages> userLangs = new JsonHandler().getLanguages(response2);
-
-                final Helper helper = new Helper();
-                ArrayList<Languages> availableForLearning = helper.extractAvailableForLearning(lang, userLangs);
-                ArrayList<Languages> availableForTeaching = helper.extractAvailableForTeaching(lang, userLangs);
-
-                availableTeachLanguages = new ArrayAdapter<>(ActivityMyProfile.this, android.R.layout.select_dialog_singlechoice);
-                availableLearnLanguages = new ArrayAdapter<>(ActivityMyProfile.this, android.R.layout.select_dialog_singlechoice);
-
-                for (Languages l : availableForLearning)
+                if (adapter != null)
                 {
-                    availableLearnLanguages.add(l.name);
-                }
-                for (Languages l : availableForTeaching)
-                {
-                    availableTeachLanguages.add(l.name);
-                }
-
-
-
-
-
-                if (lang != null && lang.size() > 0)
-                {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setLanguageSelect(lang);
-                            adapterLearnLanguage.swapItems(helper.getLearningLanguages(userLangs));
-                            adapterTeachLanguage.swapItems(helper.getTeachingLanguages(userLangs));
-                            findViewById(R.id.addLanguageToLearn).setEnabled(true);
-                        }
-                    });
-                }
-                else
-                {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            findViewById(R.id.addLanguageToLearn).setEnabled(false);
-                        }
-                    });
-                }
-            }
-        });
-
-
-        //AdapterLanguage adapterLanguage = new AdapterLanguage(this)
-    }
-
-    public ArrayList<Languages> languages;
-    private ListView langToImprove;
-
-
-    private void setLanguageSelect(ArrayList<Languages> langs)
-    {
-        langToImprove = findViewById(R.id.listView_LangImprove);
-        languages = langs;
-
-
-        final AlertDialog.Builder languageAvailableSelect = new AlertDialog.Builder(ActivityMyProfile.this);
-        final AlertDialog.Builder languageTeachingSelect = new AlertDialog.Builder(ActivityMyProfile.this);
-
-        languageAvailableSelect.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        languageAvailableSelect.setAdapter(availableLearnLanguages, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.e("Selected", availableLearnLanguages.getItem(i));
-                if (availableLearnLanguages != null)
-                {
-                    final String langName = availableLearnLanguages.getItem(i);
-                    for (Languages l : languages)
+                    String langName = adapter.getItem(which);
+                    for (Languages l : available_Languages)
                     {
                         if (l.name.equals(langName))
                         {
-                            availableLearnLanguages.remove(availableLearnLanguages.getItem(i));
-                            adapterLearnLanguage.addIfNotPresent(l);
-                            ListViewExpander.setListViewHeightBasedOnChildren(langToImprove);
+                            adapter.remove(adapter.getItem(which));
+                            lang.addIfNotPresent(l);
+                            ListViewExpander.setListViewHeightBasedOnChildren( ((ListView)findViewById(ListViewId)) );
                         }
                     }
-                }
-            }
-        });
 
-        ((ImageButton)findViewById(R.id.addLanguageToLearn)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (adapterLearnLanguage.getCount() >= 7)
-                {
-                    //tell user that max is 7
-                }
-                else
-                {
-                    languageAvailableSelect.show();
                 }
             }
         });
+        return adb;
     }
 
 
 
-
-    public void getUser()
+    private ArrayList<Languages> userLanguages = new ArrayList<>();
+    private ArrayList<Hobbies> userHobbies = new ArrayList<>();
+    private void RetrieveUserData()
     {
+        if (id_user <= -1)
+            return;
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                String getReq = Strings.ApiUrl() + "?request=get_id_user&username=" +
-                        new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username) +
-                        "&authenticationToken=" + new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey);
-                Api api = new Api();
-                String response = api.GET(getReq);
-                int id_user = new JsonHandler().getIdUser(response);
-                if (id_user != -1)
-                {
-                    String data = "";
+                String token = new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey);
+                ArrayList<PostParam> pp = new ArrayList<>();
+                pp.add(new PostParam("authenticationToken", token));
+                pp.add(new PostParam("id_user", String.valueOf(id_user)));
+                String request = Strings.Request_GetMe(token, new JsonHandler()._toJson(pp));
+                user = new JsonHandler().getUser(new Api().GET(request));
 
-                    try {
-                        JSONObject jo = new JSONObject();
-                        jo.put("id_user", id_user);
-                        jo.put("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey));
-                        data = jo.toString();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                userLanguages = new JsonHandler().getLanguages( new Api().GET(  Strings.Request_UserLanguages(String.valueOf(id_user)) ));
+                userHobbies = new JsonHandler().getHobbies(new Api().GET( Strings.Request_UserHobbies(String.valueOf(id_user))));
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (user != null)
+                            InsertUserData();
                     }
-
-                    String getUser = Strings.ApiUrl() + "?request=get_me" +
-                            "&authenticationToken=" + new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)+
-                            "&data="+data;
-
-                    String resp = api.GET(getUser);
-                    final User user = new JsonHandler().getUser(resp);
-                    System.out.print(user);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setUserFields(user);
-                        }
-                    });
-                }
+                });
             }
         });
     }
 
-    public void setUserFields(User user)
+    private void InsertUserData()
     {
-        if (user == null)
-        {
-            return;
-        }
-
         ((EditText)findViewById(R.id.inputFirstName)).setText(user.getFirstName());
         ((EditText)findViewById(R.id.inputLastName)).setText(user.getLastName());
         Date date = new Date(user.getAge());
@@ -337,23 +233,76 @@ public class ActivityMyProfile extends AppCompatActivity {
         dialog = setDate();
         ((EditText)findViewById(R.id.dateEdit)).setText(calendar.get(Calendar.DAY_OF_MONTH) + "-" +(calendar.get(Calendar.MONTH)+1) + "-" +calendar.get(Calendar.YEAR));
         if (user.getGender() > 0)
-        {
-            Log.e("VALUES SET", "Gender provieded: " + user.getGender());
-            if (genderSpinner != null) {
-                genderSpinner.setSelection(user.getGender());
-            }
-            //((Spinner)findViewById(R.id.spinnerGender)).setSelection(user.gender);
-        }
+            ((Spinner)findViewById(R.id.spinnerGender)).setSelection(user.getGender());
         if (user.getType() > -1)
-        {
-            Log.e("VALUES SET", "Type provieded: " + user.getType());
-            if (positionSpinner != null)
-            {
-                positionSpinner.setSelection(user.getType());
-            }
-            //((Spinner)findViewById(R.id.spinnerPosition)).setSelection(user.type);
-        }
+            ((Spinner)findViewById(R.id.spinnerPosition)).setSelection(user.getType());
 
+        Retrieve_Languages();
+        Retrieve_Hobbies();
     }
 
+    ArrayList<Languages> available_Languages;
+    private void Retrieve_Languages()
+    {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                available_Languages = new JsonHandler().getLanguages(new Api().GET(Strings.Languages()));
+                Helper h = new Helper();
+                ArrayList<Languages> notSelectedForLearning = h.extractAvailableForLearning(available_Languages, userLanguages);
+                ArrayList<Languages> notSelectedForTeaching = h.extractAvailableForLearning(available_Languages, userLanguages);
+
+                learnDialougeItems = h._toArrayAdapter(ActivityMyProfile.this, notSelectedForLearning);
+                teachDialougeItems = h._toArrayAdapter(ActivityMyProfile.this, notSelectedForTeaching);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ListView)findViewById(R.id.listView_LangImprove)).setAdapter(toLearn);
+                        ((ListView)findViewById(R.id.listView_LangTeach)).setAdapter(toTeach);
+
+                        Helper h = new Helper();
+                        toLearn.swapItems(h.getLearningLanguages(userLanguages));
+                        ListViewExpander.setListViewHeightBasedOnChildren(((ListView)findViewById(R.id.listView_LangImprove)));
+                        toTeach.swapItems(h.getTeachingLanguages(userLanguages));
+                        ListViewExpander.setListViewHeightBasedOnChildren(((ListView)findViewById(R.id.listView_LangTeach)));
+
+                        final AlertDialog.Builder learn = getBaseDialog(learnDialougeItems, toLearn, R.id.listView_LangImprove);
+                        final AlertDialog.Builder teach = getBaseDialog(teachDialougeItems, toTeach, R.id.listView_LangTeach);
+
+                        findViewById(R.id.addLanguageToLearn).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (toLearn.getCount() >= 7)
+                                    Toast.makeText(ActivityMyProfile.this, "You can only add up to 7 languages", Toast.LENGTH_LONG).show();
+                                else
+                                    learn.show();
+                            }
+                        });
+                        findViewById(R.id.addLanguageToTeach).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (toTeach.getCount() >= 7)
+                                    Toast.makeText(ActivityMyProfile.this, "You can only add up to 7 languages", Toast.LENGTH_LONG).show();
+                                else
+                                    teach.show();
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
+    }
+
+    ArrayList<Hobbies> available_Hobbies;
+    private void Retrieve_Hobbies()
+    {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                available_Hobbies = new JsonHandler().getHobbies(new Api().GET(Strings.Hobbies()));
+            }
+        });
+    }
 }

@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityMyProfile">
+    tools:context=".ActivityMyProfile_">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
+            android:layout_marginTop="12dp"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_width="match_parent"
@@ -161,6 +162,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:layout_marginBottom="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -181,6 +183,33 @@
                 </android.support.v7.widget.CardView>
                 <ImageButton
                     android:id="@+id/addLanguageToTeach"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="My hobbies"/>
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginTop="12dp"
+                    android:elevation="3dp">
+                    <ListView
+                        android:id="@+id/listView_Hobbies"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></ListView>
+                </android.support.v7.widget.CardView>
+                <ImageButton
+                    android:id="@+id/addHobbies"
                     android:src="@drawable/ic_add_black_24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

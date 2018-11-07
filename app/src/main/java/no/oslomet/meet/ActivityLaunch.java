@@ -210,7 +210,9 @@ public class ActivityLaunch extends AppCompatActivity {
         }
         else if (adr != null && adr.dataExit == 1)
         {
-            startActivity(new Intent(ActivityLaunch.this, ActivityMain.class));
+            Intent intent = new Intent(ActivityLaunch.this, ActivityMyProfile.class);
+            intent.putExtra("NewUser", true);
+            startActivity(intent);
         }
 
     }

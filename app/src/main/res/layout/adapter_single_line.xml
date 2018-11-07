@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
         <TextView
-            android:id="@+id/adapter_langauge_TextView"
+            android:id="@+id/adapter_TextView"
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:textSize="18dp"
-            android:text="English"
+            android:text=""
             android:layout_width="match_parent"/>
 </RelativeLayout>

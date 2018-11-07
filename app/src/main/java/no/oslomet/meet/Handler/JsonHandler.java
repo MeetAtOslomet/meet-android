@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import no.oslomet.meet.classes.ApiDataResponse;
 import no.oslomet.meet.classes.AuthStatus;
 import no.oslomet.meet.classes.Heartbeat;
+import no.oslomet.meet.classes.Hobbies;
 import no.oslomet.meet.classes.Languages;
+import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Registration;
 import no.oslomet.meet.classes.User;
 
@@ -138,6 +140,35 @@ public class JsonHandler
         return languages;
     }
 
+    public ArrayList<Hobbies> getHobbies(String jString)
+    {
+        ArrayList<Hobbies> out = new ArrayList<>();
+        try
+        {
+            JSONObject jo = new JSONObject(jString);
+            if (jo.isNull("data"))
+            {
+
+            }
+            else
+            {
+                JSONArray ja = jo.getJSONArray("data");
+                for (int i = 0; i < ja.length(); i++)
+                {
+                    JSONObject el = ja.getJSONObject(i);
+                    out.add(new Hobbies(
+                            (el.has("id_user")) ? el.getInt("id_user") : -1,
+                            (el.has("id_hobbies")) ? el.getInt("id_hobbies") : -1,
+                            (el.has("name")) ? el.getString("name") : ""
+                    ));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return out;
+    }
+
     public int getIdUser(String jString)
     {
         int id = -1;
@@ -212,5 +243,21 @@ public class JsonHandler
     }
 
 
+    public String _toJson(ArrayList<PostParam> items)
+    {
+        String out = null;
+        try
+        {
+            JSONObject jsonObject = new JSONObject();
+            for (PostParam pp : items)
+            {
+                jsonObject.put(pp.getKey(), pp.getData());
+            }
+            out = jsonObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return out;
+    }
 
 }

@@ -13,12 +13,31 @@ public class Strings
         return Domain + "/api.php?request=heartbeat";
     }
     public static String Languages() {return  Domain + "/api.php?request=get_language";}
+    public static String Hobbies() { return ApiUrl() + "?request=get_hobbies"; }
 
     public static String ProfileExists(String Username)
     {
         if (Username == null || Username.length() <= 0) {return null; }
         return Domain + "/api.php?request=chk_user&username="+Username;
     }
+
+    public static String Request_GetIdUser(String username, String token)
+    {
+        return ApiUrl() + "?request=get_id_user&username="+username+"&authenticationToken="+token;
+    }
+    public static String Request_GetMe(String token, String data)
+    {
+        return ApiUrl() + "?request=get_me&authenticationToken="+token+"&data="+data;
+    }
+    public static String Request_UserLanguages(String userId)
+    {
+        return ApiUrl() + "?request=get_user_languages&id_user="+userId;
+    }
+    public static String Request_UserHobbies(String userId)
+    {
+        return ApiUrl() + "?request=get_user_hobbies&id_user" + userId;
+    }
+
 
     public static String testPost = "{\"username\":\"Admin\",\"password\":\"c0aba0c3f3fdc55050e59b7eb596605d000d41e0625328b7e87c65336b000a15\",\"type\":\"Student\"}";
 }

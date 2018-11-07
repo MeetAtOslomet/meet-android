@@ -8,6 +8,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,16 @@ public class Helper
                 out.add(l);
         }
         return out;
+    }
+
+    public ArrayAdapter<String> _toArrayAdapter(Context context, ArrayList<Languages> listed)
+    {
+        ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.select_dialog_singlechoice);
+        for(Languages l : listed)
+        {
+            adapter.add(l.name);
+        }
+        return adapter;
     }
 
 

@@ -10,22 +10,22 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import no.oslomet.meet.R;
-import no.oslomet.meet.classes.Languages;
+import no.oslomet.meet.classes.Hobbies;
 
-public class AdapterLanguage extends BaseAdapter
+public class AdapterHobby extends BaseAdapter
 {
-    public Context context;
-    public ArrayList<Languages> items = new ArrayList<>();
+    private Context context;
+    private ArrayList<Hobbies> items;
 
-    public AdapterLanguage(Context context, ArrayList<Languages> items)
+    public AdapterHobby(Context context, ArrayList<Hobbies> items)
     {
         this.context = context;
         this.items = items;
     }
 
-    public void add(Languages languages)
+    public void add(Hobbies hobbies)
     {
-        items.add(languages);
+        items.add(hobbies);
         notifyDataSetChanged();
     }
     public void remove(int id)
@@ -34,21 +34,21 @@ public class AdapterLanguage extends BaseAdapter
         notifyDataSetChanged();
     }
 
-    public void addIfNotPresent(Languages languages)
+    public void addIfNotPresent(Hobbies hobbies)
     {
         boolean isPresent = false;
-        for (Languages lang : items)
+        for (Hobbies lang : items)
         {
-            if (lang.name.equals(languages.name))
+            if (hobbies.getName().equals(hobbies.getName()))
                 isPresent = true;
         }
         if (!isPresent)
         {
-            add(languages);
+            add(hobbies);
         }
     }
 
-    public void swapItems(ArrayList<Languages> swap)
+    public void swapItems(ArrayList<Hobbies> swap)
     {
         items = swap;
         notifyDataSetChanged();
@@ -73,7 +73,7 @@ public class AdapterLanguage extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_single_line, parent, false);
-        ((TextView)convertView.findViewById(R.id.adapter_TextView)).setText(items.get(position).name);
+        ((TextView)convertView.findViewById(R.id.adapter_TextView)).setText(items.get(position).getName());
         return convertView;
     }
 }
