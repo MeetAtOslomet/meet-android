@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import no.oslomet.meet.classes.ApiDataResponse;
 import no.oslomet.meet.classes.AuthStatus;
+import no.oslomet.meet.classes.Campus;
 import no.oslomet.meet.classes.Heartbeat;
 import no.oslomet.meet.classes.Hobbies;
 import no.oslomet.meet.classes.Languages;
@@ -81,7 +82,8 @@ public class JsonHandler
 
     public ApiDataResponse getData(String jString)
     {
-        ApiDataResponse adr = null;
+        Log.e("OUT API DATA", "=> " + jString);
+        ApiDataResponse adr = new ApiDataResponse(false, "dataError", 3, "unhandeled");
         try {
             JSONObject root = new JSONObject(jString);
             adr = new ApiDataResponse(
@@ -98,6 +100,7 @@ public class JsonHandler
 
     public ArrayList<Languages> getLanguages(String jString)
     {
+        Log.e("API Response", jString);
         ArrayList<Languages> languages = new ArrayList<>();
         try
         {
@@ -142,6 +145,7 @@ public class JsonHandler
 
     public ArrayList<Hobbies> getHobbies(String jString)
     {
+        Log.e("Hobbies Response", jString);
         ArrayList<Hobbies> out = new ArrayList<>();
         try
         {
@@ -204,6 +208,13 @@ public class JsonHandler
                     (root.has("id_campus")) ? root.getInt("id_campus") : -1,
                     (root.has("biography")) ? root.getString("biography") : ""
             );
+
+            if (root.has("hide_last_name"))
+                user.setHideLastName(root.getInt("hide_last_name"));
+            if (root.has("hide_age"))
+                user.setHideAge(root.getInt("hide_age"));
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -260,4 +271,71 @@ public class JsonHandler
         return out;
     }
 
+    public String _toLanguageJsonArrayString(String root, ArrayList<Languages> items) throws JSONException {
+        String out;
+
+        JSONObject jo = new JSONObject();
+        JSONArray ja = new JSONArray();
+        for (Languages l : items)
+        {
+            JSONObject item = new JSONObject();
+            item.put("id_user", l.id_user);
+            item.put("id_language", l.id_language);
+            item.put("teachOrLearn", l.teachOrLearn);
+            ja.put(item);
+        }
+        jo.put(root, ja);
+        out = jo.toString();
+
+
+        return out;
+    }
+
+    public String _toUserJSON(User user) throws JSONException {
+        String out = "";
+        JSONObject jo = new JSONObject();
+        jo.put("username", user.getUsername());
+        jo.put("first_name", user.getFirstName());
+        jo.put("last_name", user.getLastName());
+        jo.put("hide_last_name", user.getHideLastName());
+        jo.put("type", user.getType());
+        jo.put("gender", user.getGender());
+        jo.put("age", user.getAge());
+        jo.put("hide_age", user.getHideAge());
+        jo.put("id_campus", user.getIdCampus());
+        jo.put("biography", user.getBiography());
+        out = jo.toString();
+        return out;
+    }
+
+    public ArrayList<Campus> getCampuses(String jString)
+    {
+        ArrayList<Campus> out = new ArrayList<>();
+
+        Log.e("Campus Response", jString);
+        try
+        {
+            JSONObject jo = new JSONObject(jString);
+            if (jo.isNull("data"))
+            {
+
+            }
+            else
+            {
+                JSONArray ja = jo.getJSONArray("data");
+                for (int i = 0; i < ja.length(); i++)
+                {
+                    JSONObject el = ja.getJSONObject(i);
+                    out.add(new Campus(
+                            (el.has("id_campus")) ? el.getInt("id_campus") : -1,
+                            (el.has("name")) ? el.getString("name") : ""
+                    ));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return out;
+
+    }
 }

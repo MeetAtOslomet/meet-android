@@ -14,6 +14,9 @@ public class User
     private int id_campus;
     private String biography;
 
+    private int hideLastName = 0;
+    private int hideAge = 0;
+
     public User (int id_user, String username, String firstName, String lastName, long age, int type, int gender, int id_campus, String biography)
     {
         Log.e("VALUES USER", "Type provided: " + type);
@@ -46,7 +49,15 @@ public class User
     public int getIdCampus() { return id_campus; }
     public String getBiography() { return biography; }
 
+    public int getHideLastName() {return hideLastName;}
+    public int getHideAge() {return hideAge;}
+
     public void setGender(int i) { gender = i; }
     public void setType(int i) { type = i; }
+    public void setHideLastName(int i) {hideLastName = i;}
+    public void setHideAge(int i ) { hideAge = i;}
 
+    public void setCampus(int position) {
+        id_campus = position;
+    }
 }

@@ -34,6 +34,10 @@ public class AdapterLanguage extends BaseAdapter
         notifyDataSetChanged();
     }
 
+    public ArrayList<Languages> getItems() {
+        return items;
+    }
+
     public void addIfNotPresent(Languages languages)
     {
         boolean isPresent = false;

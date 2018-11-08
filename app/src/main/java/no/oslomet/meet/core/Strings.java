@@ -14,6 +14,7 @@ public class Strings
     }
     public static String Languages() {return  Domain + "/api.php?request=get_language";}
     public static String Hobbies() { return ApiUrl() + "?request=get_hobbies"; }
+    public static String Campus() { return ApiUrl() + "?request=get_campus"; }
 
     public static String ProfileExists(String Username)
     {
@@ -31,11 +32,11 @@ public class Strings
     }
     public static String Request_UserLanguages(String userId)
     {
-        return ApiUrl() + "?request=get_user_languages&id_user="+userId;
+        return ApiUrl() + "?request=get_user_language&id_user="+userId;
     }
     public static String Request_UserHobbies(String userId)
     {
-        return ApiUrl() + "?request=get_user_hobbies&id_user" + userId;
+        return ApiUrl() + "?request=get_user_hobbies&id_user=" + userId;
     }
 
 

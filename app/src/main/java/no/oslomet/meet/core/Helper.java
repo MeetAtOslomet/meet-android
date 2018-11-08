@@ -132,6 +132,42 @@ public class Helper
         return adapter;
     }
 
+    public ArrayList<Languages> mergeLanguages(ArrayList<Languages> learn, ArrayList<Languages> teach, int id_user)
+    {
+        ArrayList<Languages> out = new ArrayList<>();
+        for(Languages l : learn)
+        {
+            l.teachOrLearn = 1;
+            out.add(l);
+        }
+
+        for(Languages l : teach)
+        {
+            boolean add = true;
+            for (Languages ll : out)
+            {
+                if (ll.id_language == l.id_language)
+                {
+                    add = false;
+                    ll.teachOrLearn = 2;
+                    break;
+                }
+            }
+            if (add)
+            {
+                l.teachOrLearn = 0;
+                out.add(l);
+            }
+        }
+
+        for (Languages l : out)
+        {
+            l.id_user = id_user;
+        }
+
+        return out;
+    }
+
 
     public static void forceTint(Context context, MenuItem menuItem, int ColorId)
     {

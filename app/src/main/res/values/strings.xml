@@ -36,6 +36,9 @@
         <item>@string/position3</item>
         <item>@string/position4</item>
     </string-array>
+
+    <string name="campusDefault">Please select your camps</string>
+
     <string name="title_activity_chat">ActivityChat</string>
 
     <!-- TODO: Remove or change this placeholder text -->
