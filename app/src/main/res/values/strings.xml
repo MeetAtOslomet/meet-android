@@ -7,6 +7,11 @@
     <string name="preference_username"></string>
     <string name="preference_validate">false</string>
     <string name="preference_setPassword">false</string>
+    <string name="preference_matchPreference">0</string>
+    <string name="preference_idUser"></string>
+
+
+
     <string name="title_activity_match">ActivityMatch</string>
 
 
@@ -40,9 +45,9 @@
     <string name="campusDefault">Please select your camps</string>
 
     <string name="title_activity_chat">ActivityChat</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <string name="recommended_lang0">Speaks</string>
+    <string name="recommended_lang1">Needs help with</string>
 
 
 </resources>

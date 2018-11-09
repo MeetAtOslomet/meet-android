@@ -122,6 +122,17 @@ public class Helper
         return adapter;
     }
 
+    public ArrayAdapter<String> _toLanguageArrayAdapterSlim(Context context, ArrayList<Languages> listed)
+    {
+        ArrayAdapter adapter = new ArrayAdapter(context,  android.R.layout.simple_spinner_item);
+        for(Languages l : listed)
+        {
+            adapter.add(l.name);
+        }
+        return adapter;
+    }
+
+
     public ArrayAdapter<String> _toHobbyArrayAdapter(Context context, ArrayList<Hobbies> listed)
     {
         ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.select_dialog_singlechoice);

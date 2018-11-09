@@ -2,6 +2,10 @@ package no.oslomet.meet.classes;
 
 import android.util.Log;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class User
 {
     private int id_user;
@@ -51,6 +55,28 @@ public class User
 
     public int getHideLastName() {return hideLastName;}
     public int getHideAge() {return hideAge;}
+
+    public int getReadableAge()
+    {
+
+        Date birth = new Date(age);
+        Calendar birthC = Calendar.getInstance(TimeZone.getDefault());
+        birthC.setTime(birth);
+
+        Calendar today = Calendar.getInstance();
+
+        int Year = today.get(Calendar.YEAR) - birthC.get(Calendar.YEAR);
+        if (today.get(Calendar.MONTH) < birthC.get(Calendar.MONTH))
+            Year--;
+        else
+        {
+            if (today.get(Calendar.MONTH) == birthC.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < birthC.get(Calendar.DAY_OF_MONTH))
+                Year--;
+        }
+
+        return Year;
+    }
+
 
     public void setGender(int i) { gender = i; }
     public void setType(int i) { type = i; }

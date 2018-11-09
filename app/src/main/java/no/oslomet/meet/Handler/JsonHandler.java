@@ -15,6 +15,7 @@ import no.oslomet.meet.classes.Heartbeat;
 import no.oslomet.meet.classes.Hobbies;
 import no.oslomet.meet.classes.Languages;
 import no.oslomet.meet.classes.PostParam;
+import no.oslomet.meet.classes.Recommended;
 import no.oslomet.meet.classes.Registration;
 import no.oslomet.meet.classes.User;
 
@@ -337,5 +338,35 @@ public class JsonHandler
         }
         return out;
 
+    }
+
+
+    public ArrayList<Recommended> getRecommended(String jString) throws JSONException {
+        ArrayList<Recommended> out = new ArrayList<>();
+
+        JSONObject root = new JSONObject(jString);
+        JSONArray dataArray = root.getJSONArray("data");
+
+        for(int i = 0; i < dataArray.length(); i++)
+        {
+            JSONObject aItem = dataArray.getJSONObject(i);
+            User user = getUser(aItem.getJSONObject("user").toString());
+
+            JSONArray langs = aItem.getJSONArray("languages");
+            JSONObject tempLang = new JSONObject();
+            tempLang.put("data", langs);
+
+            JSONArray hobby = aItem.getJSONArray("hobbies");
+            JSONObject tempHobby = new JSONObject();
+            tempHobby.put("data", hobby);
+
+            out.add(new Recommended(user,
+                    getLanguages(tempLang.toString()),
+                    getHobbies(tempHobby.toString())
+            ));
+
+        }
+
+        return out;
     }
 }

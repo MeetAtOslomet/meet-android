@@ -599,10 +599,22 @@ public class ActivityMyProfile extends AppCompatActivity
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            finish();
+                            AlertDialog.Builder adb = new AlertDialog.Builder(ActivityMyProfile.this);
+                            adb.setTitle("Error");
+                            adb.setMessage("And error occurred when trying to get your user id, this prevents us from posting your data..");
+                            adb.show();
                         }
                     });
                 }
+            }
+            else
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                });
             }
 
         }

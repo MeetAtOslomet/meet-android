@@ -6,7 +6,11 @@
     <color name="colorButton">#FFC311</color>
     <color name="colorIconButton">#fff</color>
     <color name="colorSecondary">#d69b09</color>
-    <color name="colorRed">#f00</color>
+    <color name="colorRed">#a60000</color>
     <color name="colorLightGary">#ecebe7</color>
+    <color name="colorWhite">#FFF</color>
+    <color name="colorGreen">#008f00</color>
+
+    <color name="colorOverlay">#af000000</color>
 
 </resources>
