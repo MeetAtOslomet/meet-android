@@ -380,4 +380,17 @@ public class JsonHandler
 
         return out;
     }
+
+    public int getMatchRequestState(String jString)
+    {
+        int out = 0;
+        try {
+            JSONObject root = new JSONObject(jString);
+            out = (root.has("requestState")) ?  root.getInt("requestState") : 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return out;
+    }
+
 }

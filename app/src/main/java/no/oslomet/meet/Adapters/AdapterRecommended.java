@@ -44,6 +44,11 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         notifyItemRemoved(position);
     }
 
+    public Recommended getItem(int position)
+    {
+        return items.get(position);
+    }
+
 
     @NonNull
     @Override

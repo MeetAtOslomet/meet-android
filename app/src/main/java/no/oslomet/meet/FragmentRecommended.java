@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import no.oslomet.meet.Adapters.AdapterRecommended;
 import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.SettingsHandler;
+import no.oslomet.meet.classes.ApiDataResponse;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Recommended;
 import no.oslomet.meet.core.Api;
@@ -31,6 +33,8 @@ import no.oslomet.meet.core.Strings;
 
 
 public class FragmentRecommended extends Fragment {
+
+    public int id_user = 0;
 
     public FragmentRecommended() {
         // Required empty public constructor
@@ -68,7 +72,7 @@ public class FragmentRecommended extends Fragment {
             public void run() {
                 Api api = new Api();
                 String response = api.GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(getActivity(), R.string.preference_username), new SettingsHandler().getStringSetting(getActivity(), R.string.preference_AuthKey)  ));
-                int id_user = new JsonHandler().getIdUser(response);
+                id_user = new JsonHandler().getIdUser(response);
 
                 ArrayList<PostParam> jsonParam = new ArrayList<>();
                 jsonParam.add(new PostParam("id_user", String.valueOf(id_user)));
@@ -133,8 +137,68 @@ public class FragmentRecommended extends Fragment {
     {
         getView().findViewById(R.id.Recommended_Check).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                if (id_user > 0 && recommendedAdapter.getItemCount() > 0)
+                {
+                    getView().findViewById(R.id.Recommended_Check).setEnabled(false);
+                    getView().findViewById(R.id.Recommended_Decline).setEnabled(false);
 
+                    final Recommended rec = recommendedAdapter.getItem(0);
+
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            Api api = new Api();
+
+                            ArrayList<PostParam> jsonParam = new ArrayList<>();
+                            jsonParam.add(new PostParam("id_user", String.valueOf(id_user)));
+                            jsonParam.add(new PostParam("id_user_chosen", String.valueOf(rec.getUser().getIdUser())));
+
+                            String data = new JsonHandler()._toJson(jsonParam);
+
+                            ArrayList<PostParam> pp = new ArrayList<>();
+                            pp.add(new PostParam("request", "set_like"));
+                            pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(getActivity(), R.string.preference_AuthKey)));
+                            pp.add(new PostParam("data", data));
+
+                            String result = api.POST(Strings.ApiUrl(), api.POST_DATA(pp));
+                            ApiDataResponse apiDataResponse = new JsonHandler().getData(result);
+                            if (apiDataResponse.dataExit == 0)
+                            {
+                                final int state = new JsonHandler().getMatchRequestState(result);
+
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (recommendedAdapter.getItemCount() > 0)
+                                            recommendedAdapter.removeItem(0);
+
+                                        if (state > 0)
+                                        {
+                                            Toast.makeText(getActivity(), "You just matched with " +rec.getUser().getFirstName(), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        getView().findViewById(R.id.Recommended_Check).setEnabled(true);
+                                        getView().findViewById(R.id.Recommended_Decline).setEnabled(true);
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getView().findViewById(R.id.Recommended_Check).setEnabled(true);
+                                        getView().findViewById(R.id.Recommended_Decline).setEnabled(true);
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
+                }
             }
         });
 
