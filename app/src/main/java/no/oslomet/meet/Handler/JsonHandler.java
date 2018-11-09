@@ -295,6 +295,17 @@ public class JsonHandler
     public String _toUserJSON(User user) throws JSONException {
         String out = "";
         JSONObject jo = new JSONObject();
+        /*jo.put("username", user.getUsername());
+        jo.put("first_name", user.getFirstName());
+        jo.put("last_name", user.getLastName());
+        jo.put("hide_last_name", String.valueOf(user.getHideLastName()));
+        jo.put("type", String.valueOf(user.getType()));
+        jo.put("gender", String.valueOf(user.getGender()));
+        jo.put("age", String.valueOf(user.getAge()));
+        jo.put("hide_age", String.valueOf(user.getHideAge()));
+        jo.put("id_campus", String.valueOf(user.getIdCampus()));
+        jo.put("biography", user.getBiography());*/
+
         jo.put("username", user.getUsername());
         jo.put("first_name", user.getFirstName());
         jo.put("last_name", user.getLastName());

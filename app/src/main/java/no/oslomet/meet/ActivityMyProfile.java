@@ -509,15 +509,19 @@ public class ActivityMyProfile extends AppCompatActivity
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            int genderPosition = ((Spinner)findViewById(R.id.spinnerGender)).getSelectedItemPosition();
+                            int typePosition = ((Spinner)findViewById(R.id.spinnerPosition)).getSelectedItemPosition();
+                            int campusPosition = ((Spinner)findViewById(R.id.spinnerCampus)).getSelectedItemPosition();
+                            Log.e("Spinnser VAL", "Gender => " + genderPosition + " Type => " + typePosition + " Campus => " + campusPosition);
                             user = new User(
                                     0,
                                     new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username),
                                     ((EditText)findViewById(R.id.inputFirstName)).getText().toString(),
                                     ((EditText)findViewById(R.id.inputLastName)).getText().toString(),
                                     calendar.getTimeInMillis(),
-                                    ((Spinner)findViewById(R.id.spinnerPosition)).getSelectedItemPosition(),
-                                    ((Spinner)findViewById(R.id.spinnerGender)).getSelectedItemPosition(),
-                                    ((Spinner)findViewById(R.id.spinnerCampus)).getSelectedItemPosition(),
+                                    typePosition,
+                                    genderPosition,
+                                    campusPosition,
                                     ""
                             );
                             try {
