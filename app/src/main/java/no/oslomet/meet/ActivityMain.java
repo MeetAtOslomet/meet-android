@@ -1,7 +1,6 @@
 package no.oslomet.meet;
 
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -45,7 +44,7 @@ public class ActivityMain extends AppCompatActivity {
                 case R.id.navigation_chat:
                 {
                     SelectedNavigationItem = 2;
-                    NavigateFragment(new FragmentChat());
+                    NavigateFragment(new FragmentTandem());
                     break;
                 }
             }

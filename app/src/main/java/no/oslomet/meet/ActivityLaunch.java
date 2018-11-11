@@ -204,8 +204,17 @@ public class ActivityLaunch extends AppCompatActivity {
         ApiDataResponse adr = new JsonHandler().getData(resp);
         if (adr != null && adr.dataExit == 0)
         {
+            String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey)  ));
+            int userID = new JsonHandler().getIdUser(response);
+            if (userID > 0)
+            {
+                new SettingsHandler().setStringSetting(this, R.string.preference_idUser, String.valueOf(userID));
+                startActivity(new Intent(ActivityLaunch.this, ActivityMain.class));
+            }
+
+
             //Navigate to matching activity
-            startActivity(new Intent(ActivityLaunch.this, ActivityMain.class));
+
             //startActivity(new Intent(ActivityLaunch.this, ActivityMatch.class));
         }
         else if (adr != null && adr.dataExit == 1)

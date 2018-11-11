@@ -38,6 +38,12 @@ public class Strings
     {
         return ApiUrl() + "?request=get_user_hobbies&id_user=" + userId;
     }
+    public static String Request_Get_MY_TANDEM(String userId)
+    {
+        return ApiUrl() + "?request=get_my_tandem&id_user="+userId;
+    }
+
+
 
 
     public static String testPost = "{\"username\":\"Admin\",\"password\":\"c0aba0c3f3fdc55050e59b7eb596605d000d41e0625328b7e87c65336b000a15\",\"type\":\"Student\"}";

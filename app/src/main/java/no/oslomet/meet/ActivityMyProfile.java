@@ -47,6 +47,13 @@ public class ActivityMyProfile extends AppCompatActivity
     public User user;
     boolean isNewUser = false;
 
+    private void setId_user(int id)
+    {
+        new SettingsHandler().setStringSetting(this, R.string.preference_idUser, String.valueOf(id));
+        id_user = id;
+    }
+
+
 
     private Calendar calendar;
     private DatePickerDialog dialog;
@@ -96,7 +103,7 @@ public class ActivityMyProfile extends AppCompatActivity
             @Override
             public void run() {
                 String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)  ));
-                id_user = new JsonHandler().getIdUser(response);
+                setId_user( new JsonHandler().getIdUser(response));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -140,6 +147,7 @@ public class ActivityMyProfile extends AppCompatActivity
                         }
                     });
                 }
+                setId_user(outId);
                 return outId;
 
             }
@@ -340,6 +348,15 @@ public class ActivityMyProfile extends AppCompatActivity
             ((Spinner)findViewById(R.id.spinnerGender)).setSelection(user.getGender());
         if (user.getType() > -1)
             ((Spinner)findViewById(R.id.spinnerPosition)).setSelection(user.getType());
+        if (user.getIdCampus() > 0)
+        {
+            Spinner campus = (Spinner)findViewById(R.id.spinnerCampus);
+            if (campus.getAdapter() != null && campus.getAdapter() instanceof ArrayAdapter)
+            {
+                campus.setSelection(user.getIdCampus());
+
+            }
+        }
 
         Switch hideAge = (Switch)findViewById(R.id.switchShowAge);
         hideAge.setChecked(user.getHideAge() != 1);
