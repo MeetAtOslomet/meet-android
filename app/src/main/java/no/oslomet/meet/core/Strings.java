@@ -38,9 +38,9 @@ public class Strings
     {
         return ApiUrl() + "?request=get_user_hobbies&id_user=" + userId;
     }
-    public static String Request_Get_MY_TANDEM(String userId)
+    public static String Request_Get_TANDEM(String userId)
     {
-        return ApiUrl() + "?request=get_my_tandem&id_user="+userId;
+        return ApiUrl() + "?request=get_tandem&id_user="+userId;
     }
 
 

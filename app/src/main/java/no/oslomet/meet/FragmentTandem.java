@@ -11,8 +11,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import org.json.JSONException;
+
+import java.util.ArrayList;
+
+import no.oslomet.meet.Adapters.AdapterTandem;
+import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.SettingsHandler;
+import no.oslomet.meet.classes.Tandem;
 import no.oslomet.meet.core.Api;
 import no.oslomet.meet.core.Strings;
 
@@ -48,6 +56,7 @@ public class FragmentTandem extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        loadTandems();
         loadRecommendedTandems();
     }
 
@@ -60,9 +69,32 @@ public class FragmentTandem extends Fragment {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
+
+            }
+        });
+    }
+
+    private void loadTandems()
+    {
+        final ListView lv = (ListView)getView().findViewById(R.id.tandemMatchedList);
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
                 Api api = new Api();
-                String response = api.GET(Strings.Request_Get_MY_TANDEM(new SettingsHandler().getStringSetting(getActivity(), R.string.preference_idUser)));
+                String response = api.GET(Strings.Request_Get_TANDEM(new SettingsHandler().getStringSetting(getActivity(), R.string.preference_idUser)));
                 Log.e("Fetched TANDEM", response);
+                try {
+                    final ArrayList<Tandem> tandems = new JsonHandler().getTandems(response);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AdapterTandem adapterTandem = new AdapterTandem(getActivity(), tandems);
+                            lv.setAdapter(adapterTandem);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

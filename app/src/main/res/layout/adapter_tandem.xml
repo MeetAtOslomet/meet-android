@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp">
+    <TextView
+        android:id="@+id/userFirstName"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[Opposite User]"/>
+
+    <ImageButton
+        android:layout_marginRight="12dp"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/expandOptions"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_event_black_24dp"/>
+    <ImageButton
+        android:scaleType="centerCrop"
+        android:id="@+id/expandOptions"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_more_vert_black_24dp"/>
+
+</RelativeLayout>

@@ -17,6 +17,7 @@ import no.oslomet.meet.classes.Languages;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Recommended;
 import no.oslomet.meet.classes.Registration;
+import no.oslomet.meet.classes.Tandem;
 import no.oslomet.meet.classes.User;
 
 public class JsonHandler
@@ -392,5 +393,46 @@ public class JsonHandler
         }
         return out;
     }
+
+    public ArrayList<Tandem> getTandems(String jString) throws JSONException {
+        ArrayList<Tandem> out = new ArrayList<>();
+
+        JSONObject root = new JSONObject(jString);
+        if (root.has("data"))
+        {
+            JSONArray ja = root.getJSONArray("data");
+            for (int i = 0; i < ja.length(); i++)
+            {
+                JSONObject aE = ja.getJSONObject(i);
+
+
+                ArrayList<User> users = null;
+                if (aE.has("users"))
+                {
+                    JSONArray userA = aE.getJSONArray("users");
+                    JSONObject tempUserObj = new JSONObject();
+                    tempUserObj.put("data", userA);
+                    users = getUsers(tempUserObj.toString());
+                }
+
+                out.add(new Tandem(
+                        (aE.has("id_tandem")) ? aE.getInt("id_tandem") : -1,
+                        (aE.has("id_user1")) ? aE.getInt("id_user1") : -1,
+                        (aE.has("id_user2")) ? aE.getInt("id_user2") : -1,
+                        (aE.has("conversationName")) ? aE.getString("conversationName") : "",
+                        users
+                ));
+
+
+            }
+
+        }
+
+
+
+        return out;
+    }
+
+
 
 }
