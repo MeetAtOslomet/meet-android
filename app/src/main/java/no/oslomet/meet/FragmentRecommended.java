@@ -76,7 +76,7 @@ public class FragmentRecommended extends Fragment {
 
                 ArrayList<PostParam> jsonParam = new ArrayList<>();
                 jsonParam.add(new PostParam("id_user", String.valueOf(id_user)));
-                jsonParam.add(new PostParam("username", new SettingsHandler().getStringSetting(getActivity(), R.string.preference_username)));
+                jsonParam.add(new PostParam("username", new SettingsHandler().getStringSetting(getContext(), R.string.preference_username)));
 
                 String data = new JsonHandler()._toJson(jsonParam);
                 ArrayList<PostParam> pp = new ArrayList<>();
@@ -94,43 +94,60 @@ public class FragmentRecommended extends Fragment {
                 try {
                     recs = new JsonHandler().getRecommended(out);
                     Log.e("Recommended", recs.toString());
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setStack(recs);
-                        }
-                    });
+                    if (getView() != null)
+                    {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try
+                                {
+                                    setStack(recs);
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.e("ViewHandling", "User is probably switching fragments too fast for the code to obtain an id");
+                                    //Probably switching fragments too fast
+                                }
+                            }
+                        });
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
     }
+
     AdapterRecommended recommendedAdapter;
     public void setStack(ArrayList<Recommended> items)
     {
-        RecyclerView RecyclerView_Recommended = (RecyclerView)getView().findViewById(R.id.RecyclerView_Recommended);
-        //RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams)RecyclerView_Recommended.getLayoutParams();
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        RecyclerView_Recommended.setLayoutManager(llm);
+        Object rv = (getView().findViewById(R.id.RecyclerView_Recommended) != null) ? (RecyclerView)getView().findViewById(R.id.RecyclerView_Recommended) : null;
+        if (rv != null)
+        {
+            RecyclerView RecyclerView_Recommended = (RecyclerView)rv;
+            //RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams)RecyclerView_Recommended.getLayoutParams();
+            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            RecyclerView_Recommended.setLayoutManager(llm);
 
-        recommendedAdapter = new AdapterRecommended(getActivity(), items);
-        RecyclerView_Recommended.setAdapter(recommendedAdapter);
-        RecyclerView_Recommended.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-                return true;
-            }
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-            }
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-            }
-        });
+            recommendedAdapter = new AdapterRecommended(getActivity(), items);
+            RecyclerView_Recommended.setAdapter(recommendedAdapter);
+            RecyclerView_Recommended.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                @Override
+                public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+                    return true;
+                }
+                @Override
+                public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+                }
+                @Override
+                public void onRequestDisallowInterceptTouchEvent(boolean b) {
+                }
+            });
 
-        enableButtons();
+            enableButtons();
+        }
+
     }
 
     private void enableButtons()

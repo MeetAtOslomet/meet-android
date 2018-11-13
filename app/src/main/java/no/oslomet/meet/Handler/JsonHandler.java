@@ -17,6 +17,7 @@ import no.oslomet.meet.classes.Languages;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Recommended;
 import no.oslomet.meet.classes.Registration;
+import no.oslomet.meet.classes.Requests;
 import no.oslomet.meet.classes.Tandem;
 import no.oslomet.meet.classes.User;
 
@@ -396,7 +397,6 @@ public class JsonHandler
 
     public ArrayList<Tandem> getTandems(String jString) throws JSONException {
         ArrayList<Tandem> out = new ArrayList<>();
-
         JSONObject root = new JSONObject(jString);
         if (root.has("data"))
         {
@@ -404,8 +404,6 @@ public class JsonHandler
             for (int i = 0; i < ja.length(); i++)
             {
                 JSONObject aE = ja.getJSONObject(i);
-
-
                 ArrayList<User> users = null;
                 if (aE.has("users"))
                 {
@@ -414,7 +412,6 @@ public class JsonHandler
                     tempUserObj.put("data", userA);
                     users = getUsers(tempUserObj.toString());
                 }
-
                 out.add(new Tandem(
                         (aE.has("id_tandem")) ? aE.getInt("id_tandem") : -1,
                         (aE.has("id_user1")) ? aE.getInt("id_user1") : -1,
@@ -422,17 +419,39 @@ public class JsonHandler
                         (aE.has("conversationName")) ? aE.getString("conversationName") : "",
                         users
                 ));
-
-
             }
-
         }
-
-
-
         return out;
     }
 
+    public ArrayList<Requests> getRequests(String jString) throws JSONException {
+        ArrayList<Requests> out = new ArrayList<>();
 
+        JSONObject root = new JSONObject(jString);
+        if (root.has("data"))
+        {
+            JSONArray ja = root.getJSONArray("data");
+            if (ja.length() > 0)
+            {
+                for (int i = 0; i < ja.length(); i++)
+                {
+                    JSONObject ent = ja.getJSONObject(i);
+
+                    JSONObject usTmp = ent.getJSONObject("user");
+
+                    User user = getUser(usTmp.toString());
+                    out.add(new Requests(
+                            (ent.has("id_userSend")) ? ent.getInt("id_userSend") : 0,
+                            (ent.has("id_userMatch")) ? ent.getInt("id_userMatch") : 0,
+                            (ent.has("requestState")) ? ent.getInt("requestState") : 0,
+                            user
+                    ));
+
+                }
+            }
+        }
+
+        return out;
+    }
 
 }

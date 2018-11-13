@@ -42,6 +42,10 @@ public class Strings
     {
         return ApiUrl() + "?request=get_tandem&id_user="+userId;
     }
+    public static String Request_GetRequests(String userId)
+    {
+        return ApiUrl() + "?request=get_requests&id_user="+userId;
+    }
 
 
 

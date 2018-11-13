@@ -17,9 +17,11 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import no.oslomet.meet.Adapters.AdapterRequests;
 import no.oslomet.meet.Adapters.AdapterTandem;
 import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.SettingsHandler;
+import no.oslomet.meet.classes.Requests;
 import no.oslomet.meet.classes.Tandem;
 import no.oslomet.meet.core.Api;
 import no.oslomet.meet.core.Strings;
@@ -63,13 +65,31 @@ public class FragmentTandem extends Fragment {
 
     private void loadRecommendedTandems()
     {
-        RecyclerView rv = (RecyclerView)getView().findViewById(R.id.tandemSuggestedRecycler);
+        final RecyclerView rv = (RecyclerView)getView().findViewById(R.id.tandemSuggestedRecycler);
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv.setHasFixedSize(true);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
+                Api api = new Api();
+                String response = api.GET(Strings.Request_GetRequests(new SettingsHandler().getStringSetting(getContext(), R.string.preference_idUser)));
+                try {
+                    final ArrayList<Requests> requests = new JsonHandler().getRequests(response);
+                    if (getActivity() instanceof ActivityMain)
+                    {
+                        ActivityMain activityMain = (ActivityMain) getActivity();
+                        activityMain.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AdapterRequests adapterRequests = new AdapterRequests(getContext(), requests);
+                                rv.setAdapter(adapterRequests);
+                            }
+                        });
+                    }
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -81,17 +101,22 @@ public class FragmentTandem extends Fragment {
             @Override
             public void run() {
                 Api api = new Api();
-                String response = api.GET(Strings.Request_Get_TANDEM(new SettingsHandler().getStringSetting(getActivity(), R.string.preference_idUser)));
+                String response = api.GET(Strings.Request_Get_TANDEM(new SettingsHandler().getStringSetting(getContext(), R.string.preference_idUser)));
                 Log.e("Fetched TANDEM", response);
                 try {
                     final ArrayList<Tandem> tandems = new JsonHandler().getTandems(response);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AdapterTandem adapterTandem = new AdapterTandem(getActivity(), tandems);
-                            lv.setAdapter(adapterTandem);
-                        }
-                    });
+                    if (getActivity() instanceof ActivityMain)
+                    {
+                        ActivityMain activityMain = (ActivityMain) getActivity();
+                        activityMain.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AdapterTandem adapterTandem = new AdapterTandem(getContext(), tandems);
+                                lv.setAdapter(adapterTandem);
+                            }
+                        });
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
