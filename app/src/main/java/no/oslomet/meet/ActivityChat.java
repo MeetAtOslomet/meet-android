@@ -1,7 +1,12 @@
 package no.oslomet.meet;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +30,7 @@ import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Tandem;
 import no.oslomet.meet.classes.User;
 import no.oslomet.meet.core.Api;
+import no.oslomet.meet.core.Filters;
 import no.oslomet.meet.core.Strings;
 
 public class ActivityChat extends AppCompatActivity {
@@ -241,5 +247,24 @@ public class ActivityChat extends AppCompatActivity {
             }
         });
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageArrived, new IntentFilter(Filters.IntentFilters.MESSAGING_NEW.name()));
+
+    }
+
+    BroadcastReceiver messageArrived = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getStringExtra("action");
+            if (Filters.Actions.UPDATE.name().equals(action))
+            {
+                SetMessages(true);
+            }
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageArrived);
     }
 }
