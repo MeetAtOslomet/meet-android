@@ -44,6 +44,7 @@ import no.oslomet.meet.classes.Heartbeat;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Registration;
 import no.oslomet.meet.core.Api;
+import no.oslomet.meet.core.FCM;
 import no.oslomet.meet.core.Strings;
 
 public class ActivityLaunch extends AppCompatActivity {
@@ -202,6 +203,12 @@ public class ActivityLaunch extends AppCompatActivity {
         Api api = new Api();
         String resp = api.GET(Strings.ProfileExists(username));
         ApiDataResponse adr = new JsonHandler().getData(resp);
+
+
+        FCM fcm = new FCM();
+        String AuthKey = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey);
+        fcm.GetToken(username, AuthKey);
+
         if (adr != null && adr.dataExit == 0)
         {
             String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey)  ));
