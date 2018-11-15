@@ -11,7 +11,6 @@
     <string name="preference_idUser"></string>
 
 
-
     <string name="title_activity_match">ActivityMatch</string>
 
 
@@ -45,7 +44,7 @@
     <string name="campusDefault">Please select your camps</string>
 
     <string name="title_activity_chat">ActivityChat</string>
-    
+
     <string name="recommended_lang0">Speaks</string>
     <string name="recommended_lang1">Needs help with</string>
 

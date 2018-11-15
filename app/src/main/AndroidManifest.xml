@@ -27,8 +27,10 @@
         <activity
             android:name=".ActivityMyProfile"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ActivityMain"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ActivityMain"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ActivityChat"></activity>
     </application>
 
 </manifest>

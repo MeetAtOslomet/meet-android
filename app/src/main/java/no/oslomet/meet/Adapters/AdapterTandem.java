@@ -1,15 +1,22 @@
 package no.oslomet.meet.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import no.oslomet.meet.ActivityChat;
+import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.SettingsHandler;
 import no.oslomet.meet.R;
 import no.oslomet.meet.classes.Tandem;
@@ -48,7 +55,7 @@ public class AdapterTandem extends BaseAdapter
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_tandem, parent, false);
         for (int i = 0; i < items.size(); i++)
@@ -62,6 +69,29 @@ public class AdapterTandem extends BaseAdapter
                 }
             }
         }
+
+        ImageButton ib = convertView.findViewById(R.id.expandOptions);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Hello from expand", Toast.LENGTH_SHORT).show();
+            }
+        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tandem t = (Tandem) getItem(position);
+                try {
+                    String tandemJson = new JsonHandler()._toTandemJSON(t);
+                    Intent chatIntent = new Intent(context, ActivityChat.class);
+                    chatIntent.putExtra("id_tandem", t.id_tandem);
+                    chatIntent.putExtra("tandem_json", tandemJson);
+                    context.startActivity(chatIntent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
 

@@ -47,6 +47,11 @@ public class Strings
         return ApiUrl() + "?request=get_requests&id_user="+userId;
     }
 
+    public static String Request_ReceiveMessages(String token)
+    {
+        return ApiUrl() + "?request=receive_message&authenticationToken="+token;
+    }
+
 
 
 

@@ -1,8 +1,9 @@
 package no.oslomet.meet.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tandem
+public class Tandem implements Serializable
 {
     public int id_tandem;
     public int id_user1;

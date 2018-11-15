@@ -14,6 +14,7 @@ import no.oslomet.meet.classes.Campus;
 import no.oslomet.meet.classes.Heartbeat;
 import no.oslomet.meet.classes.Hobbies;
 import no.oslomet.meet.classes.Languages;
+import no.oslomet.meet.classes.Messaging;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Recommended;
 import no.oslomet.meet.classes.Registration;
@@ -322,6 +323,32 @@ public class JsonHandler
         return out;
     }
 
+    public String _toTandemJSON(Tandem tandem) throws JSONException {
+        String out = "";
+        JSONObject t = new JSONObject();
+        t.put("id_tandem", tandem.id_tandem);
+        t.put("id_user1", tandem.id_user1);
+        t.put("id_user2",tandem.id_user2);
+        t.put("conversationName", tandem.conversationName);
+
+        JSONArray jsonArray = new JSONArray();
+        for(User user : tandem.users)
+        {
+            JSONObject ts = new JSONObject(_toUserJSON(user));
+            jsonArray.put(ts);
+        }
+        t.put("users", jsonArray);
+
+        JSONArray ra = new JSONArray();
+        ra.put(t);
+        JSONObject root = new JSONObject();
+        root.put("data", ra);
+        out = root.toString();
+        return out;
+    }
+
+
+
     public ArrayList<Campus> getCampuses(String jString)
     {
         ArrayList<Campus> out = new ArrayList<>();
@@ -449,6 +476,34 @@ public class JsonHandler
 
                 }
             }
+        }
+
+        return out;
+    }
+
+    public ArrayList<Messaging> getMessages(String jString){
+        ArrayList<Messaging> out = new ArrayList<>();
+        try {
+            JSONObject root = new JSONObject(jString);
+            if (root.has("data"))
+            {
+                JSONArray ja = root.getJSONArray("data");
+                for(int i = 0; i < ja.length(); i++)
+                {
+                    JSONObject en = ja.getJSONObject(i);
+                    out.add(new Messaging(
+                            (en.has("id_message")) ? en.getInt("id_message") : -1,
+                            (en.has("id_userSend")) ? en.getInt("id_userSend") : -1,
+                            (en.has("id_userReceive")) ? en.getInt("id_userReceive") : -1,
+                            (en.has("id_tandem")) ? en.getInt("id_tandem") : -1,
+                            (en.has("dtime")) ? en.getLong("dtime") : -1,
+                            (en.has("viewMessage") && !en.isNull("viewMessage")) ? en.getInt("viewMessage") : -1,
+                            (en.has("message")) ? en.getString("message") : "Message not available"
+                    ));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         return out;

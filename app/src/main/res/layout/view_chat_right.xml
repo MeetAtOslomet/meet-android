@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
     android:paddingTop="6dp"
     android:paddingBottom="6dp">
 
     <android.support.v7.widget.CardView
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/imageContainer"
         android:layout_marginTop="8dp"
         android:layout_width="64dp"
@@ -26,12 +26,12 @@
         android:id="@+id/senderName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="DemoText"
         app:layout_constraintBottom_toTopOf="@+id/textContainer"
-        app:layout_constraintStart_toEndOf="@+id/imageContainer" />
+        app:layout_constraintEnd_toStartOf="@+id/imageContainer" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/textContainer"
@@ -43,7 +43,7 @@
         android:minHeight="64dp"
         app:cardCornerRadius="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageContainer"
+        app:layout_constraintEnd_toStartOf="@+id/imageContainer"
         app:layout_constraintTop_toBottomOf="@+id/imageContainer">
 
         <TextView

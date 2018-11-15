@@ -1,6 +1,7 @@
 package no.oslomet.meet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.json.JSONException;
@@ -122,6 +124,19 @@ public class FragmentTandem extends Fragment {
                 }
             }
         });
+        /*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AdapterTandem at = (AdapterTandem) lv.getAdapter();
+                Tandem t = (Tandem) at.getItem(position);
+                if (t != null)
+                {
+                    Intent chatIntent = new Intent(getActivity(), ActivityChat.class);
+                    chatIntent.putExtra("Tandem", t);
+                    startActivity(chatIntent);
+                }
+            }
+        });*/
     }
 
 
