@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,7 +36,14 @@ public class AdapterRequests extends RecyclerView.Adapter<AdapterRequests.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull AdapterRequests.ViewHolder viewHolder, int i) {
-
+        final int pos = i;
+        viewHolder.rl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Do stuff here
+                Toast.makeText(context, "I'm clickable " + String.valueOf(pos), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -44,10 +53,12 @@ public class AdapterRequests extends RecyclerView.Adapter<AdapterRequests.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView userImage;
+        RelativeLayout rl;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             userImage = itemView.findViewById(R.id.userImage);
+            rl = itemView.findViewById(R.id.request_viewHead);
         }
     }
 }
