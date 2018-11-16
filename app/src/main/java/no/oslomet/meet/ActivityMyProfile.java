@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -374,7 +374,7 @@ public class ActivityMyProfile extends AppCompatActivity
                 available_Languages = new JsonHandler().getLanguages(new Api().GET(Strings.Languages()));
                 Helper h = new Helper();
                 ArrayList<Languages> notSelectedForLearning = h.extractAvailableForLearning(available_Languages, userLanguages);
-                ArrayList<Languages> notSelectedForTeaching = h.extractAvailableForLearning(available_Languages, userLanguages);
+                ArrayList<Languages> notSelectedForTeaching = h.extractAvailableForTeaching(available_Languages, userLanguages);
 
                 learnDialougeItems = h._toLanguageArrayAdapter(ActivityMyProfile.this, notSelectedForLearning);
                 teachDialougeItems = h._toLanguageArrayAdapter(ActivityMyProfile.this, notSelectedForTeaching);

@@ -13,11 +13,21 @@ import android.widget.ArrayAdapter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import no.oslomet.meet.Handler.SettingsHandler;
+import no.oslomet.meet.R;
 import no.oslomet.meet.classes.Hobbies;
 import no.oslomet.meet.classes.Languages;
 
 public class Helper
 {
+    public static int getMyId(Context context)
+    {
+        String id = new SettingsHandler().getStringSetting(context, R.string.preference_idUser);
+        int retId = Integer.parseInt(id);
+        return retId;
+    }
+
+
 
     public ArrayList<Hobbies> extractAvailableHobbies(ArrayList<Hobbies> listed, ArrayList<Hobbies> selected)
     {

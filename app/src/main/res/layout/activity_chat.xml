@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_above="@id/relativeLayout">
-        <ListView
+        <!--<ListView
             android:paddingTop="16dip"
             android:paddingBottom="16dip"
             android:clipToPadding="false"
@@ -20,7 +20,16 @@
             android:id="@+id/messagingView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            ></ListView>
+            ></ListView>-->
+        <android.support.v7.widget.RecyclerView
+            android:paddingTop="16dip"
+            android:paddingBottom="16dip"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/messagingView">
+
+        </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <RelativeLayout

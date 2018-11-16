@@ -6,13 +6,25 @@
     tools:context=".FragmentTandem"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_tandem_requestsTitle"
+        />
     <android.support.v7.widget.RecyclerView
+
         android:id="@+id/tandemSuggestedRecycler"
         android:layout_width="match_parent"
         android:layout_height="80dp">
 
     </android.support.v7.widget.RecyclerView>
-
+    <TextView
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_tandem_tandemTitle"
+        />
     <ListView
         android:clickable="true"
         android:id="@+id/tandemMatchedList"

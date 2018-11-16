@@ -324,6 +324,10 @@ public class JsonHandler
         jo.put("hide_age", user.getHideAge());
         jo.put("id_campus", user.getIdCampus());
         jo.put("biography", user.getBiography());
+        if (user.getIdUser() > 0)
+            jo.put("id_user", user.getIdUser());
+
+
         out = jo.toString();
         return out;
     }
