@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import no.oslomet.meet.classes.ApiDataResponse;
 import no.oslomet.meet.classes.AuthStatus;
 import no.oslomet.meet.classes.Campus;
+import no.oslomet.meet.classes.FCMPush_Data;
 import no.oslomet.meet.classes.Heartbeat;
 import no.oslomet.meet.classes.Hobbies;
 import no.oslomet.meet.classes.Languages;
@@ -42,6 +43,10 @@ public class JsonHandler
             );
         }
         catch (JSONException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return heartbeat;
@@ -507,6 +512,28 @@ public class JsonHandler
         }
 
         return out;
+    }
+
+    public FCMPush_Data getFcmPush_data(String jString) throws JSONException {
+        FCMPush_Data fcmpd = null;
+
+        JSONObject root = new JSONObject(jString);
+        if (root.has("data"))
+        {
+            JSONObject dat = root.getJSONObject("data");
+            fcmpd = new FCMPush_Data(
+                    (dat.has("target")) ? dat.getString("target") : "",
+                    (dat.has("action")) ? dat.getString("action") : ""
+            );
+        }
+        else
+        {
+            fcmpd = new FCMPush_Data(
+                    (root.has("target")) ? root.getString("target") : "",
+                    (root.has("action")) ? root.getString("action") : ""
+            );
+        }
+        return fcmpd;
     }
 
 }

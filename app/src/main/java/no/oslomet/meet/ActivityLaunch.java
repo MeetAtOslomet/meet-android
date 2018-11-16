@@ -1,5 +1,8 @@
 package no.oslomet.meet;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -35,6 +38,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.SettingsHandler;
@@ -44,6 +49,7 @@ import no.oslomet.meet.classes.Heartbeat;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Registration;
 import no.oslomet.meet.core.Api;
+import no.oslomet.meet.core.FCM;
 import no.oslomet.meet.core.Strings;
 
 public class ActivityLaunch extends AppCompatActivity {
@@ -62,7 +68,28 @@ public class ActivityLaunch extends AppCompatActivity {
                 return true;
             }
         });
+        init();
     }
+
+    private void init()
+    {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel def = new NotificationChannel(Strings.DEFAULT_CHANNEL_ID, "Default", NotificationManager.IMPORTANCE_DEFAULT);
+            def.enableVibration(false);
+
+            NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            List<NotificationChannel> lnc = new ArrayList<>(Arrays.asList(
+                    def
+            ));
+            nm.createNotificationChannels(lnc);
+        }
+    }
+
+
+
+
+
+
 
     public String getMetaString(String key)
     {
@@ -202,6 +229,12 @@ public class ActivityLaunch extends AppCompatActivity {
         Api api = new Api();
         String resp = api.GET(Strings.ProfileExists(username));
         ApiDataResponse adr = new JsonHandler().getData(resp);
+
+
+        FCM fcm = new FCM();
+        String AuthKey = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey);
+        fcm.GetToken(username, AuthKey);
+
         if (adr != null && adr.dataExit == 0)
         {
             String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey)  ));
