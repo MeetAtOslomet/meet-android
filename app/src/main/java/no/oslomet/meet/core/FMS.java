@@ -1,7 +1,11 @@
 package no.oslomet.meet.core;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -11,7 +15,9 @@ import org.json.JSONException;
 
 import java.util.Map;
 
+import no.oslomet.meet.ActivityLaunch;
 import no.oslomet.meet.Handler.JsonHandler;
+import no.oslomet.meet.R;
 import no.oslomet.meet.classes.FCMPush_Data;
 
 
@@ -46,6 +52,26 @@ public class FMS extends FirebaseMessagingService
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        handleNotification(remoteMessage);
+    }
+
+    private void handleNotification(RemoteMessage remoteMessage)
+    {
+        Intent intent = new Intent(this, ActivityLaunch.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        NotificationCompat.Builder ncb = new NotificationCompat.Builder(this, Strings.DEFAULT_CHANNEL_ID)
+                .setContentText(remoteMessage.getNotification().getBody())
+                .setContentTitle(remoteMessage.getNotification().getTitle())
+                .setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+        ncb.setContentIntent(pendingIntent);
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+
+        notificationManagerCompat.notify(Strings.CHAT_ID, ncb.build());
 
     }
+
+
 }

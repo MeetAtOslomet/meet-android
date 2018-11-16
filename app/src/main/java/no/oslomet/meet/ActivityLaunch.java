@@ -1,5 +1,8 @@
 package no.oslomet.meet;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -35,6 +38,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.SettingsHandler;
@@ -63,7 +68,28 @@ public class ActivityLaunch extends AppCompatActivity {
                 return true;
             }
         });
+        init();
     }
+
+    private void init()
+    {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel def = new NotificationChannel(Strings.DEFAULT_CHANNEL_ID, "Default", NotificationManager.IMPORTANCE_DEFAULT);
+            def.enableVibration(false);
+
+            NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            List<NotificationChannel> lnc = new ArrayList<>(Arrays.asList(
+                    def
+            ));
+            nm.createNotificationChannels(lnc);
+        }
+    }
+
+
+
+
+
+
 
     public String getMetaString(String key)
     {
