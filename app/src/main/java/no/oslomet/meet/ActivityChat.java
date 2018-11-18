@@ -74,6 +74,7 @@ public class ActivityChat extends AppCompatActivity {
 
     }
 
+
     private String messageGetRequest = null;
     private void SetMessages(final boolean reload)
     {

@@ -2,12 +2,15 @@ package no.oslomet.meet.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ public class AdapterTandem extends BaseAdapter
     private ArrayList<Tandem> items;
     private int id_user = -1;
 
+
     public AdapterTandem(Context context, ArrayList<Tandem> items)
     {
         this.context = context;
@@ -37,7 +41,6 @@ public class AdapterTandem extends BaseAdapter
         Log.e("User Id", idUser);
         id_user = Integer.parseInt(idUser);
     }
-
 
     @Override
     public int getCount() {
@@ -55,28 +58,28 @@ public class AdapterTandem extends BaseAdapter
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = LayoutInflater.from(context).inflate(R.layout.adapter_tandem, parent, false);
-        for (int i = 0; i < items.size(); i++)
-        {
-            ArrayList<User> users = items.get(i).users;
-            for (User user : users)
-            {
-                if (user.getIdUser() != id_user)
-                {
-                    ((TextView)convertView.findViewById(R.id.userFirstName)).setText(user.getFirstName());
+
+
+            for (int i = 0; i < items.size(); i++) {
+                ArrayList<User> users = items.get(i).users;
+                for (User user : users) {
+                    if (user.getIdUser() != id_user) {
+                        ((TextView) convertView.findViewById(R.id.userFirstName)).setText(user.getFirstName());
+                    }
                 }
             }
-        }
 
-        ImageButton ib = convertView.findViewById(R.id.expandOptions);
+        final ImageButton ib = convertView.findViewById(R.id.expandOptions);
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "Hello from expandc", Toast.LENGTH_SHORT).show();
             }
         });
+
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +97,28 @@ public class AdapterTandem extends BaseAdapter
         });
 
 
+        final ImageButton btPlanMeeting = convertView.findViewById(R.id.planMeet);
+
+        btPlanMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show();
+                PopupMenu popupMenu = new PopupMenu(context, btPlanMeeting);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        Toast.makeText(context, "" + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+
+            }
+        });
 
         return convertView;
     }
+
 }
