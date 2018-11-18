@@ -49,8 +49,5 @@
     <string name="recommended_lang1">Needs help with</string>
     <string name="title_activity_popup">PopupActivity</string>
 
-    <string name="fragment_tandem_requestsTitle">Pending requests</string>
-    <string name="fragment_tandem_tandemTitle">Tandems</string>
-
 
 </resources>

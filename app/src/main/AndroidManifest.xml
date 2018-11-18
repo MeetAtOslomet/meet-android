@@ -31,11 +31,6 @@
             android:name=".ActivityMain"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ActivityChat"></activity>
-        <service android:name=".core.FMS">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
     </application>
 
 </manifest>

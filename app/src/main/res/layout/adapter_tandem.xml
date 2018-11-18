@@ -11,7 +11,6 @@
         android:text="[Opposite User]"/>
 
     <ImageButton
-        android:id="@+id/planMeet"
         android:layout_marginRight="12dp"
         android:scaleType="centerCrop"
         android:layout_centerVertical="true"
@@ -19,7 +18,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_event_black_24dp" />
+        android:src="@drawable/ic_event_black_24dp"/>
     <ImageButton
         android:scaleType="centerCrop"
         android:id="@+id/expandOptions"
@@ -28,6 +27,6 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_more_vert_black_24dp" />
+        android:src="@drawable/ic_more_vert_black_24dp"/>
 
 </RelativeLayout>

@@ -1,12 +1,7 @@
 package no.oslomet.meet;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.SystemClock;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import no.oslomet.meet.Adapters.AdapterMessaging;
 import no.oslomet.meet.Handler.JsonHandler;
@@ -32,7 +25,6 @@ import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Tandem;
 import no.oslomet.meet.classes.User;
 import no.oslomet.meet.core.Api;
-import no.oslomet.meet.core.Filters;
 import no.oslomet.meet.core.Strings;
 
 public class ActivityChat extends AppCompatActivity {
@@ -40,7 +32,7 @@ public class ActivityChat extends AppCompatActivity {
     private int myid;
     public int tandemId;
     public int receiverId = -1;
-    HashMap<Integer, String> users;
+
     public Tandem t;
 
     @Override
@@ -58,22 +50,11 @@ public class ActivityChat extends AppCompatActivity {
                 receiverId = t.id_user1;
             else if (t.id_user2 != myid)
                 receiverId = t.id_user2;
-
-            users = new HashMap<>();
-            for (User user : t.users)
-            {
-                String fullname = (user.getLastName().length() > 0) ? user.getFirstName() + " " + user.getLastName() : user.getFirstName();
-                users.put(user.getIdUser(), fullname);
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        RecyclerView lv = ActivityChat.this.findViewById(R.id.messagingView);
-        lv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
     }
-
 
     private String messageGetRequest = null;
     private void SetMessages(final boolean reload)
@@ -96,8 +77,7 @@ public class ActivityChat extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //ListView lv = ActivityChat.this.findViewById(R.id.messagingView);
-                        RecyclerView lv = ActivityChat.this.findViewById(R.id.messagingView);
+                        ListView lv = ActivityChat.this.findViewById(R.id.messagingView);
                         if (reload && lv.getAdapter() != null)
                         {
                             AdapterMessaging am = (AdapterMessaging) lv.getAdapter();
@@ -105,7 +85,7 @@ public class ActivityChat extends AppCompatActivity {
                         }
                         else
                         {
-                            AdapterMessaging am = new AdapterMessaging(ActivityChat.this, msgList, users);
+                            AdapterMessaging am = new AdapterMessaging(ActivityChat.this, msgList);
                             if (lv != null)
                                 lv.setAdapter(am);
                         }
@@ -119,14 +99,13 @@ public class ActivityChat extends AppCompatActivity {
 
     private void ScrollToBottom()
     {
-        final RecyclerView lv = ActivityChat.this.findViewById(R.id.messagingView);
+        final ListView lv = ActivityChat.this.findViewById(R.id.messagingView);
         lv.post(new Runnable() {
             @Override
             public void run() {
                 AdapterMessaging adapterMessaging = (AdapterMessaging) lv.getAdapter();
-                if (adapterMessaging != null && adapterMessaging.getItemCount() > 1)
-                    lv.scrollToPosition(adapterMessaging.getItemCount() -1);
-                    //lv.setSelection(adapterMessaging.getItemCount() -1);
+                if (adapterMessaging != null && adapterMessaging.getCount() > 1)
+                    lv.setSelection(adapterMessaging.getCount() -1);
             }
         });
     }
@@ -262,24 +241,5 @@ public class ActivityChat extends AppCompatActivity {
             }
         });
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(messageArrived, new IntentFilter(Filters.IntentFilters.MESSAGING_NEW.name()));
-
-    }
-
-    BroadcastReceiver messageArrived = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getStringExtra("action");
-            if (Filters.Actions.UPDATE.name().equals(action))
-            {
-                SetMessages(true);
-            }
-        }
-    };
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageArrived);
     }
 }
