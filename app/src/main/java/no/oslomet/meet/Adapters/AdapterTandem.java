@@ -58,9 +58,9 @@ public class AdapterTandem extends BaseAdapter
     }
 
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null)
-
+            convertView = LayoutInflater.from(context).inflate(R.layout.adapter_tandem, parent, false);
 
             for (int i = 0; i < items.size(); i++) {
                 ArrayList<User> users = items.get(i).users;
@@ -105,7 +105,7 @@ public class AdapterTandem extends BaseAdapter
                 Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show();
                 PopupMenu popupMenu = new PopupMenu(context, btPlanMeeting);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
-
+                popupMenu.show();
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
