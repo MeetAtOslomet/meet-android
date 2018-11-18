@@ -30,7 +30,11 @@
         <activity
             android:name=".ActivityMain"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ActivityChat"></activity>
+        <activity android:name=".ActivityChat" />
+        <activity
+            android:name=".ActivityPopup"
+            android:label="@string/title_activity_popup"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
