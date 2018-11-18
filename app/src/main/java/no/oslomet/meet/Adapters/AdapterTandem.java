@@ -74,7 +74,7 @@ public class AdapterTandem extends BaseAdapter
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Hello from expand", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Hello from expandc", Toast.LENGTH_SHORT).show();
             }
         });
         convertView.setOnClickListener(new View.OnClickListener() {
