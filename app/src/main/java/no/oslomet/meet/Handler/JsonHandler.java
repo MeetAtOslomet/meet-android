@@ -527,14 +527,16 @@ public class JsonHandler
             JSONObject dat = root.getJSONObject("data");
             fcmpd = new FCMPush_Data(
                     (dat.has("target")) ? dat.getString("target") : "",
-                    (dat.has("action")) ? dat.getString("action") : ""
+                    (dat.has("action")) ? dat.getString("action") : "",
+                    (dat.has("timestamp")) ? dat.getLong("timestamp") : 0
             );
         }
         else
         {
             fcmpd = new FCMPush_Data(
                     (root.has("target")) ? root.getString("target") : "",
-                    (root.has("action")) ? root.getString("action") : ""
+                    (root.has("action")) ? root.getString("action") : "",
+                    (root.has("timestamp")) ? root.getLong("timestamp") : 0
             );
         }
         return fcmpd;
