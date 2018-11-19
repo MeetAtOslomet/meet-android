@@ -2,8 +2,10 @@ package no.oslomet.meet.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -93,6 +95,24 @@ public class AdapterTandem extends BaseAdapter
             }
         });
 
+        final ImageButton PlanMeeting = convertView.findViewById(R.id.planMeet);
+        PlanMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show();
+                PopupMenu popupMenu = new PopupMenu(context, PlanMeeting);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.show();
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        Toast.makeText(context, "" + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+            }
+        });
 
 
         return convertView;

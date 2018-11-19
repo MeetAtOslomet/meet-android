@@ -20,6 +20,10 @@ import no.oslomet.meet.classes.Languages;
 
 public class Helper
 {
+
+    public Helper()
+    {}
+
     public static int getMyId(Context context)
     {
         String id = new SettingsHandler().getStringSetting(context, R.string.preference_idUser);

@@ -11,6 +11,7 @@
         android:text="[Opposite User]"/>
 
     <ImageButton
+        android:id="@+id/planMeet"
         android:layout_marginRight="12dp"
         android:scaleType="centerCrop"
         android:layout_centerVertical="true"
