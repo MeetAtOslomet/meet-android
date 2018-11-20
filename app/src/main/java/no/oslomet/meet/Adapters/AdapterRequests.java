@@ -1,7 +1,10 @@
 package no.oslomet.meet.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentContainer;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +13,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
+import no.oslomet.meet.FragmentRecommended;
+import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.R;
 import no.oslomet.meet.classes.Requests;
 
@@ -41,6 +48,14 @@ public class AdapterRequests extends RecyclerView.Adapter<AdapterRequests.ViewHo
             @Override
             public void onClick(View v) {
                 //Do stuff here
+
+
+                    Intent tandem_request = new Intent(context, FragmentRecommended.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id_user", 4);
+                    tandem_request.putExtras(bundle);
+                    context.startActivity(tandem_request);
+
                 Toast.makeText(context, "I'm clickable " + String.valueOf(pos), Toast.LENGTH_SHORT).show();
             }
         });
