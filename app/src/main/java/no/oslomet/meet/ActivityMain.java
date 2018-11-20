@@ -12,11 +12,13 @@ import no.oslomet.meet.core.Helper;
 
 public class ActivityMain extends AppCompatActivity {
 
+    BottomNavigationView bnv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ((BottomNavigationView)findViewById(R.id.navigation)).setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        bnv = (BottomNavigationView)findViewById(R.id.navigation);
+        bnv.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private int SelectedNavigationItem = 1;

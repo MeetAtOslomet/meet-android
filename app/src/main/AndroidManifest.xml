@@ -30,12 +30,17 @@
         <activity
             android:name=".ActivityMain"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ActivityChat"></activity>
+        <activity android:name=".ActivityChat" />
+
         <service android:name=".core.FMS">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".ActivityCalendar"
+            android:label="Calendar"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

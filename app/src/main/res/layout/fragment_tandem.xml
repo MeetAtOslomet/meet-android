@@ -1,37 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentTandem"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_margin="16dp"
+    tools:context=".FragmentTandem">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fragment_tandem_requestsTitle"
-        />
-    <android.support.v7.widget.RecyclerView
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:id="@+id/tandemSuggestedRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="80dp">
+        <TextView
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_tandem_requestsTitle"
+            />
+        <android.support.v7.widget.RecyclerView
 
-    </android.support.v7.widget.RecyclerView>
-    <TextView
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fragment_tandem_tandemTitle"
-        />
-    <ListView
-        android:clickable="true"
-        android:id="@+id/tandemMatchedList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:id="@+id/tandemSuggestedRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
 
-    </ListView>
+        </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_tandem_tandemTitle"
+            />
+        <ListView
+            android:clickable="true"
+            android:id="@+id/tandemMatchedList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        </ListView>
+    </LinearLayout>
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/planningFab"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="28dp"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:src="@drawable/ic_event_black_24dp"
+        android:scaleType="center"/>
+
+</android.support.constraint.ConstraintLayout>

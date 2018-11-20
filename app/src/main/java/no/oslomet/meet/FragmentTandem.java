@@ -62,6 +62,12 @@ public class FragmentTandem extends Fragment {
         super.onActivityCreated(savedInstanceState);
         loadTandems();
         loadRecommendedTandems();
+        getView().findViewById(R.id.planningFab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), ActivityCalendar.class));
+            }
+        });
     }
 
 
