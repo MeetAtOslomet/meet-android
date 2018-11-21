@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import no.oslomet.meet.ActivityChat;
 import no.oslomet.meet.Handler.JsonHandler;
@@ -31,6 +32,8 @@ public class AdapterTandem extends BaseAdapter
     private ArrayList<Tandem> items;
     private int id_user = -1;
 
+    private HashMap<Integer, User> users;
+
     public AdapterTandem(Context context, ArrayList<Tandem> items)
     {
         this.context = context;
@@ -38,6 +41,22 @@ public class AdapterTandem extends BaseAdapter
         String idUser = new SettingsHandler().getStringSetting(context, R.string.preference_idUser);
         Log.e("User Id", idUser);
         id_user = Integer.parseInt(idUser);
+        //setUsers();
+    }
+
+    private void setUsers()
+    {
+        users = new HashMap<>();
+        for (Tandem t : items)
+        {
+            for (User u : t.users)
+            {
+                if (!users.containsKey(u.getIdUser()))
+                {
+                    users.put(u.getIdUser(), u);
+                }
+            }
+        }
     }
 
 
@@ -59,18 +78,24 @@ public class AdapterTandem extends BaseAdapter
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = LayoutInflater.from(context).inflate(R.layout.adapter_tandem, parent, false);
-        for (int i = 0; i < items.size(); i++)
         {
-            ArrayList<User> users = items.get(i).users;
-            for (User user : users)
+            convertView = LayoutInflater.from(context).inflate(R.layout.adapter_tandem, parent, false);
+        }
+
+        Tandem t = items.get(position);
+        ArrayList<User> u = t.users;
+        for (User _u : u)
+        {
+            if (_u.getIdUser() != id_user)
             {
-                if (user.getIdUser() != id_user)
-                {
-                    ((TextView)convertView.findViewById(R.id.userFirstName)).setText(user.getFirstName());
-                }
+                ((TextView)convertView.findViewById(R.id.userFirstName)).setText(_u.getFirstName());
             }
         }
+
+
+
+
+
 
         ImageButton ib = convertView.findViewById(R.id.expandOptions);
         ib.setOnClickListener(new View.OnClickListener() {
