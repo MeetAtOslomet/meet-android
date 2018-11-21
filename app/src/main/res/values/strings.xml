@@ -59,6 +59,8 @@
     <string name="text_password">Password</string>
     <string name="text_first_name">First name</string>
     <string name="text_last_name">Last name</string>
+
+    <string name="text_confirm_password">Confirm Password</string>
     
 
 
