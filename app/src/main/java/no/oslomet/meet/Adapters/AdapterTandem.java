@@ -1,14 +1,16 @@
 package no.oslomet.meet.Adapters;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,17 +127,23 @@ public class AdapterTandem extends BaseAdapter
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show();
-                PopupMenu popupMenu = new PopupMenu(context, PlanMeeting);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
-                popupMenu.show();
+                View view = (LayoutInflater.from(context)).inflate(R.layout.popup_event,null);
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                alertBuilder.setView(view);
 
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                final EditText nameOfActivity = (EditText) view.findViewById(R.id.nameOfActivity);
+                final EditText location = (EditText) view.findViewById(R.id.location);
+                final EditText date = (EditText) view.findViewById(R.id.date);
+                final EditText message = (EditText) view.findViewById(R.id.message);
+
+                alertBuilder.setCancelable(true).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Toast.makeText(context, "" + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-                        return true;
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("1","TEST OK click");
                     }
                 });
+                Dialog dialog = alertBuilder.create();
+                dialog.show();
             }
         });
 

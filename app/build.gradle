@@ -9,7 +9,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.popup_event.runner.AndroidJUnitRunner"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "fea3ea9ee7054e2ebb1462f0c667a5e5"]
     }
     buildTypes {
@@ -27,8 +27,8 @@ dependencies {
     implementation 'com.android.support:design:27.0.1'
     implementation 'com.android.support:support-v4:27.0.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.popup_event:runner:1.0.2'
+    androidTestImplementation 'com.android.support.popup_event.espresso:espresso-core:3.0.2'
     implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
     implementation 'com.android.support:recyclerview-v7:27.0.1'
     implementation 'com.android.support:cardview-v7:27.0.1'
