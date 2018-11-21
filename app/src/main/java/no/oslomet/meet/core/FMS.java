@@ -105,7 +105,7 @@ public class FMS extends FirebaseMessagingService
                 .setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
-                .setSmallIcon(R.mipmap.ic_launcher_round);
+                .setSmallIcon(R.drawable.ic_match_cards);
         ncb.setContentIntent(pendingIntent);
 
         if (type.equals("MESSAGING"))

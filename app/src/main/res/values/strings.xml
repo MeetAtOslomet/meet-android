@@ -50,6 +50,16 @@
 
     <string name="fragment_tandem_requestsTitle">Pending requests</string>
     <string name="fragment_tandem_tandemTitle">Tandems</string>
+    
+    <string name="text_login">Sign in</string>
+    <string name="text_register">Register</string>
+    <string name="text_usernameTitle">Student number or employee username</string>
+    <string name="text_goback">Go back</string>
+    <string name="text_confirm">Confirm</string>
+    <string name="text_password">Password</string>
+    <string name="text_first_name">First name</string>
+    <string name="text_last_name">Last name</string>
+    
 
 
 </resources>

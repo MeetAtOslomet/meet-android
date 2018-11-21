@@ -12,11 +12,11 @@
     android:layout_marginTop="100dp"
     android:layout_centerHorizontal="true"
     android:layout_width="200dp"
-    android:layout_height="150dp"
-    android:src="@drawable/oslomet"
-    android:tint="@color/colorAccent"/>
+    android:layout_height="200dp"
+    android:src="@drawable/ic_meetatoslomet" />
 
     <ProgressBar
+        android:layout_below="@id/logo"
         android:id="@+id/spinner"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
@@ -41,14 +41,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="60dp"
-            android:text="Login"
+            android:text="@string/text_login"
             />
         <Button
             android:id="@+id/PromptregisterButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="60dp"
-            android:text="Registrer"
+            android:text="@string/text_register"
             />
 
     </LinearLayout>
@@ -73,7 +73,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Student nummer eller ansatt id"
+                android:text="@string/text_usernameTitle"
                 />
             <EditText
                 android:id="@+id/registerUsernameInput"
@@ -84,7 +84,7 @@
                 android:id="@+id/registerUsernameButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Register"/>
+                android:text="@string/text_register"/>
 
             <Button
                 android:layout_marginTop="10dp"
@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:text="Go back" />
+                android:text="@string/text_goback" />
 
 
         </LinearLayout>
@@ -151,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:minWidth="200dp"
                 android:layout_height="wrap_content"
-                android:text="Confirm"/>
+                android:text="@string/text_confirm"/>
         </LinearLayout>
 
         <LinearLayout
@@ -163,7 +163,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Password"
+                android:text="@string/text_password"
                 />
             <EditText
                 android:id="@+id/registerPass1"
@@ -192,7 +192,7 @@
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Confirm"/>
+                android:text="@string/text_confirm"/>
         </LinearLayout>
 
     </LinearLayout>
