@@ -28,8 +28,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.CrashManagerListener;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,11 +64,8 @@ public class ActivityLaunch extends AppCompatActivity {
             no.oslomet.meet.core.Certificate cert = new no.oslomet.meet.core.Certificate();
             cert.InitializeCetificate(this);
         }
-        CrashManager.register(this, getMetaString("net.hockeyapp.android.appIdentifier"), new CrashManagerListener() {
-            public boolean shouldAutoUploadCrashes() {
-                return true;
-            }
-        });
+        AppCenter.start(getApplication(), "38a286d6-35e4-46d5-988a-65706ec564e2",
+                Analytics.class, Crashes.class);
         init();
     }
 

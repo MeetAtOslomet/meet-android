@@ -60,6 +60,6 @@
             android:background="@drawable/effect_ripple_lightgray"
             android:backgroundTint="@color/colorGreen"
             android:src="@drawable/ic_send_black_24dp"
-            android:tint="@color/hockeyapp_background_white" />
+            android:tint="@color/colorWhite" />
     </RelativeLayout>
 </RelativeLayout>

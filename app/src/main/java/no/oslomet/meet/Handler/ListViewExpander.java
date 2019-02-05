@@ -5,8 +5,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import net.hockeyapp.android.metrics.model.Base;
-
 public class ListViewExpander
 {
 
