@@ -59,18 +59,25 @@ public class ActivityLaunch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+
+        // Creates a certificate
         if (no.oslomet.meet.core.Certificate.sslContext == null)
         {
             no.oslomet.meet.core.Certificate cert = new no.oslomet.meet.core.Certificate();
             cert.InitializeCetificate(this);
         }
+
+        // Applies the connection to AppCenter, an app overview portal
         AppCenter.start(getApplication(), "38a286d6-35e4-46d5-988a-65706ec564e2",
                 Analytics.class, Crashes.class);
+
+        // Runs init()
         init();
     }
 
     private void init()
     {
+        // If the version of android running on this hardware is equal or greater than Android Oreo (8.0)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel def = new NotificationChannel(Strings.DEFAULT_CHANNEL_ID, "Default", NotificationManager.IMPORTANCE_DEFAULT);
             def.enableVibration(false);
@@ -115,49 +122,55 @@ public class ActivityLaunch extends AppCompatActivity {
         spinner.setVisibility(View.VISIBLE);
 
 
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run()
             {
+                // Create new API object
                 Api api = new Api();
+
+                // Use the API to GET Heartbeat and save it in a string
                 final String response = api.GET(Strings.Heartbeat());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Heartbeat h = new JsonHandler().getHeartbeat(response);
-                        if (h != null && h.Status == true)
-                        {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainLogo.getLayoutParams();
-                            TranslateAnimation animation = new TranslateAnimation(0,0, 0, -lp.topMargin);
-                            animation.setDuration(1000);
-                            animation.setFillAfter(false);
-                            animation.setAnimationListener(new SplashAnimationListener());
-                            mainLogo.startAnimation(animation);
-                            AsyncTask.execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ValidateAuthentication();
-                                }
-                            });
+                            // Create a new Heartbeat object from the response string
+                            Heartbeat h = new JsonHandler().getHeartbeat(response);
+
+                            // If you managed to create a Heartbeat object and it has a status of true
+                            if (h != null && h.Status)
+                            {
+                                // Animate the logo upwards while loading in the next layout
+                                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainLogo.getLayoutParams();
+                                TranslateAnimation animation = new TranslateAnimation(0,0, 0, -lp.topMargin);
+                                animation.setDuration(1000);
+                                animation.setFillAfter(false);
+                                animation.setAnimationListener(new SplashAnimationListener());
+                                mainLogo.startAnimation(animation);
+
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Continue by calling method
+                                        ValidateAuthentication();
+                                    }
+                                });
+                            }
                         }
+                    });
 
-
-
-                        TextView tv = ActivityLaunch.this.findViewById(R.id.HeartBeat);
-                        tv.append(response);
-                    }
-                });
             }
         });
     }
 
     private void ValidateAuthentication()
     {
+        // Check what thread you are on to make sure this method can not be run on any thread except main
         if (Looper.myLooper() == Looper.getMainLooper())
         {
-            Log.e("Mistake where made", "You where just about to run network code on main thread! This is not allowed by the Android OS!");
+            Log.e("Mistake were made", "You where just about to run network code on main thread! This is not allowed by the Android OS!");
+            // If you are running on the main thread, create a new AsyncTask and call this method again
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -167,14 +180,21 @@ public class ActivityLaunch extends AppCompatActivity {
             });
         }
 
+        // Create new API object
         Api api = new Api();
+
+        // Check if the user is already logged in
         String AuthKey = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey);
+
+        // Remove the spinner from view
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 spinner.setVisibility(View.GONE);
             }
         });
+
+        // If user is not logged in, show them the user log in fields
         if (AuthKey == null || AuthKey.length() == 0)
         {
             runOnUiThread(new Runnable() {
@@ -184,14 +204,23 @@ public class ActivityLaunch extends AppCompatActivity {
                 }
             });
         }
+        // If user is logged in (an AuthKey exists), continue here
         else
         {
-            //Continue
+            // Get the username from settings
             username = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username);
+
+            // Create a new arraylist of arguments
             ArrayList<PostParam> reqs = new ArrayList<>();
+
+            // First node is the request type for the API
             reqs.add(new PostParam("request", "auth_check"));
+
+            // Second node is the Authentication Token
             reqs.add(new PostParam("authenticationToken", AuthKey));
             Log.e("AuthKey-Test", AuthKey);
+
+            // Strings.ApiUrl() returns the url to the API. Transform your PostParam into a String list then Post and save the response
             final String response2 = api.POST(Strings.ApiUrl(), api.POST_DATA(reqs));
             runOnUiThread(new Runnable() {
                 @Override

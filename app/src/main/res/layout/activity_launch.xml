@@ -248,13 +248,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/HeartBeat"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
 </RelativeLayout>

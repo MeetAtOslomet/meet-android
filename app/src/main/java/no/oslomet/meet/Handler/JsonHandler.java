@@ -1,6 +1,7 @@
 package no.oslomet.meet.Handler;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import no.oslomet.meet.ActivityLaunch;
 import no.oslomet.meet.classes.ApiDataResponse;
 import no.oslomet.meet.classes.AuthStatus;
 import no.oslomet.meet.classes.Campus;
