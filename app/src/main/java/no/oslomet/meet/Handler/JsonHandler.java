@@ -415,14 +415,12 @@ public class JsonHandler
                     getLanguages(tempLang.toString()),
                     getHobbies(tempHobby.toString())
             ));
-
         }
 
         return out;
     }
 
-    public int getMatchRequestState(String jString)
-    {
+    public int getMatchRequestState(String jString) {
         int out = 0;
         try {
             JSONObject root = new JSONObject(jString);

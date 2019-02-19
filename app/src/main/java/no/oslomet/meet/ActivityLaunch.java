@@ -71,11 +71,14 @@ public class ActivityLaunch extends AppCompatActivity {
         AppCenter.start(getApplication(), "38a286d6-35e4-46d5-988a-65706ec564e2",
                 Analytics.class, Crashes.class);
 
-        // Runs init()
-        init();
+        createNotificationChannel();
     }
 
-    private void init()
+    /**
+     * Enables notifications for android versions greater than Oreo 8.0 through a notifications channel.
+     * Called by onCreate.
+     * */
+    private void createNotificationChannel()
     {
         // If the version of android running on this hardware is equal or greater than Android Oreo (8.0)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -89,12 +92,6 @@ public class ActivityLaunch extends AppCompatActivity {
             nm.createNotificationChannels(lnc);
         }
     }
-
-
-
-
-
-
 
     public String getMetaString(String key)
     {
@@ -152,7 +149,7 @@ public class ActivityLaunch extends AppCompatActivity {
                                 AsyncTask.execute(new Runnable() {
                                     @Override
                                     public void run() {
-                                        // Continue by calling method
+                                        // Continue by calling
                                         ValidateAuthentication();
                                     }
                                 });
@@ -164,6 +161,12 @@ public class ActivityLaunch extends AppCompatActivity {
         });
     }
 
+    /**
+     * If user has log in data on their phone, try to authenticate that data with the server.
+     * If data does not exist or is incorrect, show the user log in fields.
+     * If user is authenticated call @method checkIfUserExists.
+     * Must be ran on a non-main thread. Creates new thread if ran on main.
+     */
     private void ValidateAuthentication()
     {
         // Check what thread you are on to make sure this method can not be run on any thread except main
@@ -200,6 +203,7 @@ public class ActivityLaunch extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    // TODO
                     showUserInput();
                 }
             });
@@ -226,12 +230,11 @@ public class ActivityLaunch extends AppCompatActivity {
                 @Override
                 public void run() {
                     AuthStatus authStatus = new JsonHandler().getHasAuth(response2);
-                    if (authStatus == null || authStatus.authenticationExit > 0)
-                    {
+                    if (authStatus == null || authStatus.authenticationExit > 0){
+                        // TODO
                         showUserInput();
                     }
-                    else
-                    {
+                    else{
                         /*AlertDialog.Builder adb = new AlertDialog.Builder(ActivityLaunch.this);
                         adb.setTitle("Success");
                         adb.setMessage("You where successfully authenticated!");
@@ -244,19 +247,20 @@ public class ActivityLaunch extends AppCompatActivity {
                                 checkIfUserExists();
                             }
                         });
-
                     }
                 }
             });
         }
     }
 
+    /**
+     *
+     */
     private void checkIfUserExists()
     {
         Api api = new Api();
         String resp = api.GET(Strings.ProfileExists(username));
         ApiDataResponse adr = new JsonHandler().getData(resp);
-
 
         FCM fcm = new FCM();
         String AuthKey = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey);
@@ -575,12 +579,8 @@ public class ActivityLaunch extends AppCompatActivity {
                 String password1 = et1.getText().toString();
                 String password2 = et2.getText().toString();
 
-                if (password1.equals(password2))
-                {
-
+                if (password1.equals(password2)) {
                     try {
-
-
                         JSONObject root = new JSONObject();
                         root.put("username", username);
                         root.put("password", getSHA256(password1));
@@ -611,8 +611,7 @@ public class ActivityLaunch extends AppCompatActivity {
                                                 }
                                             });
                                         }
-                                        else
-                                        {
+                                        else {
                                             Toast.makeText(ActivityLaunch.this, as.message, Toast.LENGTH_LONG).show();
                                         }
                                     }

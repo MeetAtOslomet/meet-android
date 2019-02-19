@@ -73,8 +73,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_usernameTitle"
-                />
+                android:text="@string/text_usernameTitle"/>
             <EditText
                 android:id="@+id/registerUsernameInput"
                 android:layout_width="match_parent"
