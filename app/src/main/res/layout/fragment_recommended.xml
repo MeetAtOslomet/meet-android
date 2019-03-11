@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,31 +7,25 @@
     tools:context=".FragmentRecommended">
 
     <android.support.v7.widget.RecyclerView
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorWhite"
         android:id="@+id/RecyclerView_Recommended"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="0dp"
+        >
+
+    </android.support.v7.widget.RecyclerView>
 
 
-    <LinearLayout
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:id="@+id/buttonLayout"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal|center_vertical">
 
-        <ImageButton
+
+        <!--<ImageButton
             android:layout_marginRight="6dp"
             android:id="@+id/Recommended_Decline"
             android:layout_weight="0.5"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="0dp"
             android:src="@drawable/ic_clear_black_24dp"
             android:tint="@color/colorRed"
             android:background="@drawable/effect_ripple_lightgray"
@@ -43,13 +37,47 @@
             android:id="@+id/Recommended_Check"
             android:layout_weight="0.5"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="0dp"
             android:src="@drawable/ic_check_black_24dp"
             android:tint="@color/colorGreen"
             android:background="@drawable/effect_ripple_lightgray"
             android:backgroundTint="@color/colorLightGary"
-            android:elevation="3dp"/>
-    </LinearLayout>
+            android:elevation="3dp"
+            />-->
+
+        <ImageButton
+            android:id="@+id/Recommended_Decline"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_clear_black_24dp"
+            android:tint="@color/colorWhite"
+            android:background="@drawable/effect_ripple_lightgray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/Recommended_Check"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="12dp"
+            android:elevation="3dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="15dp"
+
+            />
+
+        <ImageButton
+            android:id="@+id/Recommended_Check"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_check_black_24dp"
+            android:tint="@color/colorWhite"
+            android:background="@drawable/effect_ripple_orange"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/Recommended_Decline"
+            android:layout_marginRight="12dp"
+            android:elevation="3dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginBottom="15dp"
+
+            />
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

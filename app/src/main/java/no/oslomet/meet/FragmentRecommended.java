@@ -127,7 +127,7 @@ public class FragmentRecommended extends Fragment {
             RecyclerView RecyclerView_Recommended = (RecyclerView)rv;
             //RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams)RecyclerView_Recommended.getLayoutParams();
             LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            llm.setOrientation(LinearLayoutManager.HORIZONTAL);
             RecyclerView_Recommended.setLayoutManager(llm);
 
             recommendedAdapter = new AdapterRecommended(getActivity(), items);

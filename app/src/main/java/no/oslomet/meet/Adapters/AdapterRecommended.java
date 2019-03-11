@@ -67,12 +67,6 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         ArrayList<Languages> learn = h.getLearningLanguages(rUser.getLanguages());
         ArrayList<Languages> teach = h.getTeachingLanguages(rUser.getLanguages());
 
-        /*AdapterLanguage adapterLearn = new AdapterLanguage(context, lean);
-        AdapterLanguage adapterTeach = new AdapterLanguage(context, teach);*/
-
-        /*ArrayAdapter<String> learnArray = new Helper()._toLanguageArrayAdapterSlim(context, lean);
-        ArrayAdapter<String> teachArray = new Helper()._toLanguageArrayAdapterSlim(context, teach);*/
-
         String hobbies = "";
         Hobbies lastHobby = (rUser.getHobbies().size() > 0) ? rUser.getHobbies().get(rUser.getHobbies().size() -1) : null;
         if (lastHobby != null)
@@ -127,23 +121,18 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         viewHolder.RecommendedLearn.setText(learnString);
         viewHolder.profileHobbies.setText(hobbies);
         viewHolder.profileBio.setText(rUser.getUser().getBiography());
-        /*viewHolder.languageLearn.setAdapter(learnArray);
-        viewHolder.languageTeach.setAdapter(teachArray);*/
 
 
+        //Fixes the height of the cards. Higher dp means smaller cards.
         Measurer m = new Measurer(context);
 
         int height = m.get_DisplayHeight(context);
-        height -= new Measurer(context).convertDpToPx(153);
+        height -= new Measurer(context).convertDpToPx(195);
 
         ViewGroup.LayoutParams lp = viewHolder.CardRoot.getLayoutParams();
         lp.height = height;
         viewHolder.CardRoot.setLayoutParams(lp);
-
-
-
-
-    }
+        }
 
     @Override
     public int getItemCount() {
@@ -155,8 +144,6 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
     {
         CardView CardRoot;
         TextView profileNameAndAge;
-        /*ListView languageLearn;
-        ListView languageTeach;*/
         TextView profileHobbies;
         TextView profileBio;
         TextView RecommendedTeach;
@@ -166,12 +153,9 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
             super(itemView);
             CardRoot = (CardView)itemView.findViewById(R.id.CardRoot);
             profileNameAndAge = (TextView)itemView.findViewById(R.id.profileNameAndAge);
-           /* languageLearn = (ListView)itemView.findViewById(R.id.ListView_recommended1);
-            languageTeach = (ListView)itemView.findViewById(R.id.ListView_recommended0);*/
             profileHobbies = (TextView)itemView.findViewById(R.id.profileHobbies);
             profileBio = (TextView)itemView.findViewById(R.id.profileBio);
             RecommendedLearn = (TextView)itemView.findViewById(R.id.RecommendedLearn);
-            RecommendedTeach = (TextView)itemView.findViewById(R.id.RecommendedTeach);
             RecommendedTeach = (TextView)itemView.findViewById(R.id.RecommendedTeach);
         }
     }
