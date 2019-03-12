@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="4dp"
     android:elevation="3dp"
     android:id="@+id/CardRoot">
 
@@ -16,7 +16,6 @@
             android:id="@+id/backgroundHeader"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/colorPrimaryDark"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/titleDivider"
             />
@@ -27,8 +26,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/left_vertical"
             app:layout_constraintRight_toRightOf="@id/right_vertical"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:src="@drawable/ic_profile_black_24dp"/>
 
         <TextView
@@ -93,8 +92,6 @@
             android:text="Interests"
             />
 
-
-
         <View
             android:id="@+id/titleDivider"
             android:layout_width="match_parent"
@@ -116,40 +113,94 @@
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis ultricies nibh. Donec efficitur aliquam odio ut efficitur. Mauris imperdiet vel mi non venenatis. In at posuere felis, quis tempus massa. Quisque non arcu id nunc suscipit iaculis eget ac turpis. Phasellus ultricies suscipit augue, quis placerat ligula efficitur eu. Proin id viverra metus. "
             />
 
+        <View
+            android:id="@+id/titleDividerContent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorLightGary"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@id/RecommendedLearnTitle"
+            />
+
         <TextView
-            android:id="@+id/RecommendedLearn"
+            android:id="@+id/RecommendedLearnTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Wants to learn"
-            app:layout_constraintTop_toBottomOf="@id/profileBio"
+            android:text="Wants to learn:"
+            app:layout_constraintBottom_toTopOf="@id/Recommended1"
             app:layout_constraintLeft_toLeftOf="@id/left_vertical"
             app:layout_constraintRight_toRightOf="@id/right_vertical"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"
             />
 
-        <!--<ImageButton
-            android:id="@+id/Recommended_Clear"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_clear_black_24dp"
-            android:tint="@color/colorWhite"
-            android:background="@color/colorDarkGrey"
+        <ImageView
+            android:id="@+id/Recommended1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintStart_toStartOf="@id/left_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/Recommended_Check"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintEnd_toStartOf="@id/Recommended1Text"
             />
 
-        <ImageButton
-            android:id="@+id/Recommended_Check"
+        <TextView
+            android:id="@+id/Recommended1Text"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_check_black_24dp"
-            android:tint="@color/colorWhite"
-            android:background="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/Recommended_Clear"
-            />-->
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/Recommended1"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended1"
+            app:layout_constraintTop_toTopOf="@id/Recommended1"
+            app:layout_constraintEnd_toStartOf="@id/Recommended2"
+            android:layout_marginLeft="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/Recommended2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended1Text"
+            app:layout_constraintStart_toEndOf="@id/Recommended1Text"
+            app:layout_constraintTop_toTopOf="@id/Recommended1Text"
+            app:layout_constraintEnd_toStartOf="@id/Recommended2Text"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/Recommended2Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/Recommended2"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended2"
+            app:layout_constraintTop_toTopOf="@id/Recommended2"
+            app:layout_constraintEnd_toStartOf="@id/Recommended3"
+            android:layout_marginLeft="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/Recommended3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended2Text"
+            app:layout_constraintStart_toEndOf="@id/Recommended2Text"
+            app:layout_constraintTop_toTopOf="@id/Recommended2Text"
+            app:layout_constraintEnd_toStartOf="@id/Recommended3Text"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/Recommended3Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/Recommended3"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended3"
+            app:layout_constraintTop_toTopOf="@id/Recommended3"
+            app:layout_constraintEnd_toEndOf="@id/right_vertical"
+            android:layout_marginLeft="5dp"
+            />
+
+
 
         <android.support.constraint.Guideline
             android:id="@+id/left_vertical"
@@ -166,7 +217,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="20dp"
             />
-    </android.support.constraint.ConstraintLayout>
 
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

@@ -1,6 +1,7 @@
 package no.oslomet.meet.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -8,11 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
 
 import no.oslomet.meet.R;
 import no.oslomet.meet.classes.Hobbies;
@@ -116,11 +121,19 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
             }
         }
 
+        setCountries(viewHolder, learn);
+
+        Random rnd = new Random();
+        /*int color = Color.argb(75, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        viewHolder.backgroundHeader.setBackgroundColor(color);*/
 
         viewHolder.RecommendedTeach.setText(teachString);
-        viewHolder.RecommendedLearn.setText(learnString);
+        //viewHolder.RecommendedLearn.setText(learnString);
         viewHolder.profileHobbies.setText(hobbies);
         viewHolder.profileBio.setText(rUser.getUser().getBiography());
+
+        int number = rnd.nextInt(100);
+        Picasso.get().load("https://randomuser.me/api/portraits/men/"+number+".jpg").into(viewHolder.profilePicture);
 
 
         //Fixes the height of the cards. Higher dp means smaller cards.
@@ -132,7 +145,53 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         ViewGroup.LayoutParams lp = viewHolder.CardRoot.getLayoutParams();
         lp.height = height;
         viewHolder.CardRoot.setLayoutParams(lp);
+    }
+
+    /**
+     * @param viewHolder is passed from onBindViewHolder
+     * @param learn is an ArrayList<Languages>
+     * Displays the languages and their country codes as flags on the matching card.
+     * Will check each language up to a match in a predefined String array in Strings.xml
+     * Only converts the first three languages of the language list.
+     */
+    public void setCountries(@NonNull ViewHolder viewHolder, ArrayList<Languages> learn){
+        //TODO: CLEAN UP THIS MESSY CODE. INEFFECTIVE CODE.
+
+        String[] languagesXML = context.getResources().getStringArray(R.array.languages_array);
+        String[] codesXML = context.getResources().getStringArray(R.array.countryCode_array);
+
+        String code1 = (learn.size() > 0 ? (getCountryCode(learn.get(0), languagesXML, codesXML)) : (null));
+        String code2 = (learn.size() > 1 ? (getCountryCode(learn.get(1), languagesXML, codesXML)) : (null));
+        String code3 = (learn.size() > 2 ? (getCountryCode(learn.get(2), languagesXML, codesXML)) : (null));
+
+        if(code1 != null){
+            Picasso.get().load("https://www.countryflags.io/"+ code1 +"/flat/64.png").into(viewHolder.recommended1);
+            viewHolder.recommended1Text.setText(learn.get(0).name);
         }
+
+        if(code2 != null){
+            Picasso.get().load("https://www.countryflags.io/"+ code2 +"/flat/64.png").into(viewHolder.recommended2);
+            viewHolder.recommended2Text.setText(learn.get(1).name);
+        }
+
+        if(code3 != null){
+            Picasso.get().load("https://www.countryflags.io/"+ code3 +"/flat/64.png").into(viewHolder.recommended3);
+            viewHolder.recommended3Text.setText(learn.get(2).name);
+        }
+    }
+
+    public String getCountryCode(Languages l, String[] langs, String[] codes){
+
+
+        int counter = 0;
+        for(String s : langs){
+            if(l.name.equals(s)){
+                return codes[counter];
+            }
+            counter++;
+        }
+        return null;
+    }
 
     @Override
     public int getItemCount() {
@@ -145,9 +204,17 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         CardView CardRoot;
         TextView profileNameAndAge;
         TextView profileHobbies;
+        ImageView profilePicture;
         TextView profileBio;
         TextView RecommendedTeach;
         TextView RecommendedLearn;
+        ImageView recommended1;
+        ImageView recommended2;
+        ImageView recommended3;
+        TextView recommended1Text;
+        TextView recommended2Text;
+        TextView recommended3Text;
+        View backgroundHeader;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -155,8 +222,16 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
             profileNameAndAge = (TextView)itemView.findViewById(R.id.profileNameAndAge);
             profileHobbies = (TextView)itemView.findViewById(R.id.profileHobbies);
             profileBio = (TextView)itemView.findViewById(R.id.profileBio);
-            RecommendedLearn = (TextView)itemView.findViewById(R.id.RecommendedLearn);
+            //RecommendedLearn = (TextView)itemView.findViewById(R.id.RecommendedLearn);
             RecommendedTeach = (TextView)itemView.findViewById(R.id.RecommendedTeach);
+            backgroundHeader = (View)itemView.findViewById(R.id.backgroundHeader);
+            recommended1 = (ImageView)itemView.findViewById(R.id.Recommended1);
+            recommended2 = (ImageView)itemView.findViewById(R.id.Recommended2);
+            recommended3 = (ImageView)itemView.findViewById(R.id.Recommended3);
+            recommended1Text = (TextView)itemView.findViewById(R.id.Recommended1Text);
+            recommended2Text = (TextView)itemView.findViewById(R.id.Recommended2Text);
+            recommended3Text = (TextView)itemView.findViewById(R.id.Recommended3Text);
+            profilePicture = (ImageView)itemView.findViewById(R.id.profilePicture);
         }
     }
 

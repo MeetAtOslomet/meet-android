@@ -86,10 +86,10 @@ public class FragmentRecommended extends Fragment {
 
                 String getParam = api.POST_DATA(pp);
                 String urlWithArgs = Strings.ApiUrl() + "?" + getParam;
-                Log.e("GET URL", urlWithArgs);
+                Log.e("GET RECOMMENDED/URL", urlWithArgs);
 
                 String out = api.GET(urlWithArgs);
-                Log.e("API OUT", "=>" + out);
+                Log.e("GET RECOMMENDED/OUT", "=>" + out);
                 final ArrayList<Recommended> recs;
                 try {
                     recs = new JsonHandler().getRecommended(out);

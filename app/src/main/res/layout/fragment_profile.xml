@@ -6,24 +6,216 @@
     android:layout_height="match_parent"
     tools:context=".FragmentProfile">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:src="@drawable/ic_profile_black_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <View
+            android:id="@+id/backgroundHeader"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/titleDivider"
+            />
+
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/left_vertical"
+            app:layout_constraintRight_toRightOf="@id/right_vertical"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_profile_black_24dp"/>
+
+        <TextView
+            android:textColor="@color/colorAccent"
+            android:layout_marginTop="10dp"
+            android:textSize="30dp"
+            android:id="@+id/profileNameAndAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[Name], [Age]"
+            app:layout_constraintTop_toBottomOf="@id/profilePicture"
+            app:layout_constraintLeft_toLeftOf="@id/left_vertical"
+            app:layout_constraintBottom_toTopOf="@id/RecommendedTeach"
+            />
+
+        <ImageView
+            android:id="@+id/speaks_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_language_black_24dp"
+            app:layout_constraintLeft_toLeftOf="@id/left_vertical"
+            app:layout_constraintTop_toBottomOf="@id/profileNameAndAge"
+            app:layout_constraintBottom_toBottomOf="@id/RecommendedTeach"
+
+            />
+
+        <TextView
+            android:id="@+id/RecommendedTeach"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@id/profileNameAndAge"
+            app:layout_constraintLeft_toRightOf="@id/speaks_icon"
+            app:layout_constraintBottom_toBottomOf="@id/speaks_icon"
+            android:textColor="@color/colorDarkGrey"
+            android:text="@string/recommended_lang0"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/hobbies_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_whatshot_black_24dp"
+            app:layout_constraintLeft_toLeftOf="@id/left_vertical"
+            app:layout_constraintTop_toBottomOf="@id/speaks_icon"
+            app:layout_constraintBottom_toBottomOf="@id/profileHobbies"
+            android:layout_marginTop="5dp"
+            />
+
+        <TextView
+            android:id="@+id/profileHobbies"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@id/RecommendedTeach"
+            app:layout_constraintLeft_toRightOf="@id/speaks_icon"
+            app:layout_constraintBottom_toBottomOf="@id/hobbies_icon"
+            android:textColor="@color/colorDarkGrey"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Interests"
+            />
+
+        <View
+            android:id="@+id/titleDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorLightGary"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintTop_toBottomOf="@id/profileHobbies"
+            />
+
+        <TextView
+            android:id="@+id/profileBio"
+            android:layout_marginTop="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/left_vertical"
+            app:layout_constraintRight_toLeftOf="@id/right_vertical"
+            app:layout_constraintTop_toBottomOf="@id/titleDivider"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis ultricies nibh. Donec efficitur aliquam odio ut efficitur. Mauris imperdiet vel mi non venenatis. In at posuere felis, quis tempus massa. Quisque non arcu id nunc suscipit iaculis eget ac turpis. Phasellus ultricies suscipit augue, quis placerat ligula efficitur eu. Proin id viverra metus. "
+            />
+
+        <View
+            android:id="@+id/titleDividerContent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorLightGary"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@id/RecommendedLearnTitle"
+            />
+
+        <TextView
+            android:id="@+id/RecommendedLearnTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Wants to learn:"
+            app:layout_constraintBottom_toTopOf="@id/Recommended1"
+            app:layout_constraintLeft_toLeftOf="@id/left_vertical"
+            app:layout_constraintRight_toRightOf="@id/right_vertical"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"
+            />
+
+        <ImageView
+            android:id="@+id/Recommended1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintStart_toStartOf="@id/left_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintEnd_toStartOf="@id/Recommended1Text"
+            />
+
+        <TextView
+            android:id="@+id/Recommended1Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/Recommended1"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended1"
+            app:layout_constraintTop_toTopOf="@id/Recommended1"
+            app:layout_constraintEnd_toStartOf="@id/Recommended2"
+            android:layout_marginLeft="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/Recommended2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended1Text"
+            app:layout_constraintStart_toEndOf="@id/Recommended1Text"
+            app:layout_constraintTop_toTopOf="@id/Recommended1Text"
+            app:layout_constraintEnd_toStartOf="@id/Recommended2Text"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/Recommended2Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/Recommended2"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended2"
+            app:layout_constraintTop_toTopOf="@id/Recommended2"
+            app:layout_constraintEnd_toStartOf="@id/Recommended3"
+            android:layout_marginLeft="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/Recommended3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended2Text"
+            app:layout_constraintStart_toEndOf="@id/Recommended2Text"
+            app:layout_constraintTop_toTopOf="@id/Recommended2Text"
+            app:layout_constraintEnd_toStartOf="@id/Recommended3Text"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/Recommended3Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/Recommended3"
+            app:layout_constraintBottom_toBottomOf="@id/Recommended3"
+            app:layout_constraintTop_toTopOf="@id/Recommended3"
+            app:layout_constraintEnd_toEndOf="@id/right_vertical"
+            android:layout_marginLeft="5dp"
+            />
+
+
+
+        <android.support.constraint.Guideline
+            android:id="@+id/left_vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/right_vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="20dp"
+            />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
         android:gravity="center">
 
