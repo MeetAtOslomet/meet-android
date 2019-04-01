@@ -137,14 +137,6 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
 
         int number = rnd.nextInt(100);
         //Picasso.get().load("https://randomuser.me/api/portraits/men/"+number+".jpg").into(viewHolder.profilePicture);
-        viewHolder.scrollview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                // Disallow the touch request for parent scroll on touch of child view
-                view.getParent().requestDisallowInterceptTouchEvent(false);
-                return false;
-            }
-        });
 
         //Fixes the height of the cards. Higher dp means smaller cards.
         Measurer m = new Measurer(context);
