@@ -49,6 +49,10 @@ public class FragmentProfile extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        
+
+
         getView().findViewById(R.id.signOutButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

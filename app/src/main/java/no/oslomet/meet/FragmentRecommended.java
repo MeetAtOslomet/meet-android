@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import no.oslomet.meet.Adapters.AdapterRecommended;
 import no.oslomet.meet.Handler.JsonHandler;
 import no.oslomet.meet.Handler.SettingsHandler;
+import no.oslomet.meet.Manager.CustomLinearLayoutManager;
 import no.oslomet.meet.classes.ApiDataResponse;
 import no.oslomet.meet.classes.PostParam;
 import no.oslomet.meet.classes.Recommended;
@@ -125,25 +126,12 @@ public class FragmentRecommended extends Fragment {
         if (rv != null)
         {
             RecyclerView RecyclerView_Recommended = (RecyclerView)rv;
-            //RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams)RecyclerView_Recommended.getLayoutParams();
-            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-            llm.setOrientation(LinearLayoutManager.HORIZONTAL);
-            RecyclerView_Recommended.setLayoutManager(llm);
+            CustomLinearLayoutManager manager = new CustomLinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+            RecyclerView_Recommended.setLayoutManager(manager);
 
             recommendedAdapter = new AdapterRecommended(getActivity(), items);
             RecyclerView_Recommended.setAdapter(recommendedAdapter);
-            RecyclerView_Recommended.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-                @Override
-                public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-                    return true;
-                }
-                @Override
-                public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-                }
-                @Override
-                public void onRequestDisallowInterceptTouchEvent(boolean b) {
-                }
-            });
+
 
             enableButtons();
         }

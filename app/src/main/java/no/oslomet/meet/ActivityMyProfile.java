@@ -622,7 +622,7 @@ public class ActivityMyProfile extends AppCompatActivity
                         public void run() {
                             AlertDialog.Builder adb = new AlertDialog.Builder(ActivityMyProfile.this);
                             adb.setTitle("Error");
-                            adb.setMessage("And error occurred when trying to get your user id, this prevents us from posting your data..");
+                            adb.setMessage("An error occurred when trying to get your user id, this prevents us from posting your data..");
                             adb.show();
                         }
                     });
@@ -646,7 +646,7 @@ public class ActivityMyProfile extends AppCompatActivity
                 public void run() {
                     AlertDialog.Builder adb = new AlertDialog.Builder(ActivityMyProfile.this);
                     adb.setTitle("Error");
-                    adb.setMessage("And error occurred when trying to get your user id, this prevents us from posting your data..");
+                    adb.setMessage("An error occurred when trying to get your user id, this prevents us from posting your data..");
                     adb.show();
                 }
             });

@@ -34,7 +34,10 @@ public class Api
     public URL getUrl(String _url)
     {
         URL url = null;
-        try { url = new URL(_url); }
+        try {
+            url = new URL(_url);
+            Log.d("API-Constructor", "Getting data from api on url: " + url);
+        }
         catch (MalformedURLException e) { e.printStackTrace(); }
         return url;
     }

@@ -5,12 +5,15 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -130,11 +133,18 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         viewHolder.RecommendedTeach.setText(teachString);
         //viewHolder.RecommendedLearn.setText(learnString);
         viewHolder.profileHobbies.setText(hobbies);
-        viewHolder.profileBio.setText(rUser.getUser().getBiography());
+        //viewHolder.profileBio.setText(rUser.getUser().getBiography());
 
         int number = rnd.nextInt(100);
-        Picasso.get().load("https://randomuser.me/api/portraits/men/"+number+".jpg").into(viewHolder.profilePicture);
-
+        //Picasso.get().load("https://randomuser.me/api/portraits/men/"+number+".jpg").into(viewHolder.profilePicture);
+        viewHolder.scrollview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                // Disallow the touch request for parent scroll on touch of child view
+                view.getParent().requestDisallowInterceptTouchEvent(false);
+                return false;
+            }
+        });
 
         //Fixes the height of the cards. Higher dp means smaller cards.
         Measurer m = new Measurer(context);
@@ -215,6 +225,7 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         TextView recommended2Text;
         TextView recommended3Text;
         View backgroundHeader;
+        ScrollView scrollview;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -232,6 +243,7 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
             recommended2Text = (TextView)itemView.findViewById(R.id.Recommended2Text);
             recommended3Text = (TextView)itemView.findViewById(R.id.Recommended3Text);
             profilePicture = (ImageView)itemView.findViewById(R.id.profilePicture);
+            scrollview = (ScrollView)itemView.findViewById(R.id.scrollview);
         }
     }
 
