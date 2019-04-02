@@ -41,6 +41,16 @@
         <item>@string/position4</item>
     </string-array>
 
+    <string name="campus1">Pilestredet</string>
+    <string name="campus2">Kjeller</string>
+    <string name="campus3">Sandvika</string>
+
+    <string-array name="campuses">
+        <item>@string/campus1</item>
+        <item>@string/campus2</item>
+        <item>@string/campus3</item>
+    </string-array>
+
     <string-array name="languages_array">
         <item>English</item>
         <item>Japanese</item>
@@ -48,6 +58,9 @@
         <item>Spanish</item>
         <item>Norwegian</item>
         <item>Danish</item>
+        <item>Dutch</item>
+        <item>Swedish</item>
+        <item>German</item>
     </string-array>
 
     <string-array name="countryCode_array">
@@ -57,6 +70,9 @@
         <item>ES</item>
         <item>NO</item>
         <item>DK</item>
+        <item>NL</item>
+        <item>SE</item>
+        <item>DE</item>
     </string-array>
 
     <string name="campusDefault">Please select your camps</string>
@@ -66,9 +82,12 @@
     <string name="recommended_lang0">Speaks</string>
     <string name="recommended_lang1">Needs help with</string>
 
-    <string name="fragment_tandem_requestsTitle">Pending requests</string>
-    <string name="fragment_tandem_tandemTitle">Tandems</string>
-    
+    <string name="fragment_tandem_requestsTitle">People wanting to chat</string>
+    <string name="fragment_tandem_tandemTitle">Messages</string>
+
+    <string name="fragment_tandem_lastMessage">You: Hallaaa &#8226; 12:01</string>
+
+
     <string name="text_login">Sign in</string>
     <string name="text_register">Register</string>
     <string name="text_usernameTitle">Student number or employee username</string>

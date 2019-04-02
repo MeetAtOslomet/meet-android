@@ -27,7 +27,9 @@
             android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/messagingView">
+            android:id="@+id/messagingView"
+            android:background="@color/colorWhite"
+            >
 
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -70,7 +71,7 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
     {
         Recommended rUser = items.get(i);
         String nameAndAge = rUser.getUser().getFirstName() + " " + rUser.getUser().getLastName() + ", " +rUser.getUser().getReadableAge();
-        viewHolder.profileNameAndAge.setText(nameAndAge);
+        viewHolder.nameAndAge.setText(nameAndAge);
         Helper h = new Helper();
         ArrayList<Languages> learn = h.getLearningLanguages(rUser.getLanguages());
         ArrayList<Languages> teach = h.getTeachingLanguages(rUser.getLanguages());
@@ -130,10 +131,19 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         /*int color = Color.argb(75, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         viewHolder.backgroundHeader.setBackgroundColor(color);*/
 
-        viewHolder.RecommendedTeach.setText(teachString);
+        viewHolder.speaks.setText(teachString);
         //viewHolder.RecommendedLearn.setText(learnString);
-        viewHolder.profileHobbies.setText(hobbies);
-        //viewHolder.profileBio.setText(rUser.getUser().getBiography());
+        viewHolder.hobbies.setText(hobbies);
+        //viewHolder.bio.setText(rUser.getUser().getBiography());
+
+        String[] positions = context.getResources().getStringArray(R.array.positions);
+        String[] campuses = context.getResources().getStringArray(R.array.campuses);
+
+        String displayPosition = "";
+        displayPosition += positions[rUser.getUser().getType()] + " at " + campuses[rUser.getUser().getIdCampus()-1];
+        viewHolder.position.setText(displayPosition);
+
+        Log.d("AdapterUser", "Campus Id: " + rUser.getUser().getIdCampus());
 
         int number = rnd.nextInt(100);
         //Picasso.get().load("https://randomuser.me/api/portraits/men/"+number+".jpg").into(viewHolder.profilePicture);
@@ -204,12 +214,12 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         CardView CardRoot;
-        TextView profileNameAndAge;
-        TextView profileHobbies;
+        TextView nameAndAge;
+        TextView hobbies;
         ImageView profilePicture;
-        TextView profileBio;
-        TextView RecommendedTeach;
-        TextView RecommendedLearn;
+        TextView bio;
+        TextView speaks;
+        TextView position;
         ImageView recommended1;
         ImageView recommended2;
         ImageView recommended3;
@@ -222,11 +232,11 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             CardRoot = (CardView)itemView.findViewById(R.id.CardRoot);
-            profileNameAndAge = (TextView)itemView.findViewById(R.id.profileNameAndAge);
-            profileHobbies = (TextView)itemView.findViewById(R.id.profileHobbies);
-            profileBio = (TextView)itemView.findViewById(R.id.profileBio);
-            //RecommendedLearn = (TextView)itemView.findViewById(R.id.RecommendedLearn);
-            RecommendedTeach = (TextView)itemView.findViewById(R.id.RecommendedTeach);
+            nameAndAge = (TextView)itemView.findViewById(R.id.nameAndAge);
+            hobbies = (TextView)itemView.findViewById(R.id.hobbies);
+            bio = (TextView)itemView.findViewById(R.id.bio);
+            position = (TextView)itemView.findViewById(R.id.position);
+            speaks = (TextView)itemView.findViewById(R.id.speaks);
             backgroundHeader = (View)itemView.findViewById(R.id.backgroundHeader);
             recommended1 = (ImageView)itemView.findViewById(R.id.Recommended1);
             recommended2 = (ImageView)itemView.findViewById(R.id.Recommended2);

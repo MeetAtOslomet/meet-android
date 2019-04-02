@@ -15,7 +15,7 @@
             android:textColor="@color/colorAccent"
             android:layout_marginTop="20dp"
             android:textSize="30dp"
-            android:id="@+id/profileNameAndAge"
+            android:id="@+id/nameAndAge"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="[Name], [Age]"
@@ -31,16 +31,14 @@
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_language_black_24dp"
             app:layout_constraintLeft_toLeftOf="@id/left_vertical"
-            app:layout_constraintTop_toBottomOf="@id/profileNameAndAge"
-            app:layout_constraintBottom_toBottomOf="@id/RecommendedTeach"
-
+            app:layout_constraintTop_toBottomOf="@id/nameAndAge"
+            app:layout_constraintBottom_toBottomOf="@id/speaks"
             />
 
         <TextView
             android:id="@+id/speaks"
-            android:textSize="20dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/profileNameAndAge"
+            app:layout_constraintTop_toBottomOf="@id/nameAndAge"
             app:layout_constraintLeft_toRightOf="@id/speaks_icon"
             app:layout_constraintBottom_toBottomOf="@id/speaks_icon"
             android:textColor="@color/colorDarkGrey"
@@ -49,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_marginLeft="5dp"
+            style="@style/headerListText"
             />
 
         <ImageView
@@ -58,12 +57,12 @@
             android:src="@drawable/ic_whatshot_black_24dp"
             app:layout_constraintLeft_toLeftOf="@id/left_vertical"
             app:layout_constraintTop_toBottomOf="@id/speaks_icon"
-            app:layout_constraintBottom_toBottomOf="@id/profileHobbies"
+            app:layout_constraintBottom_toBottomOf="@id/hobbies"
             android:layout_marginTop="5dp"
             />
 
         <TextView
-            android:id="@+id/profileHobbies"
+            android:id="@+id/hobbies"
             android:textSize="20dp"
             app:layout_constraintTop_toBottomOf="@id/speaks"
             app:layout_constraintLeft_toRightOf="@id/speaks_icon"
@@ -77,7 +76,31 @@
             android:text="Interests"
             />
 
+        <ImageView
+            android:id="@+id/position_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_school_black_24dp"
+            app:layout_constraintLeft_toLeftOf="@id/left_vertical"
+            app:layout_constraintTop_toBottomOf="@id/hobbies_icon"
+            app:layout_constraintBottom_toBottomOf="@id/position"
+            android:layout_marginTop="5dp"
+            />
 
+        <TextView
+            android:id="@+id/position"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@id/hobbies"
+            app:layout_constraintLeft_toRightOf="@id/position_icon"
+            app:layout_constraintBottom_toBottomOf="@id/position_icon"
+            app:layout_constraintRight_toRightOf="@id/right_vertical"
+            android:textColor="@color/colorDarkGrey"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Position"
+            />
 
 
 
@@ -88,11 +111,11 @@
             android:background="@color/colorLightGary"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            app:layout_constraintTop_toBottomOf="@id/profileHobbies"
+            app:layout_constraintTop_toBottomOf="@id/position_icon"
             />
 
         <TextView
-            android:id="@+id/profileBio"
+            android:id="@+id/bio"
             android:layout_marginTop="10dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -101,16 +124,7 @@
             app:layout_constraintTop_toBottomOf="@id/titleDivider"
             android:text="Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis ultricies nibh. Donec efficitur aliquam odio ut efficitur. Mauris imperdiet vel mi non venenatis. In at posuere felis, quis tempus massa. Quisque non arcu id nunc suscipit iaculis eget ac turpis. Phasellus ultricies suscipit augue, quis placerat ligula efficitur eu. Proin id viverra metus. "
             />
-        <TextView
-            android:id="@+id/profileBio2"
-            android:layout_marginTop="10dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/left_vertical"
-            app:layout_constraintRight_toRightOf="@id/right_vertical"
-            app:layout_constraintTop_toBottomOf="@id/profileBio"
-            android:text="Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis ultricies nibh. Donec efficitur aliquam odio ut efficitur. Mauris imperdiet vel mi non venenatis. In at posuere felis, quis tempus massa. Quisque non arcu id nunc suscipit iaculis eget ac turpis. Phasellus ultricies suscipit augue, quis placerat ligula efficitur eu. Proin id viverra metus. "
-            />
+
 
 
         <View
@@ -120,7 +134,7 @@
             android:background="@color/colorLightGary"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            app:layout_constraintTop_toBottomOf="@id/profileBio2"
+            app:layout_constraintTop_toBottomOf="@id/bio"
             />
 
         <TextView

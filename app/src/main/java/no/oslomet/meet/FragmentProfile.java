@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -77,8 +78,8 @@ public class FragmentProfile extends Fragment {
                 getActivity().startActivity(new Intent(getActivity(), ActivityMyProfile.class));
             }
         });
-        getIdUser();
-        RetrieveUserData();
+
+
     }
 
     @Override
@@ -131,6 +132,8 @@ public class FragmentProfile extends Fragment {
 
             }
         });
+        getIdUser();        
+        RetrieveUserData(); 
     }
 
 
@@ -237,9 +240,16 @@ public class FragmentProfile extends Fragment {
             }
         }
 
-        ((TextView)getView().findViewById(R.id.profileNameAndAge)).setText(user.getFirstName() + " " + user.getLastName() + ", " + user.getReadableAge());
+        String[] positions = getResources().getStringArray(R.array.positions);
+        String[] campuses = getResources().getStringArray(R.array.campuses);
+
+        String displayPosition = "";
+        displayPosition += positions[user.getType()] + " at " + campuses[user.getIdCampus()-1];
+        ((TextView)getView().findViewById(R.id.position)).setText(displayPosition);
+
+        ((TextView)getView().findViewById(R.id.nameAndAge)).setText(user.getFirstName() + " " + user.getLastName() + ", " + user.getReadableAge());
         ((TextView)getView().findViewById(R.id.speaks)).setText(teachString);
-        ((TextView)getView().findViewById(R.id.profileHobbies)).setText(hobbiesString);
+        ((TextView)getView().findViewById(R.id.hobbies)).setText(hobbiesString);
         setCountries(learn);
 
     }

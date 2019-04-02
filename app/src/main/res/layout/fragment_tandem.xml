@@ -12,9 +12,11 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_margin="16dp"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#99000000"
             android:text="@string/fragment_tandem_requestsTitle"
             />
         <android.support.v7.widget.RecyclerView
@@ -25,16 +27,30 @@
 
         </android.support.v7.widget.RecyclerView>
         <TextView
-            android:layout_margin="16dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#99000000"
+            android:textSize="16dp"
             android:text="@string/fragment_tandem_tandemTitle"
+            />
+        <View
+            android:id="@+id/titleDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorLightGary"
+            app:layout_constraintTop_toBottomOf="@id/position"
             />
         <ListView
             android:clickable="true"
             android:id="@+id/tandemMatchedList"
+            android:divider="@color/colorLightGary"
+            android:dividerHeight="1dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
         </ListView>
     </LinearLayout>
@@ -49,6 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="@color/colorPrimaryDark"
         android:src="@drawable/ic_event_black_24dp"
-        android:scaleType="center"/>
+        android:scaleType="center"
+        android:visibility="invisible"/>
 
 </android.support.constraint.ConstraintLayout>
