@@ -118,7 +118,6 @@ public class ActivityLaunch extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
 
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run()

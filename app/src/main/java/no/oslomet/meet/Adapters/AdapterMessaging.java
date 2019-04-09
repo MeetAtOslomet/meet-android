@@ -91,7 +91,7 @@ public class AdapterMessaging extends RecyclerView.Adapter
         switch (holder.getItemViewType())
         {
             case VIEW_TYPE_MESSAGE_SENT:
-                ((SentMessageHolder)holder).bind(msg, fullname);
+                ((SentMessageHolder)holder).bind(msg, "You");
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
                 ((ReceivedMessageHolder)holder).bind(msg, fullname);

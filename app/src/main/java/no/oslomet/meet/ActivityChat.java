@@ -8,15 +8,20 @@ import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -42,14 +47,27 @@ public class ActivityChat extends AppCompatActivity {
     public int receiverId = -1;
     HashMap<Integer, String> users;
     public Tandem t;
+    TextView toolbartitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_chat);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         tandemId = getIntent().getIntExtra("id_tandem", -1);
         String id = new SettingsHandler().getStringSetting(this, R.string.preference_idUser);
         myid = Integer.parseInt(id);
+
+        toolbartitle = findViewById(R.id.toolbartitle);
 
         String tandemJson = getIntent().getStringExtra("tandem_json");
         try {
@@ -64,6 +82,9 @@ public class ActivityChat extends AppCompatActivity {
             {
                 String fullname = (user.getLastName().length() > 0) ? user.getFirstName() + " " + user.getLastName() : user.getFirstName();
                 users.put(user.getIdUser(), fullname);
+                if(receiverId == user.getIdUser()){
+                    toolbartitle.setText(user.getFirstName() + " " + user.getLastName());
+                }
             }
 
         } catch (JSONException e) {
@@ -113,7 +134,6 @@ public class ActivityChat extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     private void ScrollToBottom()
@@ -280,5 +300,15 @@ public class ActivityChat extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(messageArrived);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

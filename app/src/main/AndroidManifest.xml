@@ -23,11 +23,14 @@
         </activity>
         <activity
             android:name=".ActivityMyProfile"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ActivityMain"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ActivityChat" />
+        <activity
+            android:name=".ActivityChat"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <service android:name=".core.FMS">
             <intent-filter>
