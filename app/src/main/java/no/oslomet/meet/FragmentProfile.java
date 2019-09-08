@@ -2,6 +2,7 @@ package no.oslomet.meet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -57,7 +58,11 @@ public class FragmentProfile extends Fragment {
     TextView learn1Text;
     TextView learn2Text;
     TextView learn3Text;
-    
+    TextView position;
+    TextView nameAndAge;
+    TextView speaks;
+    TextView hobbies;
+
     public FragmentProfile() {
         // Required empty public constructor
     }
@@ -92,7 +97,10 @@ public class FragmentProfile extends Fragment {
         learn1Text = (TextView)getView().findViewById(R.id.learn1Text);
         learn2Text = (TextView)getView().findViewById(R.id.learn2Text);
         learn3Text = (TextView)getView().findViewById(R.id.learn3Text);
-
+        position = (TextView)getView().findViewById(R.id.position);
+        nameAndAge = (TextView)getView().findViewById(R.id.nameAndAge);
+        speaks = (TextView)getView().findViewById(R.id.speaks);
+        hobbies = (TextView)getView().findViewById(R.id.hobbies);
 
         getView().findViewById(R.id.signOutButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,18 +247,21 @@ public class FragmentProfile extends Fragment {
                 hobbiesString += h.getName() + ", ";
             }
         }
+        Context c = getContext();
+        if(c != null){
+            String[] positions = c.getResources().getStringArray(R.array.positions);
+            String[] campuses = c.getResources().getStringArray(R.array.campuses);
 
-        String[] positions = getResources().getStringArray(R.array.positions);
-        String[] campuses = getResources().getStringArray(R.array.campuses);
+            String displayPosition = "";
+            displayPosition += positions[user.getType()] + " at " + campuses[user.getIdCampus()-1];
+            position.setText(displayPosition);
 
-        String displayPosition = "";
-        displayPosition += positions[user.getType()] + " at " + campuses[user.getIdCampus()-1];
-        ((TextView)getView().findViewById(R.id.position)).setText(displayPosition);
+            nameAndAge.setText(user.getFirstName() + " " + user.getLastName() + ", " + user.getReadableAge());
+            speaks.setText(teachString);
+            hobbies.setText(hobbiesString);
+            setCountries(learn);
 
-        ((TextView)getView().findViewById(R.id.nameAndAge)).setText(user.getFirstName() + " " + user.getLastName() + ", " + user.getReadableAge());
-        ((TextView)getView().findViewById(R.id.speaks)).setText(teachString);
-        ((TextView)getView().findViewById(R.id.hobbies)).setText(hobbiesString);
-        setCountries(learn);
+        }
 
     }
 

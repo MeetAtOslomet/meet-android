@@ -61,7 +61,7 @@
 
         <TextView
             android:id="@+id/speaks"
-            android:textSize="20dp"
+            style="@style/headerListText"
             app:layout_constraintTop_toBottomOf="@id/nameAndAge"
             app:layout_constraintLeft_toRightOf="@id/speaks_icon"
             app:layout_constraintBottom_toBottomOf="@id/speaks_icon"
@@ -82,12 +82,12 @@
             app:layout_constraintLeft_toLeftOf="@id/left_vertical"
             app:layout_constraintTop_toBottomOf="@id/speaks_icon"
             app:layout_constraintBottom_toBottomOf="@id/hobbies"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             />
 
         <TextView
             android:id="@+id/hobbies"
-            android:textSize="20dp"
+            style="@style/headerListText"
             app:layout_constraintTop_toBottomOf="@id/speaks"
             app:layout_constraintLeft_toRightOf="@id/speaks_icon"
             app:layout_constraintBottom_toBottomOf="@id/hobbies_icon"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             android:text="Interests"
             />
 
@@ -108,12 +108,12 @@
             app:layout_constraintLeft_toLeftOf="@id/left_vertical"
             app:layout_constraintTop_toBottomOf="@id/hobbies_icon"
             app:layout_constraintBottom_toBottomOf="@id/position"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             />
 
         <TextView
             android:id="@+id/position"
-            android:textSize="20dp"
+            style="@style/headerListText"
             app:layout_constraintTop_toBottomOf="@id/hobbies"
             app:layout_constraintLeft_toRightOf="@id/position_icon"
             app:layout_constraintBottom_toBottomOf="@id/position_icon"
@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             android:text="Position"
             />
 

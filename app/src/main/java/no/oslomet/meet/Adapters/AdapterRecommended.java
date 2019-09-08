@@ -80,9 +80,14 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
         Hobbies lastHobby = (rUser.getHobbies().size() > 0) ? rUser.getHobbies().get(rUser.getHobbies().size() -1) : null;
         if (lastHobby != null)
         {
+            int hobbyCounter = 0;
             for (Hobbies hobby : rUser.getHobbies())
             {
-                if (hobby == lastHobby)
+                if(hobbyCounter == 2){
+                    hobbies += hobby.getName() + "...";
+                    break;
+                }
+                else if (hobby == lastHobby)
                 {
                     hobbies += hobby.getName();
                 }
@@ -90,6 +95,7 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
                 {
                     hobbies += hobby.getName() + ", ";
                 }
+                hobbyCounter++;
             }
         }
         else if (rUser.getHobbies().size() > 0)
@@ -97,25 +103,16 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
             hobbies = rUser.getHobbies().get(0).getName();
         }
 
-        String learnString = "";
-        Languages lastLearn = (learn.size() > 0) ? learn.get(learn.size() -1) : null;
-        for (Languages lang : learn)
-        {
-            if (lang == lastLearn)
-            {
-                learnString += lang.name;
-            }
-            else
-            {
-                learnString += lang.name + ", ";
-            }
-        }
-
         String teachString = "";
         Languages lastTeach = (teach.size() > 0) ? teach.get(teach.size() -1) : null;
+        int counter = 0;
         for (Languages lang : teach)
         {
-            if (lang == lastTeach)
+            if(counter == 2){
+                teachString += lang.name + "...";
+                break;
+            }
+            else if (lang == lastTeach)
             {
                 teachString += lang.name;
             }
@@ -123,30 +120,25 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
             {
                 teachString += lang.name + ", ";
             }
+            counter++;
         }
 
         setCountries(viewHolder, learn);
 
-        Random rnd = new Random();
-        /*int color = Color.argb(75, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        viewHolder.backgroundHeader.setBackgroundColor(color);*/
-
         viewHolder.speaks.setText(teachString);
-        //viewHolder.RecommendedLearn.setText(learnString);
         viewHolder.hobbies.setText(hobbies);
-        //viewHolder.bio.setText(rUser.getUser().getBiography());
 
         String[] positions = context.getResources().getStringArray(R.array.positions);
         String[] campuses = context.getResources().getStringArray(R.array.campuses);
 
         String displayPosition = "";
-        displayPosition += positions[rUser.getUser().getType()] + " at " + campuses[rUser.getUser().getIdCampus()-1];
+        Log.d("AdapterTest", "Type: " + rUser.getUser().getType());
+        Log.d("AdapterTest", "Campus: " + rUser.getUser().getIdCampus());
+        int campusId = rUser.getUser().getIdCampus()-1;
+        displayPosition += positions[rUser.getUser().getType()] + " at " + (campusId > -1 ? (campuses[campusId]) : "undefined");
         viewHolder.position.setText(displayPosition);
 
         Log.d("AdapterUser", "Campus Id: " + rUser.getUser().getIdCampus());
-
-        int number = rnd.nextInt(100);
-        //Picasso.get().load("https://randomuser.me/api/portraits/men/"+number+".jpg").into(viewHolder.profilePicture);
 
         //Fixes the height of the cards. Higher dp means smaller cards.
         Measurer m = new Measurer(context);
@@ -164,11 +156,9 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
      * @param learn is an ArrayList<Languages>
      * Displays the languages and their country codes as flags on the matching card.
      * Will check each language up to a match in a predefined String array in Strings.xml
-     * Only converts the first three languages of the language list.
+     * Only converts the first three languages of the language list, if there are three.
      */
     public void setCountries(@NonNull ViewHolder viewHolder, ArrayList<Languages> learn){
-        //TODO: CLEAN UP THIS MESSY CODE. INEFFECTIVE CODE.
-
         String[] languagesXML = context.getResources().getStringArray(R.array.languages_array);
         String[] codesXML = context.getResources().getStringArray(R.array.countryCode_array);
 
