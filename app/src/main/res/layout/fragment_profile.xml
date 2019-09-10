@@ -19,7 +19,7 @@
             android:id="@+id/nameAndAge"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="[Name], [Age]"
+            android:text="[...], [...]"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/left_vertical"
             app:layout_constraintRight_toRightOf="@id/right_vertical"
