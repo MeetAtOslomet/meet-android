@@ -93,12 +93,7 @@ public class AdapterTandem extends BaseAdapter
                 ((TextView)convertView.findViewById(R.id.userFirstName)).setText(_u.getFirstName());
             }
         }
-
-
-
-
-
-
+        
         ImageButton ib = convertView.findViewById(R.id.expandOptions);
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
