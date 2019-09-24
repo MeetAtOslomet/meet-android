@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 
@@ -29,6 +30,11 @@ import no.oslomet.meet.core.Api;
 import no.oslomet.meet.core.Strings;
 
 public class FragmentTandem extends Fragment {
+
+    TextView txtNoInvites = null;
+    RecyclerView rvTandemSuggested = null;
+    FloatingActionButton fabPlanning = null;
+    ListView lvTandemMatch = null;
 
     public FragmentTandem() {
         // Required empty public constructor
@@ -60,9 +66,16 @@ public class FragmentTandem extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        // assigning views to local variables..
+        txtNoInvites = getView().findViewById(R.id.txtNoInvites);
+        rvTandemSuggested = getView().findViewById(R.id.tandemSuggestedRecycler);
+        fabPlanning = getView().findViewById(R.id.planningFab);
+        lvTandemMatch = getView().findViewById(R.id.tandemMatchedList);
+
         loadTandems();
         loadRecommendedTandems();
-        getView().findViewById(R.id.planningFab).setOnClickListener(new View.OnClickListener() {
+
+        fabPlanning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), ActivityCalendar.class));
@@ -71,11 +84,9 @@ public class FragmentTandem extends Fragment {
     }
 
 
-    private void loadRecommendedTandems()
-    {
-        final RecyclerView rv = (RecyclerView)getView().findViewById(R.id.tandemSuggestedRecycler);
-        rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        rv.setHasFixedSize(true);
+    private void loadRecommendedTandems() {
+        rvTandemSuggested.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rvTandemSuggested.setHasFixedSize(true);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -83,14 +94,21 @@ public class FragmentTandem extends Fragment {
                 String response = api.GET(Strings.Request_GetRequests(new SettingsHandler().getStringSetting(getContext(), R.string.preference_idUser)));
                 try {
                     final ArrayList<Requests> requests = new JsonHandler().getRequests(response);
-                    if (getActivity() instanceof ActivityMain)
-                    {
+                    if (getActivity() instanceof ActivityMain) {
                         ActivityMain activityMain = (ActivityMain) getActivity();
                         activityMain.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                AdapterRequests adapterRequests = new AdapterRequests(getContext(), requests);
-                                rv.setAdapter(adapterRequests);
+                                if (requests.isEmpty()) {
+                                    rvTandemSuggested.setVisibility(View.GONE);
+                                    txtNoInvites.setVisibility(View.VISIBLE);
+                                } else {
+                                    rvTandemSuggested.setVisibility(View.VISIBLE);
+                                    txtNoInvites.setVisibility(View.GONE);
+                                    AdapterRequests adapterRequests = new AdapterRequests(getContext(), requests);
+                                    rvTandemSuggested.setAdapter(adapterRequests);
+                                }
+
                             }
                         });
                     }
@@ -102,9 +120,7 @@ public class FragmentTandem extends Fragment {
         });
     }
 
-    private void loadTandems()
-    {
-        final ListView lv = (ListView)getView().findViewById(R.id.tandemMatchedList);
+    private void loadTandems() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -113,14 +129,13 @@ public class FragmentTandem extends Fragment {
                 Log.e("Fetched TANDEM", response);
                 try {
                     final ArrayList<Tandem> tandems = new JsonHandler().getTandems(response);
-                    if (getActivity() instanceof ActivityMain)
-                    {
+                    if (getActivity() instanceof ActivityMain) {
                         ActivityMain activityMain = (ActivityMain) getActivity();
                         activityMain.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 AdapterTandem adapterTandem = new AdapterTandem(getContext(), tandems);
-                                lv.setAdapter(adapterTandem);
+                                lvTandemMatch.setAdapter(adapterTandem);
                             }
                         });
                     }
@@ -130,19 +145,6 @@ public class FragmentTandem extends Fragment {
                 }
             }
         });
-        /*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AdapterTandem at = (AdapterTandem) lv.getAdapter();
-                Tandem t = (Tandem) at.getItem(position);
-                if (t != null)
-                {
-                    Intent chatIntent = new Intent(getActivity(), ActivityChat.class);
-                    chatIntent.putExtra("Tandem", t);
-                    startActivity(chatIntent);
-                }
-            }
-        });*/
     }
 
 
