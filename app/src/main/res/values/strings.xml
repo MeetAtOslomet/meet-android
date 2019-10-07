@@ -86,7 +86,7 @@
     <string name="fragment_tandem_tandemTitle">Messages</string>
 
     <string name="fragment_tandem_lastMessage">You: Hallaaa &#8226; 12:01</string>
-    <string name="fragment_tandem_lastMessage_placeholder">You: ... . -:-</string>
+    <string name="fragment_tandem_lastMessage_placeholder">Click here to see more…</string>
 
 
     <string name="text_login">Sign in</string>
@@ -99,7 +99,10 @@
     <string name="text_last_name">Last name</string>
 
     <string name="text_confirm_password">Confirm Password</string>
-    
+
+    <string name="termsAndConditions"><a href="http://www.fellesstudentsystem.no/english/applications/student-id/privacy-policy.html">Terms and Conditions</a></string>
+    <string name="privacyPolicy"><a href="http://www.fellesstudentsystem.no/english/applications/student-id/privacy-policy.html">Privacy Policy</a></string>
+
 
 
 </resources>
