@@ -8,10 +8,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,7 +25,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.microsoft.appcenter.AppCenter;
@@ -61,8 +60,7 @@ public class ActivityLaunch extends AppCompatActivity {
         setContentView(R.layout.activity_launch);
 
         // Creates a certificate
-        if (no.oslomet.meet.core.Certificate.sslContext == null)
-        {
+        if (no.oslomet.meet.core.Certificate.sslContext == null) {
             no.oslomet.meet.core.Certificate cert = new no.oslomet.meet.core.Certificate();
             cert.InitializeCetificate(this);
         }
@@ -77,15 +75,14 @@ public class ActivityLaunch extends AppCompatActivity {
     /**
      * Enables notifications for android versions greater than Oreo 8.0 through a notifications channel.
      * Called by onCreate.
-     * */
-    private void createNotificationChannel()
-    {
+     */
+    private void createNotificationChannel() {
         // If the version of android running on this hardware is equal or greater than Android Oreo (8.0)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel def = new NotificationChannel(Strings.DEFAULT_CHANNEL_ID, "Default", NotificationManager.IMPORTANCE_DEFAULT);
             def.enableVibration(false);
 
-            NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             List<NotificationChannel> lnc = new ArrayList<>(Arrays.asList(
                     def
             ));
@@ -93,12 +90,10 @@ public class ActivityLaunch extends AppCompatActivity {
         }
     }
 
-    public String getMetaString(String key)
-    {
+    public String getMetaString(String key) {
         try {
             ApplicationInfo appinfo = this.getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
-            if (appinfo != null)
-            {
+            if (appinfo != null) {
                 return appinfo.metaData.get(key).toString();
             }
             return null;
@@ -111,8 +106,8 @@ public class ActivityLaunch extends AppCompatActivity {
 
     ImageView mainLogo;
     ProgressBar spinner;
-    protected void onResume()
-    {
+
+    protected void onResume() {
         super.onResume();
         mainLogo = findViewById(R.id.logo);
         spinner = findViewById(R.id.spinner);
@@ -120,41 +115,39 @@ public class ActivityLaunch extends AppCompatActivity {
 
         AsyncTask.execute(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 // Create new API object
                 Api api = new Api();
 
                 // Use the API to GET Heartbeat and save it in a string
                 final String response = api.GET(Strings.Heartbeat());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                            // Create a new Heartbeat object from the response string
-                            Heartbeat h = new JsonHandler().getHeartbeat(response);
+                        // Create a new Heartbeat object from the response string
+                        Heartbeat h = new JsonHandler().getHeartbeat(response);
 
-                            // If you managed to create a Heartbeat object and it has a status of true
-                            if (h != null && h.Status)
-                            {
-                                // Animate the logo upwards while loading in the next layout
-                                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainLogo.getLayoutParams();
-                                TranslateAnimation animation = new TranslateAnimation(0,0, 0, -lp.topMargin);
-                                animation.setDuration(1000);
-                                animation.setFillAfter(false);
-                                animation.setAnimationListener(new SplashAnimationListener());
-                                mainLogo.startAnimation(animation);
+                        // If you managed to create a Heartbeat object and it has a status of true
+                        if (h != null && h.Status) {
+                            // Animate the logo upwards while loading in the next layout
+                            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainLogo.getLayoutParams();
+                            TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -lp.topMargin);
+                            animation.setDuration(1000);
+                            animation.setFillAfter(false);
+                            animation.setAnimationListener(new SplashAnimationListener());
+                            mainLogo.startAnimation(animation);
 
-                                AsyncTask.execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // Continue by calling
-                                        ValidateAuthentication();
-                                    }
-                                });
-                            }
+                            AsyncTask.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Continue by calling
+                                    ValidateAuthentication();
+                                }
+                            });
                         }
-                    });
+                    }
+                });
 
             }
         });
@@ -166,11 +159,9 @@ public class ActivityLaunch extends AppCompatActivity {
      * If user is authenticated call @method checkIfUserExists.
      * Must be ran on a non-main thread. Creates new thread if ran on main.
      */
-    private void ValidateAuthentication()
-    {
+    private void ValidateAuthentication() {
         // Check what thread you are on to make sure this method can not be run on any thread except main
-        if (Looper.myLooper() == Looper.getMainLooper())
-        {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
             Log.e("Mistake were made", "You where just about to run network code on main thread! This is not allowed by the Android OS!");
             // If you are running on the main thread, create a new AsyncTask and call this method again
             AsyncTask.execute(new Runnable() {
@@ -197,8 +188,7 @@ public class ActivityLaunch extends AppCompatActivity {
         });
 
         // If user is not logged in, show them the user log in fields
-        if (AuthKey == null || AuthKey.length() == 0)
-        {
+        if (AuthKey == null || AuthKey.length() == 0) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -208,8 +198,7 @@ public class ActivityLaunch extends AppCompatActivity {
             });
         }
         // If user is logged in (an AuthKey exists), continue here
-        else
-        {
+        else {
             // Get the username from settings
             username = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username);
 
@@ -229,11 +218,10 @@ public class ActivityLaunch extends AppCompatActivity {
                 @Override
                 public void run() {
                     AuthStatus authStatus = new JsonHandler().getHasAuth(response2);
-                    if (authStatus == null || authStatus.authenticationExit > 0){
+                    if (authStatus == null || authStatus.authenticationExit > 0) {
                         // TODO
                         showUserInput();
-                    }
-                    else{
+                    } else {
                         /*AlertDialog.Builder adb = new AlertDialog.Builder(ActivityLaunch.this);
                         adb.setTitle("Success");
                         adb.setMessage("You where successfully authenticated!");
@@ -255,8 +243,7 @@ public class ActivityLaunch extends AppCompatActivity {
     /**
      *
      */
-    private void checkIfUserExists()
-    {
+    private void checkIfUserExists() {
         Api api = new Api();
         String resp = api.GET(Strings.ProfileExists(username));
         ApiDataResponse adr = new JsonHandler().getData(resp);
@@ -265,12 +252,10 @@ public class ActivityLaunch extends AppCompatActivity {
         String AuthKey = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey);
         fcm.GetToken(username, AuthKey);
 
-        if (adr != null && adr.dataExit == 0)
-        {
-            String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey)  ));
+        if (adr != null && adr.dataExit == 0) {
+            String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_AuthKey)));
             final int userID = new JsonHandler().getIdUser(response);
-            if (userID > 0)
-            {
+            if (userID > 0) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -284,9 +269,7 @@ public class ActivityLaunch extends AppCompatActivity {
             //Navigate to matching activity
 
             //startActivity(new Intent(ActivityLaunch.this, ActivityMatch.class));
-        }
-        else if (adr != null && adr.dataExit == 1)
-        {
+        } else if (adr != null && adr.dataExit == 1) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -300,33 +283,23 @@ public class ActivityLaunch extends AppCompatActivity {
     }
 
 
-
-
-
-
     private String username = null;
-    public void updateUsername(String username)
-    {
+
+    public void updateUsername(String username) {
         this.username = username;
     }
 
-    private void showUserInput()
-    {
+    private void showUserInput() {
         username = new SettingsHandler().getStringSetting(ActivityLaunch.this, R.string.preference_username);
         Boolean awaitingValidation = new SettingsHandler().getBooleanSetting(ActivityLaunch.this, R.string.preference_validate, false);
         Boolean awaitingPassword = new SettingsHandler().getBooleanSetting(ActivityLaunch.this, R.string.preference_setPassword, false);
-        if (username != null && username != "" && awaitingValidation == true )
-        {
+        if (username != null && username != "" && awaitingValidation == true) {
             //Show authentication code
             HandleActivation();
 
-        }
-        else if (username != null && username != "" && awaitingPassword == true)
-        {
+        } else if (username != null && username != "" && awaitingPassword == true) {
             HandlePasswordSetting();
-        }
-        else
-        {
+        } else {
             findViewById(R.id.selectLayout).setVisibility(View.VISIBLE);
 
 
@@ -359,8 +332,7 @@ public class ActivityLaunch extends AppCompatActivity {
                     findViewById(R.id.registerUsernameLayout).setVisibility(View.VISIBLE);
                     findViewById(R.id.registerUsernameButton).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             RegisterUsername();
                         }
                     });
@@ -377,11 +349,9 @@ public class ActivityLaunch extends AppCompatActivity {
         }
     }
 
-    private void RegisterUsername()
-    {
-        final String username = ((EditText)findViewById(R.id.registerUsernameInput)).getText().toString().trim();
-        if (username.contains("@"))
-        {
+    private void RegisterUsername() {
+        final String username = ((EditText) findViewById(R.id.registerUsernameInput)).getText().toString().trim();
+        if (username.contains("@")) {
             AlertDialog.Builder adb = new AlertDialog.Builder(ActivityLaunch.this);
             adb.setTitle("Illegal character!");
             adb.setMessage("Only insert your username (student number or employee number). Example sXXXXX or olanordmann");
@@ -392,9 +362,7 @@ public class ActivityLaunch extends AppCompatActivity {
                 }
             });
             adb.show();
-        }
-        else
-        {
+        } else {
             final JSONObject root = new JSONObject();
             try {
                 root.put("username", username);
@@ -404,8 +372,7 @@ public class ActivityLaunch extends AppCompatActivity {
 
             AsyncTask.execute(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     String json = root.toString();
                     ArrayList<PostParam> params = new ArrayList<>();
                     params.add(new PostParam("request", "register_user"));
@@ -414,8 +381,7 @@ public class ActivityLaunch extends AppCompatActivity {
                     Api api = new Api();
                     String reuslt = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
                     Registration registration = new JsonHandler().getRegistration(reuslt);
-                    if (registration != null && registration.registrationExit == 0)
-                    {
+                    if (registration != null && registration.registrationExit == 0) {
                         //Store username
                         new SettingsHandler().setStringSetting(ActivityLaunch.this, R.string.preference_username, username);
                         updateUsername(username);
@@ -427,6 +393,13 @@ public class ActivityLaunch extends AppCompatActivity {
                                 HandleActivation();
                             }
                         });
+                    }else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Something went wrong with Registration, please contact our helpdesk.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             });
@@ -434,15 +407,14 @@ public class ActivityLaunch extends AppCompatActivity {
     }
 
 
-    private void HandleActivation()
-    {
+    private void HandleActivation() {
         findViewById(R.id.registerUserLayout).setVisibility(View.VISIBLE);
         findViewById(R.id.registerUserCode).setVisibility(View.VISIBLE);
 
-        final EditText code1 = (EditText)findViewById(R.id.code1);
-        final EditText code2 = (EditText)findViewById(R.id.code2);
-        final EditText code3 = (EditText)findViewById(R.id.code3);
-        final EditText code4 = (EditText)findViewById(R.id.code4);
+        final EditText code1 = (EditText) findViewById(R.id.code1);
+        final EditText code2 = (EditText) findViewById(R.id.code2);
+        final EditText code3 = (EditText) findViewById(R.id.code3);
+        final EditText code4 = (EditText) findViewById(R.id.code4);
 
         code1.addTextChangedListener(new TextWatcher() {
             @Override
@@ -498,22 +470,47 @@ public class ActivityLaunch extends AppCompatActivity {
 
         code4.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_DEL) { EditText et = ((EditText)v); if (et.getText().length() == 0) { code3.requestFocus(); } }return false; }
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    EditText et = ((EditText) v);
+                    if (et.getText().length() == 0) {
+                        code3.requestFocus();
+                    }
+                }
+                return false;
+            }
         });
         code3.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_DEL) { EditText et = ((EditText)v); if (et.getText().length() == 0) { code2.requestFocus(); } }return false; }
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    EditText et = ((EditText) v);
+                    if (et.getText().length() == 0) {
+                        code2.requestFocus();
+                    }
+                }
+                return false;
+            }
         });
         code2.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_DEL) { EditText et = ((EditText)v); if (et.getText().length() == 0) { code1.requestFocus(); } }return false; }});
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    EditText et = ((EditText) v);
+                    if (et.getText().length() == 0) {
+                        code1.requestFocus();
+                    }
+                }
+                return false;
+            }
+        });
 
 
-        Button confirmCode = (Button)findViewById(R.id.UserCodeConfirm);
+        Button confirmCode = (Button) findViewById(R.id.UserCodeConfirm);
         confirmCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = code1.getText().toString() + code2.getText().toString() + code3.getText().toString() + code4.getText().toString()  ;
+                String code = code1.getText().toString() + code2.getText().toString() + code3.getText().toString() + code4.getText().toString();
                 final int activationCode = Integer.valueOf(code);
 
                 AsyncTask.execute(new Runnable() {
@@ -541,8 +538,7 @@ public class ActivityLaunch extends AppCompatActivity {
 
                         String jString = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
                         AuthStatus as = new JsonHandler().getHasAuth(jString);
-                        if (as != null && as.authenticationExit == 0)
-                        {
+                        if (as != null && as.authenticationExit == 0) {
                             SettingsHandler sh = new SettingsHandler();
                             sh.setBooleanSetting(ActivityLaunch.this, R.string.preference_validate, false);
                             sh.setBooleanSetting(ActivityLaunch.this, R.string.preference_setPassword, true);
@@ -564,13 +560,12 @@ public class ActivityLaunch extends AppCompatActivity {
 
     }
 
-    private void HandlePasswordSetting()
-    {
+    private void HandlePasswordSetting() {
         findViewById(R.id.registerUserLayout).setVisibility(View.VISIBLE);
         findViewById(R.id.registerPassword).setVisibility(View.VISIBLE);
 
-        final EditText et1 = (EditText)findViewById(R.id.registerPass1);
-        final EditText et2 = (EditText)findViewById(R.id.registerPass2);
+        final EditText et1 = (EditText) findViewById(R.id.registerPass1);
+        final EditText et2 = (EditText) findViewById(R.id.registerPass2);
 
         findViewById(R.id.registerPassButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -586,7 +581,7 @@ public class ActivityLaunch extends AppCompatActivity {
 
                         String json = root.toString();
                         final ArrayList<PostParam> params = new ArrayList<>();
-                        params.add(new PostParam("request","initPass_user"));
+                        params.add(new PostParam("request", "initPass_user"));
                         params.add(new PostParam("data", json));
 
                         AsyncTask.execute(new Runnable() {
@@ -598,8 +593,7 @@ public class ActivityLaunch extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (as != null && as.authenticationExit == 0)
-                                        {
+                                        if (as != null && as.authenticationExit == 0) {
                                             new SettingsHandler().setBooleanSetting(ActivityLaunch.this, R.string.preference_setPassword, false);
                                             findViewById(R.id.registerUserLayout).setVisibility(View.GONE);
                                             findViewById(R.id.registerPassword).setVisibility(View.GONE);
@@ -609,8 +603,7 @@ public class ActivityLaunch extends AppCompatActivity {
                                                     ValidateAuthentication();
                                                 }
                                             });
-                                        }
-                                        else {
+                                        } else {
                                             Toast.makeText(ActivityLaunch.this, as.message, Toast.LENGTH_LONG).show();
                                         }
                                     }
@@ -626,9 +619,7 @@ public class ActivityLaunch extends AppCompatActivity {
                     }
 
 
-                }
-                else
-                {
+                } else {
                     Toast.makeText(ActivityLaunch.this, "Passwords did not match", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -637,12 +628,11 @@ public class ActivityLaunch extends AppCompatActivity {
     }
 
 
-    private void Login()
-    {
-        final String username = ((EditText)findViewById(R.id.loginUser)).getText().toString();
+    private void Login() {
+        final String username = ((EditText) findViewById(R.id.loginUser)).getText().toString();
         String password = null;
         try {
-            password = getSHA256(((EditText)findViewById(R.id.loginPass)).getText().toString());
+            password = getSHA256(((EditText) findViewById(R.id.loginPass)).getText().toString());
             JSONObject root = new JSONObject();
             try {
                 root.put("username", username);
@@ -653,7 +643,7 @@ public class ActivityLaunch extends AppCompatActivity {
 
             String json = root.toString();
             final ArrayList<PostParam> params = new ArrayList<>();
-            params.add(new PostParam("request","login_user"));
+            params.add(new PostParam("request", "login_user"));
             params.add(new PostParam("data", json));
 
             AsyncTask.execute(new Runnable() {
@@ -662,20 +652,24 @@ public class ActivityLaunch extends AppCompatActivity {
                     Api api = new Api();
                     String result = api.POST(Strings.ApiUrl(), api.POST_DATA(params));
                     AuthStatus as = new JsonHandler().getHasAuth(result);
-                    if (as != null && as.authenticationExit == 0 && as.authenticationToken.length() > 0)
-                    {
+                    if (as != null && as.authenticationExit == 0 && as.authenticationToken.length() > 0) {
                         new SettingsHandler().setStringSetting(ActivityLaunch.this, R.string.preference_username, username);
                         new SettingsHandler().setStringSetting(ActivityLaunch.this, R.string.preference_AuthKey, as.authenticationToken);
                         Log.e("AuthKey", as.authenticationToken);
                         ValidateAuthentication();
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Wrong student number or password, check again .", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             });
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
-
 
 
     }
@@ -702,7 +696,7 @@ public class ActivityLaunch extends AppCompatActivity {
         @Override
         public void onAnimationEnd(Animation animation) {
             mainLogo.clearAnimation();
-            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)mainLogo.getLayoutParams();
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) mainLogo.getLayoutParams();
             lp.setMargins(0, 0, 0, lp.topMargin);
             mainLogo.setLayoutParams(lp);
 

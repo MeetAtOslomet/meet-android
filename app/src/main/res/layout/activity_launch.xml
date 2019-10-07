@@ -4,92 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityLaunch"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+    tools:context=".ActivityLaunch">
 
     <ImageView
-    android:id="@+id/logo"
-    android:layout_marginTop="100dp"
-    android:layout_centerHorizontal="true"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-    android:src="@drawable/ic_meetatoslomet" />
+        android:id="@+id/logo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_meetatoslomet" />
 
     <ProgressBar
-        android:layout_below="@id/logo"
         android:id="@+id/spinner"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
         android:id="@+id/selectLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:visibility="gone"
-        android:layout_below="@id/logo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <Button
             android:id="@+id/PromptloginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="60dp"
-            android:text="@string/text_login"
-            />
+            android:text="@string/text_login" />
+
         <Button
             android:id="@+id/PromptregisterButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="60dp"
-            android:text="@string/text_register"
-            />
+            android:text="@string/text_register" />
 
     </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/registerUserLayout"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="50dp"
-        android:visibility="gone"
-        android:layout_below="@id/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_below="@id/logo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/registerUsernameLayout"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_usernameTitle"/>
+                android:text="@string/text_usernameTitle" />
+
             <EditText
                 android:id="@+id/registerUsernameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textEmailAddress"/>
+                android:inputType="text|textEmailAddress" />
+
             <Button
                 android:id="@+id/registerUsernameButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_register"/>
+                android:minHeight="60dp"
+                android:text="@string/text_register" />
 
             <Button
-                android:layout_marginTop="10dp"
                 android:id="@+id/registerGoBackButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:minHeight="60dp"
                 android:background="@null"
                 android:text="@string/text_goback" />
 
@@ -97,101 +103,111 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/registerUserCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:visibility="gone">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="20dp"
+                android:gravity="center_horizontal">
+
                 <EditText
-                    android:digits="0123456789"
-                    android:textAlignment="center"
                     android:id="@+id/code1"
-                    android:maxLength="1"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="phone|number" />
-                <EditText
                     android:digits="0123456789"
-                    android:textAlignment="center"
+                    android:ems="10"
+                    android:inputType="phone|number"
+                    android:maxLength="1"
+                    android:textAlignment="center" />
+
+                <EditText
                     android:id="@+id/code2"
-                    android:maxLength="1"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="phone|number" />
-                <EditText
                     android:digits="0123456789"
-                    android:textAlignment="center"
+                    android:ems="10"
+                    android:inputType="phone|number"
+                    android:maxLength="1"
+                    android:textAlignment="center" />
+
+                <EditText
                     android:id="@+id/code3"
-                    android:maxLength="1"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="phone|number" />
-                <EditText
                     android:digits="0123456789"
-                    android:textAlignment="center"
-                    android:id="@+id/code4"
+                    android:ems="10"
+                    android:inputType="phone|number"
                     android:maxLength="1"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/code4"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
+                    android:digits="0123456789"
                     android:ems="10"
-                    android:inputType="phone|number" />
+                    android:inputType="phone|number"
+                    android:maxLength="1"
+                    android:textAlignment="center" />
             </LinearLayout>
+
             <Button
                 android:id="@+id/UserCodeConfirm"
                 android:layout_width="wrap_content"
-                android:minWidth="200dp"
                 android:layout_height="wrap_content"
-                android:text="@string/text_confirm"/>
+                android:minWidth="200dp"
+                android:minHeight="60dp"
+                android:text="@string/text_confirm" />
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/registerPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_password"
-                />
+                android:text="@string/text_password" />
+
             <EditText
                 android:id="@+id/registerPass1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
                 android:ems="10"
-                android:text=""/>
+                android:inputType="textPassword"
+                android:text="" />
 
             <TextView
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_confirm_password"/>
+                android:layout_marginTop="20dp"
+                android:text="@string/text_confirm_password" />
+
             <EditText
                 android:id="@+id/registerPass2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
                 android:ems="10"
-                android:text=""/>
+                android:inputType="textPassword"
+                android:text="" />
 
             <Button
                 android:id="@+id/registerPassButton"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_confirm"/>
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:minHeight="60dp"
+                android:text="@string/text_confirm" />
         </LinearLayout>
 
     </LinearLayout>
@@ -199,50 +215,61 @@
 
     <LinearLayout
         android:id="@+id/loginLayout"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="50dp"
-        android:visibility="gone"
-        android:layout_below="@id/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_usernameTitle"
-            />
-        <EditText
-            android:id="@+id/loginUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text|textEmailAddress"/>
+        android:layout_below="@id/logo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <TextView
-            android:layout_marginTop="20dp"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_password"/>
-        <EditText
-            android:id="@+id/loginPass"
+            android:layout_marginBottom="16dp"
+            app:passwordToggleEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/loginUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/text_usernameTitle"
+                android:inputType="text|textEmailAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10" />
+            android:layout_marginBottom="16dp"
+            app:passwordToggleEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/loginPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/text_password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_login"/>
-        <Button
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:minHeight="60dp"
+            android:text="@string/text_login" />
+
+        <Button
             android:id="@+id/loginGoBackButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@null"
+            android:minHeight="60dp"
             android:text="@string/text_goback" />
 
     </LinearLayout>
