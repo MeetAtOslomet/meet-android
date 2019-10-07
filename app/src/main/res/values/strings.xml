@@ -86,6 +86,7 @@
     <string name="fragment_tandem_tandemTitle">Messages</string>
 
     <string name="fragment_tandem_lastMessage">You: Hallaaa &#8226; 12:01</string>
+    <string name="fragment_tandem_lastMessage_placeholder">You: ... . -:-</string>
 
 
     <string name="text_login">Sign in</string>
