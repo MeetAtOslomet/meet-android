@@ -16,8 +16,7 @@
         android:elevation="1dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorWhite"
-        app:itemIconTint="@color/colorWhite"
+        app:itemIconTint="@drawable/bottomnavigation_icon_color"
         app:labelVisibilityMode="unlabeled"
         app:itemIconSize="36dp"
         app:menu="@menu/top_menu" />
@@ -27,7 +26,9 @@
         android:layout_below="@id/navigation"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 
 
