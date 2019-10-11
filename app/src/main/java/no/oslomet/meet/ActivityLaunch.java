@@ -59,14 +59,25 @@ public class ActivityLaunch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
-        // Creates a certificate
+        /**
+         * Initiate our official signed key
+         * Proceeds to add it to the android allowed key chain
+         * (Root provider not present in android key chain)
+         *
+         * Key-file has to be updated before certificate expires
+         */
         if (no.oslomet.meet.core.Certificate.sslContext == null) {
             no.oslomet.meet.core.Certificate cert = new no.oslomet.meet.core.Certificate();
             cert.InitializeCetificate(this);
         }
 
-        // Applies the connection to AppCenter, an app overview portal
-        AppCenter.start(getApplication(), "38a286d6-35e4-46d5-988a-65706ec564e2",
+        /**
+         * Initiates AppCenter SDK
+         * Tells the service to listen for:
+         * Analytics (Event defined in the App),
+         * Crashes (Sends the app crashes to AppCenter along with diagnostic)
+         */
+        AppCenter.start(getApplication(), "fea3ea9e-e705-4e2e-bb14-62f0c667a5e5",
                 Analytics.class, Crashes.class);
 
         createNotificationChannel();
