@@ -91,8 +91,10 @@ public class FragmentProfile extends Fragment {
         getView().findViewById(R.id.editSettings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingBottomSheetDialog settingsDialog = new SettingBottomSheetDialog();
-                settingsDialog.show(getFragmentManager(), "SettingsBottomSheet");
+               /*SettingBottomSheetDialog settingsDialog = new SettingBottomSheetDialog();
+                settingsDialog.show(getFragmentManager(), "SettingsBottomSheet");*/
+               Intent intent = new Intent(getActivity(), ActivitySettings.class);
+               startActivity(intent);
             }
         });
 

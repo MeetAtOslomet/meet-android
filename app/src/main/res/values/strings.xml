@@ -102,7 +102,7 @@
 
     <string name="termsAndConditions"><a href="http://www.fellesstudentsystem.no/english/applications/student-id/privacy-policy.html">Terms and Conditions</a></string>
     <string name="privacyPolicy"><a href="http://www.fellesstudentsystem.no/english/applications/student-id/privacy-policy.html">Privacy Policy</a></string>
-
+    <string name="title_activity_settings">ActivitySettings</string>
 
 
 </resources>

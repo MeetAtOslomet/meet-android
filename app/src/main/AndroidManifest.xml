@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".ActivitySettings"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ActivityLaunch"
             android:theme="@style/LaunchTheme">
@@ -29,8 +32,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ActivityChat"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".core.FMS">
             <intent-filter>
@@ -38,9 +40,10 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ActivityCalendar"
+        <activity
+            android:name=".ActivityCalendar"
             android:label="Calendar"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
