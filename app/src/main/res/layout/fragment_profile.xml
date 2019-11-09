@@ -106,37 +106,16 @@
             android:background="@color/colorLightGary"
             app:layout_constraintTop_toBottomOf="@id/position_icon" />
 
-        <TextView
-            android:id="@+id/bio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis ultricies nibh. Donec efficitur aliquam odio ut efficitur. Mauris imperdiet vel mi non venenatis. In at posuere felis, quis tempus massa. Quisque non arcu id nunc suscipit iaculis eget ac turpis. Phasellus ultricies suscipit augue, quis placerat ligula efficitur eu. Proin id viverra metus. "
-            app:layout_constraintLeft_toLeftOf="@id/left_vertical"
-            app:layout_constraintRight_toRightOf="@id/right_vertical"
-            app:layout_constraintTop_toBottomOf="@id/titleDivider" />
-
-
-        <View
-            android:id="@+id/titleDividerContent"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/colorLightGary"
-            app:layout_constraintTop_toBottomOf="@id/bio" />
 
         <TextView
             android:id="@+id/learnTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
             android:text="Wants to learn:"
             android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="@id/left_vertical"
             app:layout_constraintRight_toRightOf="@id/right_vertical"
-            app:layout_constraintTop_toBottomOf="@id/titleDividerContent" />
+            app:layout_constraintTop_toBottomOf="@id/titleDivider" />
 
         <ImageView
             android:id="@+id/learn1"

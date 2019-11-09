@@ -224,7 +224,6 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
             CardRoot = (CardView)itemView.findViewById(R.id.CardRoot);
             nameAndAge = (TextView)itemView.findViewById(R.id.nameAndAge);
             hobbies = (TextView)itemView.findViewById(R.id.hobbies);
-            bio = (TextView)itemView.findViewById(R.id.bio);
             position = (TextView)itemView.findViewById(R.id.position);
             speaks = (TextView)itemView.findViewById(R.id.speaks);
             backgroundHeader = (View)itemView.findViewById(R.id.backgroundHeader);
@@ -235,7 +234,6 @@ public class AdapterRecommended extends RecyclerView.Adapter<AdapterRecommended.
             recommended2Text = (TextView)itemView.findViewById(R.id.Recommended2Text);
             recommended3Text = (TextView)itemView.findViewById(R.id.Recommended3Text);
             profilePicture = (ImageView)itemView.findViewById(R.id.profilePicture);
-            scrollview = (ScrollView)itemView.findViewById(R.id.scrollview);
         }
     }
 
