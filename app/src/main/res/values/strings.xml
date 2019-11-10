@@ -100,9 +100,180 @@
 
     <string name="text_confirm_password">Confirm Password</string>
 
-    <string name="termsAndConditions"><a href="http://www.fellesstudentsystem.no/english/applications/student-id/privacy-policy.html">Terms and Conditions</a></string>
-    <string name="privacyPolicy"><a href="http://www.fellesstudentsystem.no/english/applications/student-id/privacy-policy.html">Privacy Policy</a></string>
-    <string name="title_activity_settings">ActivitySettings</string>
+    <string name="title_activity_terms">Terms and Conditions</string>
+    <string name="terms_text">
+       "The application will give information such as name, age, language interest and qualifications"
+        "at OsloMet.The hobbies of user are also shown which helps to find a correct match."
+        "All the students and staff at OsloMet who are registered in the app can use the app and"
+        "communicate with their matches. A matching algorithm is used to find the correct match "
+        "based on their language interest and hobbies. \n\n"
+        "The institution carries no responsibilities for misuse of this application and the "
+        "communication and information exchanged between the user and their match. How much "
+        "information is shared must be controlled by the user themselves and focus should be made"
+        "in learning and exchanging knowledge about language they want to learn."
+
+    </string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_privacy">Privacy Policy</string>
+    <string name="privacy_text">
+        "Privacy Policy\n\n"
+        "1) Brief presentation of the Meet@OsloMet app\n\n"
+
+        "The application will give information such as name, age, language interest and qualifications"
+        "at OsloMet.The hobbies of user are also shown which helps to find a correct match."
+        "All the students and staff at OsloMet who are registered in the app can use the app and"
+        "communicate with their matches.\n\n"
+
+        "2) About this privacy policy\n\n"
+
+        "This privacy policy describes how Your University/University College manages your personal"
+        "data in the Meet@OsloMet app. The purpose of this privacy policy is to inform you of the "
+        "types of personal data processed, how it is processed, who is responsible for the processing,"
+        "your rights and whom to contact.\n\n"
+
+
+        "3)What is personal data?\n\n"
+
+        "The term personal data includes any data, information and assessment that can be linked to "
+        "you as an individual, cf. GDPR Article 4 no. 1. The determining factor in whether data is "
+        "considered personal information, is whether it is fit to identify a specific person."
+        "In some cases, data which, on its own, cannot be linked to an individual person, may "
+        "constitute personal data if it is used in combination with other data.\n\n"
+
+
+
+        "4)The purpose of the processing of personal data in the Meet@OsloMet app.\n\n"
+        "Purpose\n"
+        "The purpose of processing personal data in the Meet@OsloMet app is to match the language"
+        "interests and hobbies with other registered users of the app and provide suitable partners"
+        "to help learn a new language\n\n"
+
+        "Legal basis\n"
+
+        "For Universities/University Colleges who has chosen institutional use:\n"
+
+        "The legal basis for the processing of personal data in the Meet@OsloMet app is GDPR Article 6"
+        "no, 1 litra c, cf. no. 3 litra b, and provisions in the Act Relating to Universities and "
+        "University Colleges § 4-15.\n\n"
+
+        "For Universities/University Colleges who has chosen personal use:\n"
+        "Statutory authority for the processing of personal data in the Meet@OsloMet app is based on"
+        "consent. Students are asked to give consent when logging on to the app.\n\n"
+
+        "5) Which kinds of personal data are processed in the Meet@OsloMet app, and how long to we"
+        "store your personal data?\n"
+        "The Meet@OsloMet app shows your name and qualifications, and whether you are staff or "
+        "student of OsloMet. The personal data presented in the app is retrieved from the study"
+        "administration system Common Student System (FS), as well as FEIDE (Joint Electronic Identity),"
+        "which is the Ministry of Education and Research’s preferred solution for secure identification"
+        "in the education sector. The data is stored locally on your device and you may delete them"
+        "whenever you want.\n"
+
+        "Downloading the app and logging on is entirely voluntary, and you control to whom you invite"
+        "in the app. Using the app is voluntary. If you choose not to use the app you may, at most"
+        "universities and university colleges, there are other language learning spaces.\n\n"
+
+        "6) Automatic processing\n"
+        "Your personal data will not be made subject to automated processing or profiling.\n\n"
+
+        "7) Disclosure of your personal data to third parties\n"
+        "Disclosure or export of data is defined as any transfer of data save for use in the "
+        "controller’s own systems/processing or to the data subject itself or any other party "
+        "receiving data on the data subject’s behalf.\n"
+
+        "Your personal data will not be disclosed to countries outside of the EU/EEA, or to any "
+        "international organizations.\n\n"
+
+        "Your personal data may be disclosed to the following parties/agencies:\n"
+
+        "UNINETT AS\n"
+        "When you log in to the Meet@OsloMet app, you use the log-in services FEIDE and Dataporten."
+        "FEIDE and Dataporten are developed and provided by UNINETT AS. UNINETT AS staff may access"
+        "your FEIDE user name and IP address, provided they need such access in order to perform "
+        "their duties. They need this access in order to provide user support and, if relevant, "
+        "correct errors as part of their duties. Your personal data will be erased from FEIDE after"
+        "six months.\n\n"
+
+        "8) Personal data safety\n"
+        "To protect your personal data in the Meet@OsloMet app, various security measures have been"
+        "implemented; all transfers to the app are encrypted. In addition, Unit regularly perform"
+        "risk and vulnerability analyses and testing of the security in the Meet@OsloMet app.\n\n"
+
+        "9) Your rights\n"
+        "Right to information and access\n"
+        "You have the right to information about how your University/University College processes "
+        "your personal data. The purpose of this privacy policy is to provide you with any and all"
+        "information you have the right to get.\n"
+        "You also have the right to view/access any and all personal data registered about you at"
+        "your University/University College. You also have the right to request a copy of the "
+        "personal data registered about you if you so wish.\n\n"
+
+        "Right to correction\n"
+        "You have the right to have corrected any and all incorrect personal data about you. You"
+        "also have the right to supplement any and all incomplete data registered about you. Please"
+        "contact us if you believe we have registered incorrect or incomplete personal data about"
+        "you. It is important that you justify and, if relevant, document why you believe the "
+        "personal data registered is incorrect or incomplete.\n\n"
+
+        "Right to limit processing\n"
+        "In certain circumstances, you have the right to demand limited processing of your personal"
+        "data. Limiting the processing of personal data means that your personal data will still be"
+        "registered, but the opportunities for further processing are limited.\n"
+        "If you believe that personal data about you is incorrect or incomplete, or you have filed"
+        "a complaint against the processing of your data (read more about this below), you have the"
+        "right to demand to demand that the processing of your personal data be limited temporarily."
+        "This means that processing will be limited until, if relevant, we have rectified your "
+        "personal data, or until we have been able to assess whether your complaint is justified."
+        "In other circumstances you may also demand a more permanent limitation on the processing"
+        "of your personal data. In order to qualify for the right to limit processing of personal "
+        "data, the conditions established by the Personal Data Act and Article 18 of the GDPR must"
+        "be met. If we receive a request from you to limit processing of your personal data, we "
+        "will assess whether the statutory conditions have been met.\n\n"
+
+        "Right to erasure\n"
+        "In certain circumstances you have the right to demand that we erase your personal data. "
+        "The right to erasure is not unconditional, and whether this applies to your situation must"
+        "be assessed in light of relevant privacy legislation, i.e. the Personal Data Act and GDPR."
+        "Please contact us if you want to have your personal data erased. It is important that you"
+        "justify why you want the personal data erased, and, if possible, that you also specify "
+        "which personal data you want erased. We will then consider whether the conditions for "
+        "erasure, as established by law, have been met. Please be advised that the law allows for us"
+        "to make exceptions to your right to erasure. For example, we may need to store personal "
+        "data for the purpose of performing a task in compliance of the Act Relating to Universities"
+        "and University Colleges, or for reasons of public interest, such as archiving, research and"
+        "statistics.\n\n"
+
+        "Right to object\n"
+        "You may have the right to file an objection against the processing, i.e. object to the "
+        "processing, on grounds that you have a specific need to stop the processing, e.g. if you "
+        "have a need for protection, have a secret address, etc. The right to object is not "
+        "unconditional, and it is contingent upon the legal basis for the processing, and on your "
+        "particular circumstances. The conditions are established by Article 21 of the GDPR. If you"
+        "object to processing of your personal data, we will consider whether the conditions for "
+        "filing an objection have been met. If we find that you have the right to object to the "
+        "processing and that your objection is justified, we will discontinue processing, and you "
+        "will have the right to demand erasure of the data. Please be advised that we, under certain"
+        "circumstances, may make exceptions from erasure, e.g. if we have to store your personal "
+        "data for the purpose of performing a task in compliance with the Act Relating to "
+        "Universities and University Colleges, or for reasons of public interest.\n\n"
+
+        "Right to file complaint against processing\n"
+        "If you believe we processed your personal data incorrectly or unlawfully, or if you believe"
+        "we failed to protect your rights, you have the right to file a complaint against processing."
+        "Please see item 10 below for how to contact us.\n"
+        "If we dismiss your complaint, you may file your complaint with the Norwegian Data "
+        "Protection Authority (DPA). The DPA is responsible for making sure Norwegian enterprises "
+        "comply with the provisions of the Personal Data Act and the GDPR in their processing of "
+        "personal data.\n\n"
+
+        "10) Contact information\n"
+        "Data Controller\n\n"
+        "Your University/University College is the data controller of personal data in the Student"
+        "ID app, cf. GDPR Article 4 no. 7.\n"
+
+        "If you wish to exercise your rights as established in item 9 above, please contact your "
+        "University/University College.\n\n"
+    </string>
 
 
 </resources>

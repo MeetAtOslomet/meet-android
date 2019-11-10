@@ -12,9 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ActivitySettings"
-            android:label="@string/title_activity_settings"
+            android:name=".ActivityPrivacy"
+            android:label="@string/title_activity_privacy"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ActivityTerms"
+            android:label="@string/title_activity_terms"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ActivityLaunch"
             android:theme="@style/LaunchTheme">

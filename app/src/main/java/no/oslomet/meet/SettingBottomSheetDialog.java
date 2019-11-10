@@ -1,5 +1,6 @@
 package no.oslomet.meet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,11 +18,23 @@ public class SettingBottomSheetDialog extends BottomSheetDialogFragment {
         View v = inflater.inflate(R.layout.bottomaction_settings, container, false);
 
         TextView txtTerms = v.findViewById(R.id.infoTxtTerms);
-        txtTerms.setMovementMethod(LinkMovementMethod.getInstance());
+        txtTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent termsIntent= new Intent(getActivity(), ActivityTerms.class);
+                getActivity().startActivity(termsIntent);
+            }
+        });
+        //txtTerms.setMovementMethod(LinkMovementMethod.getInstance());
 
         TextView txtPrivacy = v.findViewById(R.id.infoTxtPrivacy);
-        txtPrivacy.setMovementMethod(LinkMovementMethod.getInstance());
-
+        txtPrivacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent privacyIntent= new Intent(getActivity(),ActivityPrivacy.class);
+                getActivity().startActivity(privacyIntent);
+            }
+        });
         return v;
     }
 
