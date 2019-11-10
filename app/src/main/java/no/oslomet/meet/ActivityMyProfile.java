@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,18 +40,15 @@ import no.oslomet.meet.core.Api;
 import no.oslomet.meet.core.Helper;
 import no.oslomet.meet.core.Strings;
 
-public class ActivityMyProfile extends AppCompatActivity
-{
+public class ActivityMyProfile extends AppCompatActivity {
     private int id_user = -1;
     public User user;
     boolean isNewUser = false;
 
-    private void setId_user(int id)
-    {
+    private void setId_user(int id) {
         new SettingsHandler().setStringSetting(this, R.string.preference_idUser, String.valueOf(id));
         id_user = id;
     }
-
 
 
     private Calendar calendar;
@@ -69,10 +65,15 @@ public class ActivityMyProfile extends AppCompatActivity
     }
 
     private AdapterHobby adapterHobby = new AdapterHobby(this, new ArrayList<Hobbies>());
-    private ArrayAdapter<String> arrayHobby;
 
     private AdapterLanguage toLearn = new AdapterLanguage(this, new ArrayList<Languages>());
     private AdapterLanguage toTeach = new AdapterLanguage(this, new ArrayList<Languages>());
+    private ArrayAdapter<String> arrayHobby;
+
+    private ListView ListView_LangImprove;
+    private ListView ListView_LangTeach;
+    private ListView ListView_hobby;
+
     private ArrayAdapter<String> teachDialougeItems;
     private ArrayAdapter<String> learnDialougeItems;
 
@@ -82,28 +83,26 @@ public class ActivityMyProfile extends AppCompatActivity
         super.onStart();
         initSpinner();
 
-        if (!isNewUser)
-        {
+        if (!isNewUser) {
             getIdUser();
             RetrieveUserData();
-        }
-        else
-        {
+        } else {
             user = new User();
             Retrieve_Languages();
             Retrieve_Hobbies();
         }
 
         initListeners();
+
+        // toLearn.
     }
 
-    public void getIdUser()
-    {
+    public void getIdUser() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)  ));
-                setId_user( new JsonHandler().getIdUser(response));
+                String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
+                setId_user(new JsonHandler().getIdUser(response));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -118,10 +117,10 @@ public class ActivityMyProfile extends AppCompatActivity
      * This method is for posting user when the user is not registered
      * The method will return an id for the user created
      * Required to run this method: RUN IN ASYNC!
+     *
      * @return int
      */
-    private int postUserForId()
-    {
+    private int postUserForId() {
         int out = 0;
         try {
             String jString = new JsonHandler()._toUserJSON(user);
@@ -134,12 +133,10 @@ public class ActivityMyProfile extends AppCompatActivity
 
             String addResp = api.POST(Strings.ApiUrl(), api.POST_DATA(pp));
             ApiDataResponse adr = new JsonHandler().getData(addResp);
-            if (adr.dataExit == 0)
-            {
-                String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)  ));
+            if (adr.dataExit == 0) {
+                String response = new Api().GET(Strings.Request_GetIdUser(new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username), new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
                 int outId = new JsonHandler().getIdUser(response);
-                if (outId < 0)
-                {
+                if (outId < 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -153,7 +150,6 @@ public class ActivityMyProfile extends AppCompatActivity
             }
 
 
-
         } catch (JSONException e) {
             e.printStackTrace();
             out = -1;
@@ -161,19 +157,21 @@ public class ActivityMyProfile extends AppCompatActivity
         return out;
     }
 
-    public DatePickerDialog setDate() { return new DatePickerDialog(ActivityMyProfile.this, setDate, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)); }
+    public DatePickerDialog setDate() {
+        return new DatePickerDialog(ActivityMyProfile.this, setDate, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
     public DatePickerDialog.OnDateSetListener setDate = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             calendar.set(year, month, dayOfMonth);
-            String date = dayOfMonth + "-" + (month+1) + "-" + year;
-            ((EditText)findViewById(R.id.dateEdit)).setText(date);
+            String date = dayOfMonth + "-" + (month + 1) + "-" + year;
+            ((EditText) findViewById(R.id.dateEdit)).setText(date);
         }
     };
 
-    private void initSpinner()
-    {
-        Spinner gender = ((Spinner)findViewById(R.id.spinnerGender));
+    private void initSpinner() {
+        Spinner gender = ((Spinner) findViewById(R.id.spinnerGender));
         gender.setAdapter(new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.genders)
         ));
@@ -183,11 +181,13 @@ public class ActivityMyProfile extends AppCompatActivity
                 if (user != null)
                     user.setGender(position);
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
-        Spinner position = ((Spinner)findViewById(R.id.spinnerPosition));
+        Spinner position = ((Spinner) findViewById(R.id.spinnerPosition));
         position.setAdapter(new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.positions)
         ));
@@ -199,7 +199,8 @@ public class ActivityMyProfile extends AppCompatActivity
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
 
@@ -214,11 +215,10 @@ public class ActivityMyProfile extends AppCompatActivity
                     public void run() {
                         ArrayAdapter<String> campusAdapter = new ArrayAdapter<String>(ActivityMyProfile.this, android.R.layout.simple_spinner_dropdown_item);
                         campusAdapter.add(getResources().getString(R.string.campusDefault));
-                        for (Campus c : campuses)
-                        {
+                        for (Campus c : campuses) {
                             campusAdapter.add(c.name);
                         }
-                        Spinner campus = ((Spinner)findViewById(R.id.spinnerCampus));
+                        Spinner campus = ((Spinner) findViewById(R.id.spinnerCampus));
                         campus.setAdapter(campusAdapter);
 
                         campus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -233,21 +233,15 @@ public class ActivityMyProfile extends AppCompatActivity
 
                             }
                         });
-
                     }
                 });
-
             }
         });
 
-
-
-
     }
 
-    private void initListeners()
-    {
-        EditText dateEdit = (EditText)findViewById(R.id.dateEdit);
+    private void initListeners() {
+        EditText dateEdit = (EditText) findViewById(R.id.dateEdit);
         dateEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -270,10 +264,44 @@ public class ActivityMyProfile extends AppCompatActivity
             }
         });
 
+        ListView_LangImprove = findViewById(R.id.listView_LangImprove);
+        ListView_LangTeach = findViewById(R.id.listView_LangTeach);
+        ListView_hobby = findViewById(R.id.listView_Hobbies);
+
+        ListView_LangImprove.setAdapter(toLearn);
+        ListView_LangTeach.setAdapter(toTeach);
+        ListView_hobby.setAdapter(adapterHobby);
+
+        toLearn.setListener(new AdapterLanguage.LanguageAdapterListener() {
+            @Override
+            public void onDeleteClick(Languages lang, int position) {
+                // language delete code....
+                toLearn.remove(position);
+                ListViewExpander.setListViewHeightBasedOnChildren(ListView_LangImprove);
+            }
+        });
+
+        toTeach.setListener(new AdapterLanguage.LanguageAdapterListener() {
+            @Override
+            public void onDeleteClick(Languages lang, int position) {
+                // language delete code....
+                toTeach.remove(position);
+                ListViewExpander.setListViewHeightBasedOnChildren(ListView_LangTeach);
+            }
+        });
+
+        adapterHobby.setListener(new AdapterHobby.HobbyAdapterListener() {
+            @Override
+            public void onDeleteClick(Hobbies hobby, int position) {
+                // hobby delete code...
+                adapterHobby.remove(position);
+                ListViewExpander.setListViewHeightBasedOnChildren(ListView_hobby);
+            }
+        });
+
     }
 
-    private AlertDialog.Builder getBaseDialog(final ArrayAdapter<String> adapter, final AdapterLanguage lang, final int ListViewId)
-    {
+    private AlertDialog.Builder getBaseDialog(final ArrayAdapter<String> adapter, final AdapterLanguage lang, final int ListViewId) {
         AlertDialog.Builder adb = new AlertDialog.Builder(ActivityMyProfile.this);
         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -283,18 +311,14 @@ public class ActivityMyProfile extends AppCompatActivity
         });
         adb.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                if (adapter != null)
-                {
+            public void onClick(DialogInterface dialog, int which) {
+                if (adapter != null) {
                     String langName = adapter.getItem(which);
-                    for (Languages l : available_Languages)
-                    {
-                        if (l.name.equals(langName))
-                        {
+                    for (Languages l : available_Languages) {
+                        if (l.name.equals(langName)) {
                             adapter.remove(adapter.getItem(which));
                             lang.addIfNotPresent(l);
-                            ListViewExpander.setListViewHeightBasedOnChildren( ((ListView)findViewById(ListViewId)) );
+                            ListViewExpander.setListViewHeightBasedOnChildren(((ListView) findViewById(ListViewId)));
                         }
                     }
 
@@ -305,11 +329,10 @@ public class ActivityMyProfile extends AppCompatActivity
     }
 
 
-
     private ArrayList<Languages> userLanguages = new ArrayList<>();
     private ArrayList<Hobbies> userHobbies = new ArrayList<>();
-    private void RetrieveUserData()
-    {
+
+    private void RetrieveUserData() {
         if (id_user <= -1)
             return;
         AsyncTask.execute(new Runnable() {
@@ -322,8 +345,8 @@ public class ActivityMyProfile extends AppCompatActivity
                 String request = Strings.Request_GetMe(token, new JsonHandler()._toJson(pp));
                 user = new JsonHandler().getUser(new Api().GET(request));
 
-                userLanguages = new JsonHandler().getLanguages( new Api().GET(  Strings.Request_UserLanguages(String.valueOf(id_user)) ));
-                userHobbies = new JsonHandler().getHobbies(new Api().GET( Strings.Request_UserHobbies(String.valueOf(id_user))));
+                userLanguages = new JsonHandler().getLanguages(new Api().GET(Strings.Request_UserLanguages(String.valueOf(id_user))));
+                userHobbies = new JsonHandler().getHobbies(new Api().GET(Strings.Request_UserHobbies(String.valueOf(id_user))));
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -336,29 +359,26 @@ public class ActivityMyProfile extends AppCompatActivity
         });
     }
 
-    private void InsertUserData()
-    {
-        ((EditText)findViewById(R.id.inputFirstName)).setText(user.getFirstName());
-        ((EditText)findViewById(R.id.inputLastName)).setText(user.getLastName());
+    private void InsertUserData() {
+        ((EditText) findViewById(R.id.inputFirstName)).setText(user.getFirstName());
+        ((EditText) findViewById(R.id.inputLastName)).setText(user.getLastName());
         Date date = new Date(user.getAge());
         calendar.setTime(date);
         dialog = setDate();
-        ((EditText)findViewById(R.id.dateEdit)).setText(calendar.get(Calendar.DAY_OF_MONTH) + "-" +(calendar.get(Calendar.MONTH)+1) + "-" +calendar.get(Calendar.YEAR));
+        ((EditText) findViewById(R.id.dateEdit)).setText(calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR));
         if (user.getGender() > 0)
-            ((Spinner)findViewById(R.id.spinnerGender)).setSelection(user.getGender());
+            ((Spinner) findViewById(R.id.spinnerGender)).setSelection(user.getGender());
         if (user.getType() > -1)
-            ((Spinner)findViewById(R.id.spinnerPosition)).setSelection(user.getType());
-        if (user.getIdCampus() > 0)
-        {
-            Spinner campus = (Spinner)findViewById(R.id.spinnerCampus);
-            if (campus.getAdapter() != null && campus.getAdapter() instanceof ArrayAdapter)
-            {
+            ((Spinner) findViewById(R.id.spinnerPosition)).setSelection(user.getType());
+        if (user.getIdCampus() > 0) {
+            Spinner campus = (Spinner) findViewById(R.id.spinnerCampus);
+            if (campus.getAdapter() != null && campus.getAdapter() instanceof ArrayAdapter) {
                 campus.setSelection(user.getIdCampus());
 
             }
         }
 
-        Switch hideAge = (Switch)findViewById(R.id.switchShowAge);
+        Switch hideAge = (Switch) findViewById(R.id.switchShowAge);
         hideAge.setChecked(user.getHideAge() != 1);
 
         Retrieve_Languages();
@@ -366,8 +386,8 @@ public class ActivityMyProfile extends AppCompatActivity
     }
 
     ArrayList<Languages> available_Languages;
-    private void Retrieve_Languages()
-    {
+
+    private void Retrieve_Languages() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -382,14 +402,12 @@ public class ActivityMyProfile extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((ListView)findViewById(R.id.listView_LangImprove)).setAdapter(toLearn);
-                        ((ListView)findViewById(R.id.listView_LangTeach)).setAdapter(toTeach);
 
                         Helper h = new Helper();
                         toLearn.swapItems(h.getLearningLanguages(userLanguages));
-                        ListViewExpander.setListViewHeightBasedOnChildren(((ListView)findViewById(R.id.listView_LangImprove)));
+                        ListViewExpander.setListViewHeightBasedOnChildren((ListView_LangImprove));
                         toTeach.swapItems(h.getTeachingLanguages(userLanguages));
-                        ListViewExpander.setListViewHeightBasedOnChildren(((ListView)findViewById(R.id.listView_LangTeach)));
+                        ListViewExpander.setListViewHeightBasedOnChildren((ListView_LangTeach));
 
                         final AlertDialog.Builder learn = getBaseDialog(learnDialougeItems, toLearn, R.id.listView_LangImprove);
                         final AlertDialog.Builder teach = getBaseDialog(teachDialougeItems, toTeach, R.id.listView_LangTeach);
@@ -421,8 +439,8 @@ public class ActivityMyProfile extends AppCompatActivity
 
     ArrayList<Hobbies> available_Hobbies;
     ArrayList<Hobbies> nonSelectedHobbies;
-    private void Retrieve_Hobbies()
-    {
+
+    private void Retrieve_Hobbies() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -432,12 +450,8 @@ public class ActivityMyProfile extends AppCompatActivity
 
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         adapterHobby.swapItems(userHobbies);
-                        ((ListView)findViewById(R.id.listView_Hobbies)).setAdapter(adapterHobby);
-                        ListViewExpander.setListViewHeightBasedOnChildren(((ListView)findViewById(R.id.listView_Hobbies)));
-
 
                         final AlertDialog.Builder adb = new AlertDialog.Builder(ActivityMyProfile.this);
                         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -448,18 +462,14 @@ public class ActivityMyProfile extends AppCompatActivity
                         });
                         adb.setAdapter(arrayHobby, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                if (arrayHobby != null)
-                                {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (arrayHobby != null) {
                                     String langName = arrayHobby.getItem(which);
-                                    for (Hobbies l : available_Hobbies)
-                                    {
-                                        if (l.getName().equals(langName))
-                                        {
+                                    for (Hobbies l : available_Hobbies) {
+                                        if (l.getName().equals(langName)) {
                                             arrayHobby.remove(arrayHobby.getItem(which));
                                             adapterHobby.addIfNotPresent(l);
-                                            ListViewExpander.setListViewHeightBasedOnChildren( ((ListView)findViewById(R.id.listView_Hobbies)) );
+                                            ListViewExpander.setListViewHeightBasedOnChildren(ListView_hobby);
                                         }
                                     }
 
@@ -482,12 +492,10 @@ public class ActivityMyProfile extends AppCompatActivity
     }
 
 
-    private String getHobbies()
-    {
+    private String getHobbies() {
         String hobbies = "";
-        Hobbies lastItem = (Hobbies) adapterHobby.getItem(adapterHobby.getItems().size()-1);
-        for (Hobbies h : adapterHobby.getItems())
-        {
+        Hobbies lastItem = (Hobbies) adapterHobby.getItem(adapterHobby.getItems().size() - 1);
+        for (Hobbies h : adapterHobby.getItems()) {
             if (h == lastItem)
                 hobbies += h.getIdHobby();
             else
@@ -502,8 +510,7 @@ public class ActivityMyProfile extends AppCompatActivity
         return hobbies;
     }
 
-    private String addLanguagesJSON()
-    {
+    private String addLanguagesJSON() {
         String languages = null;
         ArrayList<Languages> merged = new Helper().mergeLanguages(toLearn.getItems(), toTeach.getItems(), id_user);
 
@@ -516,25 +523,23 @@ public class ActivityMyProfile extends AppCompatActivity
         return languages;
     }
 
-    private void upload()
-    {
+    private void upload() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                if (isNewUser)
-                {
+                if (isNewUser) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            int genderPosition = ((Spinner)findViewById(R.id.spinnerGender)).getSelectedItemPosition();
-                            int typePosition = ((Spinner)findViewById(R.id.spinnerPosition)).getSelectedItemPosition();
-                            int campusPosition = ((Spinner)findViewById(R.id.spinnerCampus)).getSelectedItemPosition();
+                            int genderPosition = ((Spinner) findViewById(R.id.spinnerGender)).getSelectedItemPosition();
+                            int typePosition = ((Spinner) findViewById(R.id.spinnerPosition)).getSelectedItemPosition();
+                            int campusPosition = ((Spinner) findViewById(R.id.spinnerCampus)).getSelectedItemPosition();
                             Log.e("Spinnser VAL", "Gender => " + genderPosition + " Type => " + typePosition + " Campus => " + campusPosition);
                             user = new User(
                                     0,
                                     new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_username),
-                                    ((EditText)findViewById(R.id.inputFirstName)).getText().toString(),
-                                    ((EditText)findViewById(R.id.inputLastName)).getText().toString(),
+                                    ((EditText) findViewById(R.id.inputFirstName)).getText().toString(),
+                                    ((EditText) findViewById(R.id.inputLastName)).getText().toString(),
                                     calendar.getTimeInMillis(),
                                     typePosition,
                                     genderPosition,
@@ -558,33 +563,27 @@ public class ActivityMyProfile extends AppCompatActivity
                     });
 
 
-                }
-                else
-                {
+                } else {
                     PerformUpload();
                 }
-
 
 
             }
         });
 
 
-
     }
 
 
-    private void PerformUpload()
-    {
-        if (id_user > 0)
-        {
+    private void PerformUpload() {
+        if (id_user > 0) {
             Api api = new Api();
             ArrayList<PostParam> pp = new ArrayList<>();
             pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
 
             ArrayList<PostParam> langPost = new ArrayList<>(pp);
             langPost.add(new PostParam("request", "add_language"));
-            langPost.add(new PostParam("data",addLanguagesJSON() ));
+            langPost.add(new PostParam("data", addLanguagesJSON()));
             String languages = addLanguagesJSON();
             Log.e("JSON POST Lang", languages);
             String langresponse = api.POST(Strings.ApiUrl(), api.POST_DATA(langPost));
@@ -595,16 +594,14 @@ public class ActivityMyProfile extends AppCompatActivity
             ArrayList<PostParam> hobbyPost = new ArrayList<>(pp);
             hobbyPost.add(new PostParam("request", "add_hobbies"));
             hobbyPost.add(new PostParam("data", getHobbies()));
-            Log.e("JSON POST Hobby",  getHobbies());
+            Log.e("JSON POST Hobby", getHobbies());
             String hobbyResponse = api.POST(Strings.ApiUrl(), api.POST_DATA(hobbyPost));
             Log.e("API POST RESPONSE", hobbyResponse);
 
             ApiDataResponse hobbiesResponse = new JsonHandler().getData(hobbyResponse);
 
-            if (isNewUser)
-            {
-                if (langaugeResponse.dataExit == 0 && hobbiesResponse.dataExit == 0)
-                {
+            if (isNewUser) {
+                if (langaugeResponse.dataExit == 0 && hobbiesResponse.dataExit == 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -614,9 +611,7 @@ public class ActivityMyProfile extends AppCompatActivity
                             finish();
                         }
                     });
-                }
-                else
-                {
+                } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -627,9 +622,7 @@ public class ActivityMyProfile extends AppCompatActivity
                         }
                     });
                 }
-            }
-            else
-            {
+            } else {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -638,9 +631,7 @@ public class ActivityMyProfile extends AppCompatActivity
                 });
             }
 
-        }
-        else
-        {
+        } else {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
