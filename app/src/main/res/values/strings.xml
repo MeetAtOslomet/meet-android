@@ -115,6 +115,7 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_privacy">Privacy Policy</string>
+    <string name="logout">Logout</string>
     <string name="privacy_text">
         "Privacy Policy\n\n"
         "1) Brief presentation of the Meet@OsloMet app\n\n"

@@ -185,7 +185,7 @@
             android:padding="15dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_settings_black_24dp"
-            app:layout_constraintBottom_toTopOf="@+id/signOutButton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/left_vertical" />
 
         <ImageButton
@@ -196,18 +196,8 @@
             android:padding="15dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_edit_black_24dp"
-            app:layout_constraintBottom_toTopOf="@+id/signOutButton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/right_vertical" />
-
-        <Button
-            android:id="@+id/signOutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:minHeight="56dp"
-            android:text="Log out"
-            android:textColor="@color/colorRed"
-            app:layout_constraintBottom_toBottomOf="parent" />
 
         <android.support.constraint.Guideline
             android:id="@+id/left_vertical"
@@ -222,7 +212,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintGuide_end="20dp" />
-        
+
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>
