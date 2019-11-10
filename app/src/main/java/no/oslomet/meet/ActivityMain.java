@@ -27,7 +27,7 @@ public class ActivityMain extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             int prevSelected = SelectedNavigationItem;
 
-            Helper.forceTint(ActivityMain.this, menuItem, R.color.colorWhite);
+            Helper.forceTint(ActivityMain.this, menuItem, R.color.colorLightGary);
             switch (menuItem.getItemId())
             {
                 case R.id.navigation_profile:
@@ -54,7 +54,7 @@ public class ActivityMain extends AppCompatActivity {
             if (SelectedNavigationItem != prevSelected)
             {
                 MenuItem prev = ((BottomNavigationView)findViewById(R.id.navigation)).getMenu().getItem(prevSelected);
-                Helper.forceTint(ActivityMain.this, prev, R.color.colorWhite);
+                Helper.forceTint(ActivityMain.this, prev, R.color.colorLightGary);
                 //Deselect color
             }
 
