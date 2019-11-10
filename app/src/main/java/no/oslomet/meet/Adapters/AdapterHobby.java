@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,6 +17,12 @@ public class AdapterHobby extends BaseAdapter
 {
     private Context context;
     private ArrayList<Hobbies> items;
+
+    private HobbyAdapterListener listener = null;
+
+    public void setListener(HobbyAdapterListener listener) {
+        this.listener = listener;
+    }
 
     public AdapterHobby(Context context, ArrayList<Hobbies> items)
     {
@@ -74,10 +81,23 @@ public class AdapterHobby extends BaseAdapter
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_single_line, parent, false);
         ((TextView)convertView.findViewById(R.id.adapter_TextView)).setText(items.get(position).getName());
+        ImageButton btnDelete = convertView.findViewById(R.id.imgDeleteLangHobbies);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener != null)
+                    listener.onDeleteClick(items.get(position),position);
+            }
+        });
+
         return convertView;
+    }
+
+    public interface HobbyAdapterListener{
+        void onDeleteClick(Hobbies hobby, int position);
     }
 }

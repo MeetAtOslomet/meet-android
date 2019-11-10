@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -12,24 +13,27 @@ import java.util.ArrayList;
 import no.oslomet.meet.R;
 import no.oslomet.meet.classes.Languages;
 
-public class AdapterLanguage extends BaseAdapter
-{
+public class AdapterLanguage extends BaseAdapter {
     public Context context;
     public ArrayList<Languages> items = new ArrayList<>();
 
-    public AdapterLanguage(Context context, ArrayList<Languages> items)
-    {
+    LanguageAdapterListener listener = null;
+
+    public void setListener(LanguageAdapterListener listener) {
+        this.listener = listener;
+    }
+
+    public AdapterLanguage(Context context, ArrayList<Languages> items) {
         this.context = context;
         this.items = items;
     }
 
-    public void add(Languages languages)
-    {
+    public void add(Languages languages) {
         items.add(languages);
         notifyDataSetChanged();
     }
-    public void remove(int id)
-    {
+
+    public void remove(int id) {
         items.remove(id);
         notifyDataSetChanged();
     }
@@ -38,22 +42,18 @@ public class AdapterLanguage extends BaseAdapter
         return items;
     }
 
-    public void addIfNotPresent(Languages languages)
-    {
+    public void addIfNotPresent(Languages languages) {
         boolean isPresent = false;
-        for (Languages lang : items)
-        {
+        for (Languages lang : items) {
             if (lang.name.equals(languages.name))
                 isPresent = true;
         }
-        if (!isPresent)
-        {
+        if (!isPresent) {
             add(languages);
         }
     }
 
-    public void swapItems(ArrayList<Languages> swap)
-    {
+    public void swapItems(ArrayList<Languages> swap) {
         items = swap;
         notifyDataSetChanged();
     }
@@ -74,10 +74,28 @@ public class AdapterLanguage extends BaseAdapter
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_single_line, parent, false);
-        ((TextView)convertView.findViewById(R.id.adapter_TextView)).setText(items.get(position).name);
+
+        ((TextView) convertView.findViewById(R.id.adapter_TextView)).setText(items.get(position).name);
+        ImageButton btnDelete = convertView.findViewById(R.id.imgDeleteLangHobbies);
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null)
+                    listener.onDeleteClick(items.get(position), position);
+            }
+        });
+
         return convertView;
+
     }
+
+
+    public interface LanguageAdapterListener {
+        void onDeleteClick(Languages lang, int position);
+    }
+
 }
