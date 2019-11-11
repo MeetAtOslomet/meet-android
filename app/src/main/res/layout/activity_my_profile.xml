@@ -133,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="40dp"
-                    android:prompt="@string/genderSelect"></Spinner>
+                    android:prompt="@string/genderSelect" />
             </LinearLayout>
 
             <LinearLayout
@@ -151,7 +151,7 @@
                     android:id="@+id/spinnerPosition"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"></Spinner>
+                    android:minHeight="40dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -169,7 +169,7 @@
                     android:id="@+id/spinnerCampus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"></Spinner>
+                    android:minHeight="40dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -258,7 +258,7 @@
                     <ListView
                         android:id="@+id/listView_Hobbies"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="wrap_content" />
                 </android.support.v7.widget.CardView>
 
                 <ImageButton
@@ -274,8 +274,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
+                android:background="@color/colorButton"
+                android:text="Update" />
 
-                android:text="Upload" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
         </LinearLayout>
     </ScrollView>
 
