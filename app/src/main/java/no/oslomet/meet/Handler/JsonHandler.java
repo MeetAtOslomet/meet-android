@@ -1,7 +1,6 @@
 package no.oslomet.meet.Handler;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,7 +8,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import no.oslomet.meet.ActivityLaunch;
 import no.oslomet.meet.classes.ApiDataResponse;
 import no.oslomet.meet.classes.AuthStatus;
 import no.oslomet.meet.classes.Campus;
@@ -25,45 +23,38 @@ import no.oslomet.meet.classes.Requests;
 import no.oslomet.meet.classes.Tandem;
 import no.oslomet.meet.classes.User;
 
-public class JsonHandler
-{
+public class JsonHandler {
 
     /**
      * Returns Heartbeat object from json string.
+     *
      * @param jString JSONObject as string is required
      * @return returns Heartbeat object
      */
-    public Heartbeat getHeartbeat(String jString)
-    {
+    public Heartbeat getHeartbeat(String jString) {
         Heartbeat heartbeat = null;
-        try
-        {
+        try {
             JSONObject root = new JSONObject(jString);
             heartbeat = new Heartbeat(
                     (root.has("status")) ? root.getBoolean("status") : false,
                     (root.has("timestamp")) ? root.getLong("timestamp") : 0
             );
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return heartbeat;
     }
 
-    public AuthStatus getHasAuth(String jString)
-    {
+    public AuthStatus getHasAuth(String jString) {
         AuthStatus authStatus = null;
-        try
-        {
+        try {
             JSONObject root = new JSONObject(jString);
             authStatus = new AuthStatus(
                     (root.has("status")) ? root.getBoolean("status") : false,
                     (root.has("authentication")) ? root.getString("authentication") : "",
-                    (root.has("authenticationExit")) ? root.getInt("authenticationExit") :  -1,
+                    (root.has("authenticationExit")) ? root.getInt("authenticationExit") : -1,
                     (root.has("message")) ? root.getString("message") : "",
                     (root.has("authenticationToken")) ? root.getString("authenticationToken") : ""
             );
@@ -74,16 +65,14 @@ public class JsonHandler
     }
 
 
-    public Registration getRegistration(String jString)
-    {
+    public Registration getRegistration(String jString) {
         Registration registration = null;
-        try
-        {
+        try {
             JSONObject root = new JSONObject(jString);
             registration = new Registration(
                     (root.has("status")) ? root.getBoolean("status") : false,
                     (root.has("registration")) ? root.getString("registration") : "",
-                    (root.has("registrationExit")) ? root.getInt("registrationExit") :  -1
+                    (root.has("registrationExit")) ? root.getInt("registrationExit") : -1
             );
         } catch (JSONException e) {
             e.printStackTrace();
@@ -91,8 +80,7 @@ public class JsonHandler
         return registration;
     }
 
-    public ApiDataResponse getData(String jString)
-    {
+    public ApiDataResponse getData(String jString) {
         Log.e("OUT API DATA", "=> " + jString);
         ApiDataResponse adr = new ApiDataResponse(false, "dataError", 3, "unhandeled");
         try {
@@ -101,7 +89,7 @@ public class JsonHandler
                     (root.has("status") ? root.getBoolean("status") : false),
                     (root.has("data") ? root.getString("data") : ""),
                     (root.has("dataExit") ? root.getInt("dataExit") : -1),
-                    (root.has("message") ? root.getString("message"): "")
+                    (root.has("message") ? root.getString("message") : "")
             );
         } catch (JSONException e) {
             e.printStackTrace();
@@ -109,34 +97,25 @@ public class JsonHandler
         return adr;
     }
 
-    public ArrayList<Languages> getLanguages(String jString)
-    {
+    public ArrayList<Languages> getLanguages(String jString) {
         Log.e("API Response", jString);
         ArrayList<Languages> languages = new ArrayList<>();
-        try
-        {
+        try {
             JSONObject jo = new JSONObject(jString);
-            if (jo.isNull("data"))
-            {
+            if (jo.isNull("data")) {
 
-            }
-            else
-            {
+            } else {
                 JSONArray ja = jo.getJSONArray("data");
-                for (int i = 0; i < ja.length(); i++)
-                {
+                for (int i = 0; i < ja.length(); i++) {
                     JSONObject l = ja.getJSONObject(i);
-                    if (l.has("id_user") && l.has("teachOrLearn"))
-                    {
+                    if (l.has("id_user") && l.has("teachOrLearn")) {
                         languages.add(new Languages(
                                 (l.has("id_language")) ? l.getInt("id_language") : -1,
                                 (l.has("name")) ? l.getString("name") : "NAN",
                                 (l.has("id_user")) ? l.getInt("id_user") : -1,
                                 (l.has("teachOrLearn")) ? l.getInt("teachOrLearn") : -1
                         ));
-                    }
-                    else
-                    {
+                    } else {
                         languages.add(new Languages(
                                 (l.has("id_language")) ? l.getInt("id_language") : -1,
                                 (l.has("name")) ? l.getString("name") : "NAN"
@@ -146,30 +125,22 @@ public class JsonHandler
                 }
             }
 
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return languages;
     }
 
-    public ArrayList<Hobbies> getHobbies(String jString)
-    {
+    public ArrayList<Hobbies> getHobbies(String jString) {
         Log.e("Hobbies Response", jString);
         ArrayList<Hobbies> out = new ArrayList<>();
-        try
-        {
+        try {
             JSONObject jo = new JSONObject(jString);
-            if (jo.isNull("data"))
-            {
+            if (jo.isNull("data")) {
 
-            }
-            else
-            {
+            } else {
                 JSONArray ja = jo.getJSONArray("data");
-                for (int i = 0; i < ja.length(); i++)
-                {
+                for (int i = 0; i < ja.length(); i++) {
                     JSONObject el = ja.getJSONObject(i);
                     out.add(new Hobbies(
                             (el.has("id_user")) ? el.getInt("id_user") : -1,
@@ -184,8 +155,7 @@ public class JsonHandler
         return out;
     }
 
-    public int getIdUser(String jString)
-    {
+    public int getIdUser(String jString) {
         int id = -1;
 
         try {
@@ -198,8 +168,7 @@ public class JsonHandler
         return id;
     }
 
-    public User getUser(String jString)
-    {
+    public User getUser(String jString) {
         User user = null;
         try {
             JSONObject root = new JSONObject(jString);
@@ -233,16 +202,13 @@ public class JsonHandler
         return user;
     }
 
-    public ArrayList<User> getUsers(String jString)
-    {
+    public ArrayList<User> getUsers(String jString) {
         ArrayList<User> users = new ArrayList<>();
 
-        try
-        {
+        try {
             JSONObject root = new JSONObject(jString);
-            JSONArray  ja = root.getJSONArray("data");
-            for(int i = 0; i < ja.length(); i++)
-            {
+            JSONArray ja = root.getJSONArray("data");
+            for (int i = 0; i < ja.length(); i++) {
                 JSONObject data = ja.getJSONObject(i);
                 users.add(new User(
                         (data.has("id_user")) ? data.getInt("id_user") : -1,
@@ -265,14 +231,11 @@ public class JsonHandler
     }
 
 
-    public String _toJson(ArrayList<PostParam> items)
-    {
+    public String _toJson(ArrayList<PostParam> items) {
         String out = null;
-        try
-        {
+        try {
             JSONObject jsonObject = new JSONObject();
-            for (PostParam pp : items)
-            {
+            for (PostParam pp : items) {
                 jsonObject.put(pp.getKey(), pp.getData());
             }
             out = jsonObject.toString();
@@ -287,8 +250,7 @@ public class JsonHandler
 
         JSONObject jo = new JSONObject();
         JSONArray ja = new JSONArray();
-        for (Languages l : items)
-        {
+        for (Languages l : items) {
             JSONObject item = new JSONObject();
             item.put("id_user", l.id_user);
             item.put("id_language", l.id_language);
@@ -301,6 +263,21 @@ public class JsonHandler
 
         return out;
     }
+
+    public String _toDelLanguageJsonArrayString(int id_user, int teachOrLearn, String id_language) throws JSONException {
+        String out;
+
+        JSONObject item = new JSONObject();
+        item.put("id_user", id_user);
+        item.put("teachOrLearn", teachOrLearn);
+        item.put("id_language", id_language);
+
+
+        out = item.toString();
+
+        return out;
+    }
+
 
     public String _toUserJSON(User user) throws JSONException {
         String out = "";
@@ -339,12 +316,11 @@ public class JsonHandler
         JSONObject t = new JSONObject();
         t.put("id_tandem", tandem.id_tandem);
         t.put("id_user1", tandem.id_user1);
-        t.put("id_user2",tandem.id_user2);
+        t.put("id_user2", tandem.id_user2);
         t.put("conversationName", tandem.conversationName);
 
         JSONArray jsonArray = new JSONArray();
-        for(User user : tandem.users)
-        {
+        for (User user : tandem.users) {
             JSONObject ts = new JSONObject(_toUserJSON(user));
             jsonArray.put(ts);
         }
@@ -359,24 +335,17 @@ public class JsonHandler
     }
 
 
-
-    public ArrayList<Campus> getCampuses(String jString)
-    {
+    public ArrayList<Campus> getCampuses(String jString) {
         ArrayList<Campus> out = new ArrayList<>();
 
         Log.e("Campus Response", jString);
-        try
-        {
+        try {
             JSONObject jo = new JSONObject(jString);
-            if (jo.isNull("data"))
-            {
+            if (jo.isNull("data")) {
 
-            }
-            else
-            {
+            } else {
                 JSONArray ja = jo.getJSONArray("data");
-                for (int i = 0; i < ja.length(); i++)
-                {
+                for (int i = 0; i < ja.length(); i++) {
                     JSONObject el = ja.getJSONObject(i);
                     out.add(new Campus(
                             (el.has("id_campus")) ? el.getInt("id_campus") : -1,
@@ -398,8 +367,7 @@ public class JsonHandler
         JSONObject root = new JSONObject(jString);
         JSONArray dataArray = root.getJSONArray("data");
 
-        for(int i = 0; i < dataArray.length(); i++)
-        {
+        for (int i = 0; i < dataArray.length(); i++) {
             JSONObject aItem = dataArray.getJSONObject(i);
             User user = getUser(aItem.getJSONObject("user").toString());
 
@@ -424,7 +392,7 @@ public class JsonHandler
         int out = 0;
         try {
             JSONObject root = new JSONObject(jString);
-            out = (root.has("requestState")) ?  root.getInt("requestState") : 0;
+            out = (root.has("requestState")) ? root.getInt("requestState") : 0;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -434,15 +402,12 @@ public class JsonHandler
     public ArrayList<Tandem> getTandems(String jString) throws JSONException {
         ArrayList<Tandem> out = new ArrayList<>();
         JSONObject root = new JSONObject(jString);
-        if (root.has("data"))
-        {
+        if (root.has("data")) {
             JSONArray ja = root.getJSONArray("data");
-            for (int i = 0; i < ja.length(); i++)
-            {
+            for (int i = 0; i < ja.length(); i++) {
                 JSONObject aE = ja.getJSONObject(i);
                 ArrayList<User> users = null;
-                if (aE.has("users"))
-                {
+                if (aE.has("users")) {
                     JSONArray userA = aE.getJSONArray("users");
                     JSONObject tempUserObj = new JSONObject();
                     tempUserObj.put("data", userA);
@@ -464,13 +429,10 @@ public class JsonHandler
         ArrayList<Requests> out = new ArrayList<>();
 
         JSONObject root = new JSONObject(jString);
-        if (root.has("data"))
-        {
+        if (root.has("data")) {
             JSONArray ja = root.getJSONArray("data");
-            if (ja.length() > 0)
-            {
-                for (int i = 0; i < ja.length(); i++)
-                {
+            if (ja.length() > 0) {
+                for (int i = 0; i < ja.length(); i++) {
                     JSONObject ent = ja.getJSONObject(i);
 
                     JSONObject usTmp = ent.getJSONObject("user");
@@ -490,15 +452,13 @@ public class JsonHandler
         return out;
     }
 
-    public ArrayList<Messaging> getMessages(String jString){
+    public ArrayList<Messaging> getMessages(String jString) {
         ArrayList<Messaging> out = new ArrayList<>();
         try {
             JSONObject root = new JSONObject(jString);
-            if (root.has("data"))
-            {
+            if (root.has("data")) {
                 JSONArray ja = root.getJSONArray("data");
-                for(int i = 0; i < ja.length(); i++)
-                {
+                for (int i = 0; i < ja.length(); i++) {
                     JSONObject en = ja.getJSONObject(i);
                     out.add(new Messaging(
                             (en.has("id_message")) ? en.getInt("id_message") : -1,
@@ -522,17 +482,14 @@ public class JsonHandler
         FCMPush_Data fcmpd = null;
 
         JSONObject root = new JSONObject(jString);
-        if (root.has("data"))
-        {
+        if (root.has("data")) {
             JSONObject dat = root.getJSONObject("data");
             fcmpd = new FCMPush_Data(
                     (dat.has("target")) ? dat.getString("target") : "",
                     (dat.has("action")) ? dat.getString("action") : "",
                     (dat.has("timestamp")) ? dat.getLong("timestamp") : 0
             );
-        }
-        else
-        {
+        } else {
             fcmpd = new FCMPush_Data(
                     (root.has("target")) ? root.getString("target") : "",
                     (root.has("action")) ? root.getString("action") : "",
