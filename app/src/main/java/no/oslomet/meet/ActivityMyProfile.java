@@ -77,6 +77,11 @@ public class ActivityMyProfile extends AppCompatActivity {
     private ArrayAdapter<String> teachDialougeItems;
     private ArrayAdapter<String> learnDialougeItems;
 
+    // DELETED ITEMS
+    private ArrayList<Languages> deletedLearnLanguages = new ArrayList<>();
+    private ArrayList<Languages> deletedTeachLanguages = new ArrayList<>();
+    private ArrayList<Hobbies> deletedHobbies = new ArrayList<>();
+
 
     @Override
     protected void onStart() {
@@ -277,6 +282,8 @@ public class ActivityMyProfile extends AppCompatActivity {
             public void onDeleteClick(Languages lang, int position) {
                 // language delete code....
                 toLearn.remove(position);
+                if (!deletedLearnLanguages.contains(lang)) deletedLearnLanguages.add(lang);
+                learnDialougeItems.add(String.valueOf(lang.name));
                 ListViewExpander.setListViewHeightBasedOnChildren(ListView_LangImprove);
             }
         });
@@ -286,6 +293,8 @@ public class ActivityMyProfile extends AppCompatActivity {
             public void onDeleteClick(Languages lang, int position) {
                 // language delete code....
                 toTeach.remove(position);
+                if (!deletedTeachLanguages.contains(lang)) deletedTeachLanguages.add(lang);
+                teachDialougeItems.add(String.valueOf(lang.name));
                 ListViewExpander.setListViewHeightBasedOnChildren(ListView_LangTeach);
             }
         });
@@ -294,6 +303,7 @@ public class ActivityMyProfile extends AppCompatActivity {
             @Override
             public void onDeleteClick(Hobbies hobby, int position) {
                 // hobby delete code...
+                deletedHobbies.add(hobby);
                 adapterHobby.remove(position);
                 ListViewExpander.setListViewHeightBasedOnChildren(ListView_hobby);
             }
@@ -452,6 +462,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                     @Override
                     public void run() {
                         adapterHobby.swapItems(userHobbies);
+                        ListViewExpander.setListViewHeightBasedOnChildren(ListView_hobby);
 
                         final AlertDialog.Builder adb = new AlertDialog.Builder(ActivityMyProfile.this);
                         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -492,19 +503,20 @@ public class ActivityMyProfile extends AppCompatActivity {
     }
 
 
-    private String getHobbies() {
+    private String getHobbies(Boolean isAddOrDelete) {
         String hobbies = "";
-        Hobbies lastItem = (Hobbies) adapterHobby.getItem(adapterHobby.getItems().size() - 1);
-        for (Hobbies h : adapterHobby.getItems()) {
-            if (h == lastItem)
-                hobbies += h.getIdHobby();
-            else
-                hobbies += h.getIdHobby() + ",";
+        for (Hobbies h : isAddOrDelete ? adapterHobby.getItems() : deletedHobbies) {
+            hobbies += h.getIdHobby() + ",";
         }
 
+        // removing the last comma
+        if (hobbies.length() > 1) {
+            hobbies = hobbies.substring(0, hobbies.length() - 1);
+        }
         ArrayList<PostParam> pp = new ArrayList<>();
         pp.add(new PostParam("id_user", String.valueOf(id_user)));
         pp.add(new PostParam("id_hobbies", hobbies));
+
         hobbies = new JsonHandler()._toJson(pp);
 
         return hobbies;
@@ -516,6 +528,19 @@ public class ActivityMyProfile extends AppCompatActivity {
 
         try {
             languages = new JsonHandler()._toLanguageJsonArrayString("languages", merged);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return languages;
+    }
+
+    private String addDeletedLanguagesJSON(ArrayList<Languages> lang) {
+        String languages = null;
+
+        String json = new Helper().getDelLearnLangJSON(lang);
+        try {
+            languages = new JsonHandler()._toDelLanguageJsonArrayString(lang.get(0).id_user, lang.get(0).teachOrLearn, json);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -562,46 +587,104 @@ public class ActivityMyProfile extends AppCompatActivity {
                         }
                     });
 
-
                 } else {
                     PerformUpload();
                 }
-
-
             }
         });
-
-
     }
 
 
+    // This will perform LANGUAGE add / remove !
+    private int performLanguagesUpdate() {
+        Api api = new Api();
+        ArrayList<PostParam> pp = new ArrayList<>();
+        pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
+
+        ArrayList<PostParam> langPost = new ArrayList<>(pp);
+        langPost.add(new PostParam("request", "add_language"));
+        langPost.add(new PostParam("data", addLanguagesJSON()));
+
+        Log.e("API CALL: ", ("add_language"));
+        String languages = addLanguagesJSON();
+        Log.e("JSON POST Lang", languages);
+
+        String langresponse = api.POST(Strings.ApiUrl(), api.POST_DATA(langPost));
+
+        Log.e("API POST RESPONSE", langresponse);
+
+        ApiDataResponse languageResponse = new JsonHandler().getData(langresponse);
+        return languageResponse.dataExit;
+    }
+
+    // This will perform LANGUAGE add / remove !
+    private int performDelLanguagesUpdate(ArrayList<Languages> lang) {
+
+        if (lang.size() < 1) return 0;
+
+        Api api = new Api();
+        ArrayList<PostParam> pp = new ArrayList<>();
+        pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
+
+        ArrayList<PostParam> langPost = new ArrayList<>(pp);
+
+        langPost.add(new PostParam("request", "del_language"));
+
+        langPost.add(new PostParam("data", addDeletedLanguagesJSON(lang)));
+
+
+        Log.e("API CALL: ", "del_language");
+
+        String languages = addDeletedLanguagesJSON(lang);
+        Log.e("JSON POST Lang", languages);
+
+        String langresponse = api.POST(Strings.ApiUrl(), api.POST_DATA(langPost));
+
+
+        Log.e("API POST RESPONSE", langresponse);
+
+        ApiDataResponse languageResponse = new JsonHandler().getData(langresponse);
+        return languageResponse.dataExit;
+    }
+
+    // This will perform HOBBIES add / delete
+    private int performHobbiesUpdate(Boolean isAddOrDelete) {
+        Api api = new Api();
+        ArrayList<PostParam> pp = new ArrayList<>();
+        pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
+
+        ArrayList<PostParam> hobbyPost = new ArrayList<>(pp);
+        hobbyPost.add(new PostParam("request", isAddOrDelete ? "add_hobbies" : "del_hobbies"));
+        hobbyPost.add(new PostParam("data", getHobbies(isAddOrDelete)));
+        Log.e("API Request : ", isAddOrDelete ? "add_hobbies" : "del_hobbies");
+        Log.e("JSON POST Hobby", getHobbies(isAddOrDelete));
+
+        String hobbyResponse = api.POST(Strings.ApiUrl(), api.POST_DATA(hobbyPost));
+        Log.e("API POST RESPONSE", hobbyResponse);
+
+        ApiDataResponse hobbiesResponse = new JsonHandler().getData(hobbyResponse);
+        return hobbiesResponse.dataExit;
+
+    }
+
     private void PerformUpload() {
         if (id_user > 0) {
-            Api api = new Api();
-            ArrayList<PostParam> pp = new ArrayList<>();
-            pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
 
-            ArrayList<PostParam> langPost = new ArrayList<>(pp);
-            langPost.add(new PostParam("request", "add_language"));
-            langPost.add(new PostParam("data", addLanguagesJSON()));
-            String languages = addLanguagesJSON();
-            Log.e("JSON POST Lang", languages);
-            String langresponse = api.POST(Strings.ApiUrl(), api.POST_DATA(langPost));
-            Log.e("API POST RESPONSE", langresponse);
+            // language updates should be done three times !
+            // once for addition and two times for deletion of learn and teach...
+            int languageResponse = performLanguagesUpdate();
 
-            ApiDataResponse langaugeResponse = new JsonHandler().getData(langresponse);
+            int deletedLearnLanguageResponse = performDelLanguagesUpdate(deletedLearnLanguages);
+            int deletedTeachLanguageResponse = performDelLanguagesUpdate(deletedTeachLanguages);
 
-            ArrayList<PostParam> hobbyPost = new ArrayList<>(pp);
-            hobbyPost.add(new PostParam("request", "add_hobbies"));
-            hobbyPost.add(new PostParam("data", getHobbies()));
-            Log.e("JSON POST Hobby", getHobbies());
-            String hobbyResponse = api.POST(Strings.ApiUrl(), api.POST_DATA(hobbyPost));
-            Log.e("API POST RESPONSE", hobbyResponse);
-
-            ApiDataResponse hobbiesResponse = new JsonHandler().getData(hobbyResponse);
+            int hobbiesResponse = performHobbiesUpdate(true);
+            int hobbiesDeletedResponse = 0;
+            if (!deletedHobbies.isEmpty())
+                hobbiesDeletedResponse = performHobbiesUpdate(false);
 
             if (isNewUser) {
-                if (langaugeResponse.dataExit == 0 && hobbiesResponse.dataExit == 0) {
+                if (languageResponse == 0 && deletedLearnLanguageResponse == 0 && deletedTeachLanguageResponse == 0
+                        && hobbiesResponse == 0 && hobbiesDeletedResponse == 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
