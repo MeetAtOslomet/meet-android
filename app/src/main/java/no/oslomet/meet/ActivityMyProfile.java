@@ -304,6 +304,7 @@ public class ActivityMyProfile extends AppCompatActivity {
             public void onDeleteClick(Hobbies hobby, int position) {
                 // hobby delete code...
                 deletedHobbies.add(hobby);
+                arrayHobby.add(String.valueOf(hobby.getName()));
                 adapterHobby.remove(position);
                 ListViewExpander.setListViewHeightBasedOnChildren(ListView_hobby);
             }
