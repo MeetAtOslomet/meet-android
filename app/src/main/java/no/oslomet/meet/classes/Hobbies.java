@@ -22,4 +22,13 @@ public class Hobbies
     }
     public int getIdHobby() { return id_hobby; }
     public String getName() { return name; }
+
+    @Override
+    public String toString() {
+        return "Hobbies{" +
+                "id_user=" + id_user +
+                ", id_hobby=" + id_hobby +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
