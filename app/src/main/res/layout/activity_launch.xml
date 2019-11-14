@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-
+    <!--Select Login/Register layout  -->
     <LinearLayout
         android:id="@+id/selectLayout"
         android:layout_width="match_parent"
@@ -35,7 +35,9 @@
         android:layout_marginBottom="20dp"
         android:gravity="bottom"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
 
         <Button
             android:id="@+id/PromptloginButton"
@@ -53,15 +55,15 @@
 
     </LinearLayout>
 
-
+    <!--Student registration layout  -->
     <LinearLayout
         android:id="@+id/registerUserLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/logo"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -70,7 +72,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:gravity="bottom"
+            android:visibility="gone"
+            tools:visibility="visible"
+            >
 
             <TextView
                 android:layout_width="match_parent"
@@ -83,6 +88,14 @@
                 android:layout_height="wrap_content"
                 android:inputType="text|textEmailAddress" />
 
+            <TextView
+                android:text="@string/legalNote"
+                android:id="@+id/txtRegisterTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                />
             <Button
                 android:id="@+id/registerUsernameButton"
                 android:layout_width="match_parent"
@@ -212,7 +225,7 @@
 
     </LinearLayout>
 
-
+    <!-- Student login layout -->
     <LinearLayout
         android:id="@+id/loginLayout"
         android:layout_width="match_parent"
@@ -273,5 +286,6 @@
             android:text="@string/text_goback" />
 
     </LinearLayout>
+
 
 </RelativeLayout>

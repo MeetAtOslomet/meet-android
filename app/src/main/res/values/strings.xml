@@ -74,6 +74,7 @@
         <item>SE</item>
         <item>DE</item>
     </string-array>
+    <string name="legalNote">"By using this application or related software you agree that you have read and accept the &lt;a href=http://localhost/termsofuse.html>terms of use&lt;/a> and that you are familiar with the &lt;a href=http://localhost/privacy.html>privacy policy&lt;/a>"</string>
 
     <string name="campusDefault">Please select your camps</string>
 

@@ -10,10 +10,13 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.v4.text.HtmlCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.microsoft.appcenter.AppCenter;
@@ -347,17 +351,31 @@ public class ActivityLaunch extends AppCompatActivity {
                             RegisterUsername();
                         }
                     });
+                    findViewById(R.id.txtRegisterTerms).setVisibility(View.VISIBLE);
                     findViewById(R.id.registerGoBackButton).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             findViewById(R.id.selectLayout).setVisibility(View.VISIBLE);
                             findViewById(R.id.registerUserLayout).setVisibility(View.GONE);
                             findViewById(R.id.registerUsernameLayout).setVisibility(View.GONE);
+                            findViewById(R.id.txtRegisterTerms).setVisibility(View.GONE);
                         }
                     });
+
+                    loadLegalText();
+
                 }
             });
         }
+    }
+    /*Assigning html text to textView for consent text on registration page.*/
+    private void loadLegalText()
+    {
+        String text = getString(R.string.legalNote);
+        Spanned policy = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY);
+        TextView tv = findViewById(R.id.txtRegisterTerms);
+        tv.setText(policy);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void RegisterUsername() {
