@@ -157,18 +157,6 @@ public class Helper {
         return out;
     }
 
-    public String getDelLearnLangJSON(ArrayList<Languages> learn) {
-        String out = "";
-        for (Languages l : learn) {
-            l.teachOrLearn = 1;
-            out += l.id_language + ",";
-        }
-        if (out.length() > 1) out = out.substring(0, out.length() - 1);
-
-        return out;
-    }
-
-
     public static void forceTint(Context context, MenuItem menuItem, int ColorId) {
         Drawable image = menuItem.getIcon();
         image = DrawableCompat.wrap(image);

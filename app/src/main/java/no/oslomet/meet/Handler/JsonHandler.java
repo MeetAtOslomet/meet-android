@@ -264,7 +264,7 @@ public class JsonHandler {
         return out;
     }
 
-    public String _toDelLanguageJsonArrayString(int id_user, int teachOrLearn, String id_language) throws JSONException {
+    public String _toDelLanguageJsonString(int id_user, int teachOrLearn, int id_language) throws JSONException {
         String out;
 
         JSONObject item = new JSONObject();
