@@ -602,6 +602,11 @@ public class ActivityMyProfile extends AppCompatActivity {
         return languages;
     }
 
+    /***
+     * Getting the language as json, to be used as body when calling the API ( delete_language)
+     * @param lang
+     * @return
+     */
     private String addDeletedLanguagesJSON(Languages lang) {
         String languages = null;
 
@@ -614,6 +619,11 @@ public class ActivityMyProfile extends AppCompatActivity {
         return languages;
     }
 
+    /***
+     * Getting the Hobbies as json, to be used as body when calling the API ( delete_hobbies)
+     * @param hobby
+     * @return
+     */
     private String addDeletedHobbyJSON(Hobbies hobby) {
         String hobbies = null;
         try {
@@ -671,7 +681,10 @@ public class ActivityMyProfile extends AppCompatActivity {
     }
 
 
-    // This will perform LANGUAGE add  !
+    /**
+     * This will perform the language updated add_lanauge API call
+     * @return
+     */
     private int performLanguagesUpdate() {
         Api api = new Api();
         ArrayList<PostParam> pp = new ArrayList<>();
@@ -693,7 +706,11 @@ public class ActivityMyProfile extends AppCompatActivity {
         return languageResponse.dataExit;
     }
 
-    // This will perform LANGUAGE remove !
+    /***
+     * This will perform language DELETE delete_language ( whether teach or Learn )
+     * @param lang
+     * @return
+     */
     private boolean performLanguageDelete(final Languages lang) {
         if (lang == null) return false;
 
@@ -723,7 +740,11 @@ public class ActivityMyProfile extends AppCompatActivity {
 
     }
 
-    // this will berform HOBBIES delete
+    /**
+     * THis will perform Hobbies delete delete_hobbies ( SINGLE hobby deletion )
+     * @param hobby
+     * @return
+     */
     private boolean performHobbiesDelete(final Hobbies hobby) {
         if (hobby == null) return false;
 
@@ -752,6 +773,11 @@ public class ActivityMyProfile extends AppCompatActivity {
         return (hobbyApiResponse.dataExit == 0);
     }
 
+
+    /***
+     * Perform hobbies Update on user, add_hobbies API call
+     * @return
+     */
 
     private int performHobbiesUpdate() {
         Api api = new Api();
