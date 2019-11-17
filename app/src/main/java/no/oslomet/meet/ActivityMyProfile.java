@@ -81,7 +81,7 @@ public class ActivityMyProfile extends AppCompatActivity {
 
     // JUST ADDED IN THE UI, BUT NOT UPDATED.. THE ITEMS IN THIS LIST SHOULD NOT TRIGGER DELETE API CALL... but just get deleted from ui !
     private ArrayList<Languages> notUpdatedLanguage = new ArrayList<>();
-    private ArrayList<Hobbies> deletedHobbies = new ArrayList<>();
+    private ArrayList<Hobbies> notUpdatedHobbies = new ArrayList<>();
 
 
     @Override
@@ -293,7 +293,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if (result) {
-                                    if(notUpdatedLanguage.contains(lang)){
+                                    if (notUpdatedLanguage.contains(lang)) {
                                         notUpdatedLanguage.remove(lang);
                                     }
                                     toLearn.remove(position);
@@ -326,7 +326,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if (result) {
-                                    if(notUpdatedLanguage.contains(lang)){
+                                    if (notUpdatedLanguage.contains(lang)) {
                                         notUpdatedLanguage.remove(lang);
                                     }
                                     toTeach.remove(position);
@@ -344,12 +344,32 @@ public class ActivityMyProfile extends AppCompatActivity {
 
         adapterHobby.setListener(new AdapterHobby.HobbyAdapterListener() {
             @Override
-            public void onDeleteClick(Hobbies hobby, int position) {
+            public void onDeleteClick(final Hobbies hobby, final int position) {
                 // hobby delete code...
-                deletedHobbies.add(hobby);
-                arrayHobby.add(String.valueOf(hobby.getName()));
-                adapterHobby.remove(position);
-                ListViewExpander.setListViewHeightBasedOnChildren(ListView_hobby);
+                //Call remove API !
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // need to check noUpdateList. since it can just be added in the UI and not been updated !
+                        final boolean result = notUpdatedHobbies.contains(hobby) ? true : performHobbiesDelete(hobby);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (result) {
+                                    if (notUpdatedHobbies.contains(hobby)) {
+                                        notUpdatedHobbies.remove(hobby);
+                                    }
+                                    arrayHobby.add(String.valueOf(hobby.getName()));
+                                    adapterHobby.remove(position);
+                                    ListViewExpander.setListViewHeightBasedOnChildren(ListView_hobby);
+                                } else {
+                                    Toast.makeText(ActivityMyProfile.this, "Something went wrong, please try again later.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
+
             }
         });
 
@@ -527,6 +547,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                                             arrayHobby.remove(arrayHobby.getItem(which));
                                             adapterHobby.addIfNotPresent(l);
                                             ListViewExpander.setListViewHeightBasedOnChildren(ListView_hobby);
+                                            notUpdatedHobbies.add(l);
                                         }
                                     }
 
@@ -593,6 +614,16 @@ public class ActivityMyProfile extends AppCompatActivity {
         return languages;
     }
 
+    private String addDeletedHobbyJSON(Hobbies hobby) {
+        String hobbies = null;
+        try {
+            hobbies = new JsonHandler()._toDelHobbiesJsonString(hobby);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return hobbies;
+    }
+
     private void upload() {
         AsyncTask.execute(new Runnable() {
             @Override
@@ -640,7 +671,7 @@ public class ActivityMyProfile extends AppCompatActivity {
     }
 
 
-    // This will perform LANGUAGE add / remove !
+    // This will perform LANGUAGE add  !
     private int performLanguagesUpdate() {
         Api api = new Api();
         ArrayList<PostParam> pp = new ArrayList<>();
@@ -662,7 +693,7 @@ public class ActivityMyProfile extends AppCompatActivity {
         return languageResponse.dataExit;
     }
 
-    // This will perform LANGUAGE add / remove !
+    // This will perform LANGUAGE remove !
     private boolean performLanguageDelete(final Languages lang) {
         if (lang == null) return false;
 
@@ -692,13 +723,43 @@ public class ActivityMyProfile extends AppCompatActivity {
 
     }
 
+    // this will berform HOBBIES delete
+    private boolean performHobbiesDelete(final Hobbies hobby) {
+        if (hobby == null) return false;
+
+        Api api = new Api();
+        ArrayList<PostParam> pp = new ArrayList<>();
+        pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
+
+        ArrayList<PostParam> hobbyPost = new ArrayList<>(pp);
+
+        hobbyPost.add(new PostParam("request", "delete_hobbies"));
+
+        hobbyPost.add(new PostParam("data", addDeletedHobbyJSON(hobby)));
+
+
+        Log.e("API CALL: ", "delete_hobbies");
+
+        String hobbies = addDeletedHobbyJSON(hobby);
+        Log.e("JSON POST Lang", hobbies);
+
+        String hobbyResponse = api.POST(Strings.ApiUrl(), api.POST_DATA(hobbyPost));
+
+
+        Log.e("API POST RESPONSE", hobbyResponse);
+
+        ApiDataResponse hobbyApiResponse = new JsonHandler().getData(hobbyResponse);
+        return (hobbyApiResponse.dataExit == 0);
+    }
+
+
     private int performHobbiesUpdate() {
         Api api = new Api();
         ArrayList<PostParam> pp = new ArrayList<>();
         pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
 
         ArrayList<PostParam> hobbyPost = new ArrayList<>(pp);
-        hobbyPost.add(new PostParam("request","add_hobbies" ));
+        hobbyPost.add(new PostParam("request", "add_hobbies"));
         hobbyPost.add(new PostParam("data", getHobbies()));
         Log.e("API Request : ", "add_hobbies");
         Log.e("JSON POST Hobby", getHobbies());
