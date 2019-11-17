@@ -14,3 +14,5 @@ app/build/*
 app/debug/*
 app/release/*
 .idea/
+
+.idea/caches/*
