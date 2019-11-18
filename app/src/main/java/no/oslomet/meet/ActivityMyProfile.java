@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -63,6 +64,11 @@ public class ActivityMyProfile extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Showing back button on Actionbar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.set(1990, calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -71,30 +77,40 @@ public class ActivityMyProfile extends AppCompatActivity {
         isNewUser = getIntent().getBooleanExtra("NewUser", false);
     }
 
+    // For adding Profile delete icon on right of the toolbar ! as menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile_delete, menu);
         return true;
     }
 
+
+    // When the right icon ( user_delete) is clicked ! or Back button is pressed !
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == android.R.id.home) {
+            this.onBackPressed();
+        }
         if (id == R.id.user_delete_action) {
 
+            // Showing a Dialogbox, where a user can confirm before deleting the user permanently !
             new AlertDialog.Builder(this)
                     .setTitle(R.string.delete_profile_title)
                     .setMessage(R.string.delete_profile_desc)
                     .setIcon(R.drawable.ic_warning)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
+                            // If the user clicks YES / CONFIRM !
                             AsyncTask.execute(new Runnable() {
                                 @Override
                                 public void run() {
+                                    // Perform the Deletion of the user, using the current id_user
                                     final boolean result = PerformUserDelete();
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            // If the Deleting call of API was successful !
                                             if (result) {
                                                 Toast.makeText(ActivityMyProfile.this, R.string.profile_deleted, Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(ActivityMyProfile.this, ActivityLaunch.class);
@@ -109,7 +125,8 @@ public class ActivityMyProfile extends AppCompatActivity {
                             });
                         }
                     })
-                    .setNegativeButton(android.R.string.no, null).show();
+                    .setNegativeButton(android.R.string.no, null) // Do nothing on NO Click
+                    .show();
             return true;
         }
 
@@ -903,14 +920,13 @@ public class ActivityMyProfile extends AppCompatActivity {
     }
 
     /***
-     * Deleting the user profile !
+     * Deleting the user profile ! Call the API delete_user using id_user as parameters !
      * @return success / failure
      */
     private boolean PerformUserDelete() {
         Api api = new Api();
         ArrayList<PostParam> pp = new ArrayList<>();
         pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
-        pp.add(new PostParam("id_user", String.valueOf(id_user)));
 
         ArrayList<PostParam> deleteUserPost = new ArrayList<>(pp);
         deleteUserPost.add(new PostParam("request", "delete_user"));
@@ -925,6 +941,9 @@ public class ActivityMyProfile extends AppCompatActivity {
         Log.e("API POST RESPONSE", deleteUserResponse);
         ApiDataResponse delUserApiResponse = new JsonHandler().getData(deleteUserResponse);
         if (delUserApiResponse.dataExit == 0) {
+            //NOTE::::
+            // DELETE all the stored variables if the user is deleted from system ! All local stored values should be deleted!
+            // IF there is any other local things , that needs to be deleted, then add here !!!
             new SettingsHandler().setStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey, null);
             new SettingsHandler().setStringSetting(ActivityMyProfile.this, R.string.preference_username, null);
             new SettingsHandler().setStringSetting(ActivityMyProfile.this, R.string.preference_idUser, null);
