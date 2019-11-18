@@ -17,7 +17,7 @@ public class ActivityMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bnv = (BottomNavigationView)findViewById(R.id.navigation);
+        bnv = findViewById(R.id.navigation);
         bnv.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 

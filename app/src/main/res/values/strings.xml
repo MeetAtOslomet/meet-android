@@ -277,5 +277,9 @@
         "University/University College.\n\n"
     </string>
 
+    <string name="delete_profile_title">Are you sure ?</string>
+    <string name="delete_profile_desc">Your profile will be permanently deleted from system. You need to register again to login again. Do you want to continue</string>
+    <string name="profile_deleted">Your profile is deleted from system.</string>
+    <string name="something_went_wrong">Something went wrong, please try again later.</string>
 
 </resources>

@@ -53,4 +53,5 @@ public class SettingsHandler
         SharedPreferences sp = context.getSharedPreferences(key, Context.MODE_PRIVATE);
         return sp.getBoolean(key, defaultValue);
     }
+
 }

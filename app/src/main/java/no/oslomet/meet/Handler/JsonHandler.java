@@ -278,6 +278,19 @@ public class JsonHandler {
         return out;
     }
 
+    public String _toUserIdJsonString(int id_user) {
+        String out;
+        try{
+            JSONObject item = new JSONObject();
+            item.put("id_user", id_user);
+            out = item.toString();
+        }catch(JSONException e){
+            e.printStackTrace();
+            out = null;
+        }
+        return out;
+    }
+
     public String _toDelHobbiesJsonString(Hobbies hobby) throws JSONException {
         String out;
 

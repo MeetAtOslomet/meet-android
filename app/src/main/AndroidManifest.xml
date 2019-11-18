@@ -30,6 +30,7 @@
         </activity>
         <activity
             android:name=".ActivityMyProfile"
+            android:label="Endre Profil"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ActivityMain"

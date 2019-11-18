@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,11 +60,60 @@ public class ActivityMyProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
         calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.set(1990, calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dialog = setDate();
 
         isNewUser = getIntent().getBooleanExtra("NewUser", false);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile_delete, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.user_delete_action) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.delete_profile_title)
+                    .setMessage(R.string.delete_profile_desc)
+                    .setIcon(R.drawable.ic_warning)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            AsyncTask.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    final boolean result = PerformUserDelete();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (result) {
+                                                Toast.makeText(ActivityMyProfile.this, R.string.profile_deleted, Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(ActivityMyProfile.this, ActivityLaunch.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(intent);
+                                                finish();
+                                            } else
+                                                Toast.makeText(ActivityMyProfile.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private AdapterHobby adapterHobby = new AdapterHobby(this, new ArrayList<Hobbies>());
@@ -146,7 +198,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(ActivityMyProfile.this, "Something went wrong when adding your profile, please try again later..", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ActivityMyProfile.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -301,7 +353,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                                     ListViewExpander.setListViewHeightBasedOnChildren(ListView_LangImprove);
 
                                 } else
-                                    Toast.makeText(ActivityMyProfile.this, "Something went wrong, please try again later.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityMyProfile.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -333,7 +385,7 @@ public class ActivityMyProfile extends AppCompatActivity {
                                     teachDialougeItems.add(String.valueOf(lang.name));
                                     ListViewExpander.setListViewHeightBasedOnChildren(ListView_LangTeach);
                                 } else {
-                                    Toast.makeText(ActivityMyProfile.this, "Something went wrong, please try again later.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityMyProfile.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -683,6 +735,7 @@ public class ActivityMyProfile extends AppCompatActivity {
 
     /**
      * This will perform the language updated add_lanauge API call
+     *
      * @return
      */
     private int performLanguagesUpdate() {
@@ -742,6 +795,7 @@ public class ActivityMyProfile extends AppCompatActivity {
 
     /**
      * THis will perform Hobbies delete delete_hobbies ( SINGLE hobby deletion )
+     *
      * @param hobby
      * @return
      */
@@ -846,5 +900,36 @@ public class ActivityMyProfile extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    /***
+     * Deleting the user profile !
+     * @return success / failure
+     */
+    private boolean PerformUserDelete() {
+        Api api = new Api();
+        ArrayList<PostParam> pp = new ArrayList<>();
+        pp.add(new PostParam("authenticationToken", new SettingsHandler().getStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey)));
+        pp.add(new PostParam("id_user", String.valueOf(id_user)));
+
+        ArrayList<PostParam> deleteUserPost = new ArrayList<>(pp);
+        deleteUserPost.add(new PostParam("request", "delete_user"));
+        deleteUserPost.add(new PostParam("data", new JsonHandler()._toUserIdJsonString(id_user)));
+
+
+        Log.e("API CALL: ", ("deleteUserPost"));
+        Log.e("id_user: ", new JsonHandler()._toUserIdJsonString(id_user));
+
+        String deleteUserResponse = api.POST(Strings.ApiUrl(), api.POST_DATA(deleteUserPost));
+
+        Log.e("API POST RESPONSE", deleteUserResponse);
+        ApiDataResponse delUserApiResponse = new JsonHandler().getData(deleteUserResponse);
+        if (delUserApiResponse.dataExit == 0) {
+            new SettingsHandler().setStringSetting(ActivityMyProfile.this, R.string.preference_AuthKey, null);
+            new SettingsHandler().setStringSetting(ActivityMyProfile.this, R.string.preference_username, null);
+            new SettingsHandler().setStringSetting(ActivityMyProfile.this, R.string.preference_idUser, null);
+            return true;
+        }
+        return false;
     }
 }
