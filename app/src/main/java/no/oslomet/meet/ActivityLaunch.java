@@ -149,7 +149,7 @@ public class ActivityLaunch extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
 
         Bundle b = getIntent().getExtras();
-        if (b != null && b.getInt("activeView") != R.id.selectLayout)
+        if (b != null && b.containsKey("activeView") && b.getInt("activeView") != R.id.selectLayout)
         {
             int av = b.getInt("activeView");
             if (av != 0)
