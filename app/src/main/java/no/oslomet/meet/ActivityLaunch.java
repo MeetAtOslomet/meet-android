@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.PersistableBundle;
 import android.support.v4.text.HtmlCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -58,6 +59,7 @@ import no.oslomet.meet.core.Strings;
 
 public class ActivityLaunch extends AppCompatActivity {
 
+    private int activeViewId = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,25 @@ public class ActivityLaunch extends AppCompatActivity {
                 Analytics.class, Crashes.class);
 
         createNotificationChannel();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)
+    {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        getIntent().putExtra("activeView", activeViewId);
     }
 
     /**
@@ -126,46 +147,71 @@ public class ActivityLaunch extends AppCompatActivity {
         super.onResume();
         mainLogo = findViewById(R.id.logo);
         spinner = findViewById(R.id.spinner);
-        spinner.setVisibility(View.VISIBLE);
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                // Create new API object
-                Api api = new Api();
+        Bundle b = getIntent().getExtras();
+        if (b != null && b.getInt("activeView") != R.id.selectLayout)
+        {
+            int av = b.getInt("activeView");
+            if (av != 0)
+            {
+                View v = findViewById(av);
 
-                // Use the API to GET Heartbeat and save it in a string
-                final String response = api.GET(Strings.Heartbeat());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                if (v != null)
+                {
+                    if (av != R.id.selectLayout)
+                        findViewById(R.id.selectLayout).setVisibility(View.GONE);
+                    if (av != R.id.registerUserLayout)
+                        findViewById(R.id.registerUserLayout).setVisibility(View.GONE);
+                    if (av != R.id.loginLayout)
+                        findViewById(R.id.loginLayout).setVisibility(View.GONE);
 
-                        // Create a new Heartbeat object from the response string
-                        Heartbeat h = new JsonHandler().getHeartbeat(response);
-
-                        // If you managed to create a Heartbeat object and it has a status of true
-                        if (h != null && h.Status) {
-                            // Animate the logo upwards while loading in the next layout
-                            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainLogo.getLayoutParams();
-                            TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -lp.topMargin);
-                            animation.setDuration(1000);
-                            animation.setFillAfter(false);
-                            animation.setAnimationListener(new SplashAnimationListener());
-                            mainLogo.startAnimation(animation);
-
-                            AsyncTask.execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Continue by calling
-                                    ValidateAuthentication();
-                                }
-                            });
-                        }
-                    }
-                });
-
+                    v.setVisibility(View.VISIBLE);
+                }
             }
-        });
+        }
+        else
+        {
+            spinner.setVisibility(View.VISIBLE);
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    // Create new API object
+                    Api api = new Api();
+
+                    // Use the API to GET Heartbeat and save it in a string
+                    final String response = api.GET(Strings.Heartbeat());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            // Create a new Heartbeat object from the response string
+                            Heartbeat h = new JsonHandler().getHeartbeat(response);
+
+                            // If you managed to create a Heartbeat object and it has a status of true
+                            if (h != null && h.Status) {
+                                // Animate the logo upwards while loading in the next layout
+                                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainLogo.getLayoutParams();
+                                TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -lp.topMargin);
+                                animation.setDuration(1000);
+                                animation.setFillAfter(false);
+                                animation.setAnimationListener(new SplashAnimationListener());
+                                mainLogo.startAnimation(animation);
+
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Continue by calling
+                                        ValidateAuthentication();
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
     }
 
     /**
@@ -316,13 +362,14 @@ public class ActivityLaunch extends AppCompatActivity {
             HandlePasswordSetting();
         } else {
             findViewById(R.id.selectLayout).setVisibility(View.VISIBLE);
-
+            activeViewId = R.id.selectLayout;
 
             findViewById(R.id.PromptloginButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     findViewById(R.id.selectLayout).setVisibility(View.GONE);
                     findViewById(R.id.loginLayout).setVisibility(View.VISIBLE);
+                    activeViewId = R.id.loginLayout;
                     findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -344,6 +391,7 @@ public class ActivityLaunch extends AppCompatActivity {
                 public void onClick(View v) {
                     findViewById(R.id.selectLayout).setVisibility(View.GONE);
                     findViewById(R.id.registerUserLayout).setVisibility(View.VISIBLE);
+                    activeViewId = R.id.registerUserLayout;
                     findViewById(R.id.registerUsernameLayout).setVisibility(View.VISIBLE);
                     findViewById(R.id.registerUsernameButton).setOnClickListener(new View.OnClickListener() {
                         @Override
